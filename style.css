@@ -35,17 +35,50 @@ html, body {
   transition: all 1.5s ease;
 }
 
-#bokeh-canvas, #petals-canvas, #fireworks-canvas {
+/* FLOATING RIBBON PARTICLES LAYER */
+#ribbon-particles-layer {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 3;
+  overflow: hidden;
+}
+
+.ribbon-particle {
+  position: absolute;
+  font-size: 18px;
+  opacity: 0.45;
+  animation: floatRibbon 8s linear infinite;
+  user-select: none;
+}
+
+@keyframes floatRibbon {
+  0% {
+    transform: translateY(105vh) rotate(0deg);
+    opacity: 0.1;
+  }
+  20% { opacity: 0.5; }
+  80% { opacity: 0.5; }
+  100% {
+    transform: translateY(-10vh) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+#fireworks-canvas {
   position: fixed;
   inset: 0;
   width: 100%;
   height: 100%;
   pointer-events: none;
+  z-index: 4;
+  opacity: 0;
+  transition: opacity 0.8s ease;
 }
-#bokeh-canvas { z-index: 2; }
-#petals-canvas { z-index: 3; }
-#fireworks-canvas { z-index: 4; opacity: 0; transition: opacity 0.8s ease; }
-#fireworks-canvas.active { opacity: 1; pointer-events: auto; }
+#fireworks-canvas.active {
+  opacity: 1;
+  pointer-events: auto;
+}
 
 #app {
   position: relative;
@@ -62,7 +95,7 @@ html, body {
   top: 10px;
   left: 50%;
   transform: translateX(-50%);
-  background: rgba(255, 255, 255, 0.85);
+  background: rgba(255, 255, 255, 0.88);
   border: 1px solid rgba(255, 77, 109, 0.3);
   backdrop-filter: blur(10px);
   padding: 5px 14px;
@@ -105,19 +138,24 @@ html, body {
   border-radius: 26px;
   padding: 24px 20px;
   box-shadow: var(--card-shadow);
-  border: 1px solid rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.9);
   width: 92%;
   max-width: 400px;
   position: relative;
   margin: 0 auto;
 }
 
+.preloader-card {
+  padding: 30px 22px;
+}
+
 .heading-serif {
   font-family: 'Playfair Display', serif;
-  font-size: clamp(20px, 5.5vw, 26px);
+  font-size: clamp(20px, 5.5vw, 25px);
   font-weight: 700;
   color: var(--text-primary);
   margin-bottom: 4px;
+  line-height: 1.35;
 }
 .heading-regal {
   font-family: 'Cinzel', serif;
@@ -132,9 +170,24 @@ html, body {
   font-weight: 400;
   margin-bottom: 14px;
 }
+.subheading-celestial {
+  font-size: 12px;
+  color: var(--accent-rose);
+  font-weight: 500;
+  margin-top: 6px;
+  margin-bottom: 16px;
+  letter-spacing: 0.5px;
+}
+.subheading-heartfelt {
+  font-size: 12px;
+  color: var(--text-secondary);
+  font-weight: 500;
+  line-height: 1.5;
+  margin: 8px 0 16px 0;
+}
 .cursive-rose {
   font-family: 'Great Vibes', cursive;
-  font-size: clamp(38px, 9vw, 54px);
+  font-size: clamp(38px, 9vw, 52px);
   color: var(--accent-rose);
 }
 
@@ -155,6 +208,14 @@ html, body {
 }
 .btn-coral:active {
   transform: scale(0.95);
+}
+
+.btn-wrapper-loader {
+  margin-top: 18px;
+  min-height: 42px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .loader-bar-bg {
@@ -200,11 +261,42 @@ html, body {
   margin-top: 2px;
 }
 
-/* AESTHETIC CAKE COMPOSITION */
+/* CHAP 3: EXCITEMENT GATE & RUNAWAY BUTTON */
+.excitement-card {
+  position: relative;
+  overflow: hidden;
+}
+.kawaii-bears-stage {
+  margin: 10px 0;
+}
+.excited-btn-group {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  position: relative;
+  min-height: 50px;
+  margin-top: 10px;
+}
+.btn-no-runaway {
+  background: #ffffff;
+  color: #5c3a44;
+  border: 1px solid #f4acb7;
+  padding: 10px 22px;
+  border-radius: 50px;
+  font-size: 11.5px;
+  font-weight: 600;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
+/* CAKE & KNIFE SLICING PHYSICS */
 .cake-vector-stage {
   position: relative;
-  width: 180px;
-  height: 150px;
+  width: 200px;
+  height: 160px;
   margin: 10px auto;
   cursor: pointer;
 }
@@ -235,46 +327,126 @@ html, body {
   100% { transform: scale(1.15); }
 }
 
-.aesthetic-cake-body {
+.knife-el {
+  position: absolute;
+  top: -20px;
+  left: 50%;
+  transform: translateX(-50%) rotate(-45deg);
+  font-size: 32px;
+  opacity: 0;
+  z-index: 20;
+  transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.knife-el.cutting {
+  opacity: 1;
+  top: 45px;
+  transform: translateX(-50%) rotate(15deg);
+}
+
+.aesthetic-cake-container {
   position: absolute;
   bottom: 0;
   width: 100%;
   height: 110px;
   display: flex;
+  justify-content: center;
+  align-items: flex-end;
+}
+
+.cake-half {
+  width: 75px;
+  height: 80px;
+  display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-end;
+  transition: transform 0.8s ease;
 }
+.cake-half.left-half {
+  border-radius: 10px 0 0 0;
+}
+.cake-half.right-half {
+  border-radius: 0 10px 0 0;
+}
+.cake-half.left-half.cut {
+  transform: translateX(-22px) rotate(-6deg);
+}
+.cake-half.right-half.cut {
+  transform: translateX(22px) rotate(6deg);
+}
+
 .cake-layer-top {
-  width: 110px;
+  width: 100%;
   height: 35px;
   background: #f4acb7;
-  border-radius: 10px 10px 0 0;
+  border-top: 3px solid #ffffff;
 }
 .cake-layer-base {
-  width: 150px;
+  width: 100%;
   height: 45px;
   background: #ffcad4;
-  border-radius: 10px 10px 0 0;
-}
-.cake-drip-top {
-  width: 110px;
-  height: 10px;
-  background: #ffffff;
-  border-radius: 10px 10px 4px 4px;
-  position: absolute;
-  top: 30px;
-  z-index: 5;
 }
 .cake-plate {
-  width: 170px;
+  width: 180px;
   height: 10px;
   background: #eaeaea;
   border-radius: 20px;
+  position: absolute;
+  bottom: 0;
+  z-index: -1;
   box-shadow: 0 4px 10px rgba(0,0,0,0.08);
 }
 
-/* ENVELOPE & TWIRLED SCROLL */
+/* GRID PAPER SURPRISE BOX CARD */
+.grid-paper-card {
+  background-color: #fffaf0;
+  background-image: 
+    linear-gradient(rgba(244, 172, 183, 0.25) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(244, 172, 183, 0.25) 1px, transparent 1px);
+  background-size: 20px 20px;
+  border: 1px solid #ffcad4;
+}
+.handwritten-title-cursive {
+  font-family: 'Caveat', cursive;
+  font-size: 28px;
+  color: #800f2f;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.surprise-box-stage {
+  position: relative;
+  width: 220px;
+  height: 180px;
+  margin: 10px auto;
+  cursor: pointer;
+}
+.gift-box-3d-vector {
+  transition: transform 0.4s ease;
+}
+.gift-box-3d-vector:hover, .gift-box-3d-vector:active {
+  transform: scale(1.06);
+}
+.tap-here-callout {
+  position: absolute;
+  bottom: 25px;
+  right: 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: 'Caveat', cursive;
+  font-size: 16px;
+  color: #5c3a44;
+  font-weight: 600;
+}
+.party-cat-sticker {
+  position: absolute;
+  bottom: 5px;
+  right: -10px;
+  transform: rotate(8deg);
+  pointer-events: none;
+}
+
+/* ENVELOPE & FULLSCREEN MODAL LETTER */
 .envelope-container {
   width: 220px;
   height: 140px;
@@ -323,41 +495,57 @@ html, body {
   transform: translateX(-50%) scale(0);
 }
 
-.twirled-scroll-paper {
-  position: absolute;
-  top: 10px;
-  left: 10px;
-  right: 10px;
-  height: 90px;
-  background: #fff9fa;
-  border-radius: 8px;
-  transform: scale(0.2) translateY(50px);
+.fullscreen-letter-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(43, 30, 35, 0.5);
+  backdrop-filter: blur(8px);
+  z-index: 200;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
   opacity: 0;
-  transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  z-index: 12;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.12);
-  border: 1px solid #ffcad4;
+  visibility: hidden;
+  transition: all 0.5s ease;
 }
-.pink-envelope.open .twirled-scroll-paper.unrolled {
-  transform: scale(1) translateY(-110px);
+.fullscreen-letter-overlay.active {
   opacity: 1;
-  height: 230px;
-  left: -25px;
-  right: -25px;
+  visibility: visible;
 }
-.scroll-inner-padding {
+.letter-scroll-paper {
+  background: #fff9fa;
   width: 100%;
-  height: 100%;
-  padding: 14px;
+  max-width: 360px;
+  max-height: 80vh;
+  border-radius: 20px;
+  padding: 24px 20px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+  border: 1px solid #ffcad4;
   overflow-y: auto;
+  position: relative;
   text-align: left;
+}
+.close-letter-btn {
+  position: absolute;
+  top: 12px;
+  right: 14px;
+  background: #fde2e4;
+  border: none;
+  color: #c9184a;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
 }
 .handwritten-text-box {
   font-family: 'Caveat', cursive;
-  font-size: 17px;
-  line-height: 1.5;
+  font-size: 18px;
+  line-height: 1.6;
   color: #3d0c15;
   font-weight: 600;
+  margin-top: 10px;
 }
 
 /* POLAROID GALLERY */
@@ -408,7 +596,7 @@ html, body {
   font-weight: 600;
 }
 
-/* REALISTIC AWARD DIPLOMA (ROSE-CREAM) */
+/* REALISTIC AWARD DIPLOMA (SEAMLESS ROSE-GOLD) */
 .realistic-diploma-paper {
   position: relative;
   width: 94%;
@@ -418,9 +606,10 @@ html, body {
   padding: 24px 18px;
   color: #2b1e23;
   margin: 0 auto;
-  box-shadow: 0 15px 35px rgba(0,0,0,0.1), inset 0 0 15px rgba(212, 175, 55, 0.15);
+  box-shadow: 0 15px 35px rgba(0,0,0,0.08), inset 0 0 15px rgba(212, 175, 55, 0.12);
   font-family: 'Playfair Display', serif;
   overflow: hidden;
+  border: 1px solid #f4acb7;
 }
 .guilloche-frame {
   position: absolute;
@@ -567,9 +756,9 @@ html, body {
 /* REASONS & SCRATCH CARD */
 .reasons-stack {
   width: 240px;
-  height: 120px;
+  height: 110px;
   position: relative;
-  margin: 12px auto;
+  margin: 10px auto;
   cursor: pointer;
 }
 .reason-card {
@@ -591,8 +780,8 @@ html, body {
 .scratch-wrapper {
   position: relative;
   width: 240px;
-  height: 120px;
-  margin: 12px auto;
+  height: 110px;
+  margin: 6px auto;
   border-radius: 16px;
   overflow: hidden;
   border: 1px solid #ffcad4;
@@ -616,19 +805,10 @@ html, body {
   cursor: pointer;
 }
 
-/* BOUQUET WRAPPER & INPUT */
-.bouquet-vector-wrapper { margin: 10px 0; }
-.wish-input-field {
-  width: 100%;
-  padding: 10px 14px;
-  border-radius: 20px;
-  border: 1px solid #f4acb7;
-  background: #fff0f5;
-  color: #2b1e23;
-  font-size: 12px;
-  text-align: center;
-  outline: none;
-  margin-bottom: 12px;
+/* BOUQUET WRAPPER */
+.bouquet-realistic-container {
+  margin: 10px 0;
+  filter: drop-shadow(0 10px 20px rgba(201, 24, 74, 0.15));
 }
 
 /* ANCHORED FOOTER STAMP ABOVE NAV BUTTONS */
@@ -669,3 +849,4 @@ html, body {
   font-weight: 600;
   box-shadow: 0 4px 12px rgba(0,0,0,0.05);
   }
+  
