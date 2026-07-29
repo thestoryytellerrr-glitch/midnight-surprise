@@ -548,6 +548,12 @@ document.addEventListener('DOMContentLoaded', () => {
     bw = fwCanvas ? (fwCanvas.width = window.innerWidth) : window.innerWidth;
     bh = fwCanvas ? (fwCanvas.height = window.innerHeight) : window.innerHeight;
   };
+  renderFireworks();
+
+  window.onresize = () => {
+    bw = fwCanvas ? (fwCanvas.width = window.innerWidth) : window.innerWidth;
+    bh = fwCanvas ? (fwCanvas.height = window.innerHeight) : window.innerHeight;
+  };
 
   resetAllStates();
 });
