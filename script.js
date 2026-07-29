@@ -9,7 +9,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if ('vibrate' in navigator) navigator.vibrate(pattern);
   }
 
-  /* Ribbon Particles Engine */
   function spawnRibbonParticles() {
     const layer = document.getElementById('ribbon-particles-layer');
     if (!layer) return;
@@ -28,7 +27,6 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   spawnRibbonParticles();
 
-  /* Universal State Reset Engine */
   function resetAllStates() {
     isCandleBlown = false;
     isCakeCut = false;
@@ -93,13 +91,12 @@ document.addEventListener('DOMContentLoaded', () => {
     if (num === 12) triggerHaptic([60, 120, 60]);
   }
 
-  document.getElementById('nav-back-btn').addEventListener('click', () => goToChapter(currentChap - 1));
-  document.getElementById('nav-replay-btn').addEventListener('click', () => {
+  document.getElementById('nav-back-btn')?.addEventListener('click', () => goToChapter(currentChap - 1));
+  document.getElementById('nav-replay-btn')?.addEventListener('click', () => {
     resetAllStates();
     goToChapter(1);
   });
 
-  /* Real-Time Frame-Synced Audio Explosions */
   const AudioCtx = window.AudioContext || window.webkitAudioContext;
   let audioCtx = null;
 
@@ -114,7 +111,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const now = audioCtx.currentTime;
 
-    // High Transient Burst
     const boom = audioCtx.createOscillator();
     const boomGain = audioCtx.createGain();
     boom.type = 'triangle';
@@ -127,7 +123,6 @@ document.addEventListener('DOMContentLoaded', () => {
     boom.start(now);
     boom.stop(now + 0.25);
 
-    // Sparkling Crackle Tail
     const bufferSize = audioCtx.sampleRate * 0.15;
     const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
     const data = buffer.getChannelData(0);
@@ -147,51 +142,65 @@ document.addEventListener('DOMContentLoaded', () => {
   const hbdAudio = document.getElementById('audio-hbd');
 
   function startMainAudio() {
-    if (mainAudio.paused) {
+    initAudio();
+    if (mainAudio && mainAudio.paused) {
       mainAudio.volume = 1.0;
       mainAudio.play().catch(() => {});
     }
   }
 
-  /* Chap 1 Preloader */
   setTimeout(() => {
-    document.getElementById('load-bar').style.width = '100%';
-    setTimeout(() => { document.getElementById('btn-chap-1').style.display = 'inline-block'; }, 1200);
+    const loadBar = document.getElementById('load-bar');
+    if (loadBar) loadBar.style.width = '100%';
+    setTimeout(() => {
+      const btn1 = document.getElementById('btn-chap-1');
+      if (btn1) btn1.style.display = 'inline-block';
+    }, 1200);
   }, 300);
 
-  document.getElementById('btn-chap-1').onclick = () => { startMainAudio(); goToChapter(2); };
+  const btnChap1 = document.getElementById('btn-chap-1');
+  if (btnChap1) btnChap1.onclick = () => { startMainAudio(); goToChapter(2); };
 
-  /* Chap 2 Countdown Gate */
   function checkTimerAndAutoUnlock() {
     const diff = TARGET_DATE - new Date();
     if (diff <= 0) {
-      goToChapter(3);
+      if (currentChap === 2) goToChapter(3);
     } else {
-      document.getElementById('td-days').textContent = String(Math.floor(diff / (1000 * 60 * 60 * 24))).padStart(2, '0');
-      document.getElementById('td-hours').textContent = String(Math.floor((diff / (1000 * 60 * 60)) % 24)).padStart(2, '0');
-      document.getElementById('td-mins').textContent = String(Math.floor((diff / 1000 / 60) % 60)).padStart(2, '0');
-      document.getElementById('td-secs').textContent = String(Math.floor((diff / 1000) % 60)).padStart(2, '0');
+      const tdDays = document.getElementById('td-days');
+      const tdHours = document.getElementById('td-hours');
+      const tdMins = document.getElementById('td-mins');
+      const tdSecs = document.getElementById('td-secs');
+
+      if (tdDays) tdDays.textContent = String(Math.floor(diff / (1000 * 60 * 60 * 24))).padStart(2, '0');
+      if (tdHours) tdHours.textContent = String(Math.floor((diff / (1000 * 60 * 60)) % 24)).padStart(2, '0');
+      if (tdMins) tdMins.textContent = String(Math.floor((diff / 1000 / 60) % 60)).padStart(2, '0');
+      if (tdSecs) tdSecs.textContent = String(Math.floor((diff / 1000) % 60)).padStart(2, '0');
     }
   }
   setInterval(checkTimerAndAutoUnlock, 1000);
   checkTimerAndAutoUnlock();
 
-  let secretTap = 0;
-  document.getElementById('secret-title').onclick = () => {
-    secretTap++;
-    if (secretTap >= 3) {
-      secretTap = 0;
-      if (prompt("Enter Secret Passcode:") === SECRET_PIN) goToChapter(3);
-    }
-  };
+  const btnChap2Preview = document.getElementById('btn-chap-2-preview');
+  if (btnChap2Preview) btnChap2Preview.onclick = () => goToChapter(3);
 
-  /* Chap 3 Excitement Gate */
+  let secretTap = 0;
+  const secretTitle = document.getElementById('secret-title');
+  if (secretTitle) {
+    secretTitle.onclick = () => {
+      secretTap++;
+      if (secretTap >= 3) {
+        secretTap = 0;
+        if (prompt("Enter Secret Passcode:") === SECRET_PIN) goToChapter(3);
+      }
+    };
+  }
+
   const runawayBtn = document.getElementById('btn-excited-no');
   function dodgeNoButton() {
     triggerHaptic(20);
     const x = (Math.random() - 0.5) * 160;
     const y = (Math.random() - 0.5) * 100;
-    runawayBtn.style.transform = `translate(${x}px, ${y}px)`;
+    if (runawayBtn) runawayBtn.style.transform = `translate(${x}px, ${y}px)`;
   }
 
   if (runawayBtn) {
@@ -200,33 +209,37 @@ document.addEventListener('DOMContentLoaded', () => {
     runawayBtn.addEventListener('click', dodgeNoButton);
   }
 
-  document.getElementById('btn-excited-yes').onclick = () => {
-    triggerHaptic(50);
-    goToChapter(4);
-  };
+  const btnExcitedYes = document.getElementById('btn-excited-yes');
+  if (btnExcitedYes) {
+    btnExcitedYes.onclick = () => {
+      triggerHaptic(50);
+      goToChapter(4);
+    };
+  }
 
-  /* Chap 4 Cake Blow & Slicing Physics */
   let isCandleBlown = false;
   let isCakeCut = false;
 
   function handleCakeInteraction() {
     if (!isCandleBlown) {
       isCandleBlown = true;
-      document.getElementById('candle-flame').style.display = 'none';
-      document.getElementById('cake-action-hint').textContent = "Candle blown out! Tap again to slice cake 🔪";
+      const flame = document.getElementById('candle-flame');
+      if (flame) flame.style.display = 'none';
+      const hint = document.getElementById('cake-action-hint');
+      if (hint) hint.textContent = "Candle blown out! Tap again to slice cake 🔪";
       triggerHaptic(50);
     } else if (!isCakeCut) {
       isCakeCut = true;
       const knife = document.getElementById('cake-knife');
-      knife.classList.add('cutting');
+      if (knife) knife.classList.add('cutting');
 
       setTimeout(() => {
-        document.getElementById('cake-left').classList.add('cut');
-        document.getElementById('cake-right').classList.add('cut');
+        document.getElementById('cake-left')?.classList.add('cut');
+        document.getElementById('cake-right')?.classList.add('cut');
         triggerHaptic([40, 60, 40]);
 
-        mainAudio.pause();
-        hbdAudio.play().catch(() => {});
+        if (mainAudio) mainAudio.pause();
+        if (hbdAudio) hbdAudio.play().catch(() => {});
 
         setTimeout(() => {
           goToChapter(5);
@@ -235,7 +248,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  document.getElementById('cake-touch-area').onclick = handleCakeInteraction;
+  const cakeStage = document.getElementById('cake-touch-area');
+  if (cakeStage) cakeStage.onclick = handleCakeInteraction;
 
   if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
     navigator.mediaDevices.getUserMedia({ audio: true }).then(stream => {
@@ -257,33 +271,41 @@ document.addEventListener('DOMContentLoaded', () => {
     }).catch(() => {});
   }
 
-  /* Chap 5 Celebration Fireworks Loop */
   function startFireworksLoop() {
-    document.getElementById('fireworks-canvas').classList.add('active');
+    document.getElementById('fireworks-canvas')?.classList.add('active');
   }
 
-  document.getElementById('btn-chap-5').onclick = () => {
-    document.getElementById('fireworks-canvas').classList.remove('active');
-    goToChapter(6);
-  };
+  const btnChap5 = document.getElementById('btn-chap-5');
+  if (btnChap5) {
+    btnChap5.onclick = () => {
+      document.getElementById('fireworks-canvas')?.classList.remove('active');
+      goToChapter(6);
+    };
+  }
 
-  /* Chap 6 Surprise Gift Box */
-  document.getElementById('surprise-box-trigger').onclick = () => {
-    triggerHaptic([50, 100, 50]);
-    document.getElementById('gift-box-el').style.transform = 'scale(1.15) rotate(5deg)';
-    setTimeout(() => {
-      document.getElementById('gift-box-el').style.transform = 'scale(1)';
-      document.getElementById('btn-chap-6').style.display = 'inline-block';
-    }, 300);
-  };
+  const surpriseTrigger = document.getElementById('surprise-box-trigger');
+  if (surpriseTrigger) {
+    surpriseTrigger.onclick = () => {
+      triggerHaptic([50, 100, 50]);
+      const giftEl = document.getElementById('gift-box-el');
+      if (giftEl) giftEl.style.transform = 'scale(1.15) rotate(5deg)';
+      setTimeout(() => {
+        if (giftEl) giftEl.style.transform = 'scale(1)';
+        const btn6 = document.getElementById('btn-chap-6');
+        if (btn6) btn6.style.display = 'inline-block';
+      }, 300);
+    };
+  }
 
-  document.getElementById('btn-chap-6').onclick = () => {
-    hbdAudio.pause();
-    startMainAudio();
-    goToChapter(7);
-  };
+  const btnChap6 = document.getElementById('btn-chap-6');
+  if (btnChap6) {
+    btnChap6.onclick = () => {
+      if (hbdAudio) hbdAudio.pause();
+      startMainAudio();
+      goToChapter(7);
+    };
+  }
 
-  /* Chap 7 Ribbon Envelope & Fullscreen Modal Letter */
   const fullLetterLines = [
     "Dearest Samrudhi,\n",
     "Welcome to Level 19! Today marks the start of another beautiful chapter in your life, and I wanted to make sure you were surrounded by all the light, warmth, and joy you so effortlessly give to everyone around you.\n\n",
@@ -298,6 +320,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (typingStarted) return;
     typingStarted = true;
     const container = document.getElementById('typing-text-box');
+    if (!container) return;
     container.innerHTML = "";
     let lineIdx = 0;
 
@@ -310,29 +333,37 @@ document.addEventListener('DOMContentLoaded', () => {
         lineIdx++;
         setTimeout(typeNextLine, 600);
       } else {
-        document.getElementById('btn-chap-7').style.display = 'inline-block';
+        const btn7 = document.getElementById('btn-chap-7');
+        if (btn7) btn7.style.display = 'inline-block';
       }
     }
     typeNextLine();
   }
 
-  document.getElementById('envelope-wrapper').onclick = () => {
-    triggerHaptic(40);
-    document.getElementById('envelope-el').classList.add('open');
-    setTimeout(() => {
-      document.getElementById('fullscreen-letter-modal').classList.add('active');
-      typeWriterLetter();
-    }, 500);
-  };
+  const envWrapper = document.getElementById('envelope-wrapper');
+  if (envWrapper) {
+    envWrapper.onclick = () => {
+      triggerHaptic(40);
+      document.getElementById('envelope-el')?.classList.add('open');
+      setTimeout(() => {
+        document.getElementById('fullscreen-letter-modal')?.classList.add('active');
+        typeWriterLetter();
+      }, 500);
+    };
+  }
 
-  document.getElementById('close-letter-btn').onclick = () => {
-    document.getElementById('fullscreen-letter-modal').classList.remove('active');
-    document.getElementById('btn-chap-7').style.display = 'inline-block';
-  };
+  const closeLetterBtn = document.getElementById('close-letter-btn');
+  if (closeLetterBtn) {
+    closeLetterBtn.onclick = () => {
+      document.getElementById('fullscreen-letter-modal')?.classList.remove('active');
+      const btn7 = document.getElementById('btn-chap-7');
+      if (btn7) btn7.style.display = 'inline-block';
+    };
+  }
 
-  document.getElementById('btn-chap-7').onclick = () => goToChapter(8);
+  const btnChap7 = document.getElementById('btn-chap-7');
+  if (btnChap7) btnChap7.onclick = () => goToChapter(8);
 
-  /* Chap 8 Polaroid Gallery */
   const photoList = [
     { cap: "Bright Smiles & Warm Memories", note: "Some moments stay golden forever." },
     { cap: "Laughter & Pure Joy", note: "Your happiness lights up every room." },
@@ -346,29 +377,48 @@ document.addEventListener('DOMContentLoaded', () => {
   let pIdx = 0;
 
   function renderPhoto() {
-    document.getElementById('photo-counter').textContent = `Memory ${pIdx + 1} of 8 (Tap to Flip)`;
-    document.getElementById('photo-idx-num').textContent = pIdx + 1;
-    document.getElementById('photo-caption').textContent = photoList[pIdx].cap;
-    document.getElementById('photo-back-note').textContent = `"${photoList[pIdx].note}"`;
-    document.getElementById('polaroid-el').classList.remove('flipped');
+    const counter = document.getElementById('photo-counter');
+    const idxNum = document.getElementById('photo-idx-num');
+    const caption = document.getElementById('photo-caption');
+    const backNote = document.getElementById('photo-back-note');
+    const polaroid = document.getElementById('polaroid-el');
+
+    if (counter) counter.textContent = `Memory ${pIdx + 1} of 8 (Tap to Flip)`;
+    if (idxNum) idxNum.textContent = pIdx + 1;
+    if (caption) caption.textContent = photoList[pIdx].cap;
+    if (backNote) backNote.textContent = `"${photoList[pIdx].note}"`;
+    if (polaroid) polaroid.classList.remove('flipped');
   }
 
-  document.getElementById('polaroid-el').onclick = () => {
-    triggerHaptic(30);
-    document.getElementById('polaroid-el').classList.toggle('flipped');
-  };
-  document.getElementById('next-photo-btn').onclick = () => { pIdx = (pIdx + 1) % photoList.length; renderPhoto(); };
-  document.getElementById('prev-photo-btn').onclick = () => { pIdx = (pIdx - 1 + photoList.length) % photoList.length; renderPhoto(); };
-  document.getElementById('btn-chap-8').onclick = () => goToChapter(9);
+  const polaroidEl = document.getElementById('polaroid-el');
+  if (polaroidEl) {
+    polaroidEl.onclick = () => {
+      triggerHaptic(30);
+      polaroidEl.classList.toggle('flipped');
+    };
+  }
 
-  /* Chap 9 Certificate Seal Tap */
-  document.getElementById('seal-el').onclick = () => {
-    triggerHaptic(50);
-    document.getElementById('stats-overlay').style.display = 'block';
-  };
-  document.getElementById('btn-chap-9').onclick = () => goToChapter(10);
+  const nextPhotoBtn = document.getElementById('next-photo-btn');
+  if (nextPhotoBtn) nextPhotoBtn.onclick = () => { pIdx = (pIdx + 1) % photoList.length; renderPhoto(); };
 
-  /* Chap 10 Reasons Deck & Scratch Canvas */
+  const prevPhotoBtn = document.getElementById('prev-photo-btn');
+  if (prevPhotoBtn) prevPhotoBtn.onclick = () => { pIdx = (pIdx - 1 + photoList.length) % photoList.length; renderPhoto(); };
+
+  const btnChap8 = document.getElementById('btn-chap-8');
+  if (btnChap8) btnChap8.onclick = () => goToChapter(9);
+
+  const sealEl = document.getElementById('seal-el');
+  if (sealEl) {
+    sealEl.onclick = () => {
+      triggerHaptic(50);
+      const overlay = document.getElementById('stats-overlay');
+      if (overlay) overlay.style.display = 'block';
+    };
+  }
+
+  const btnChap9 = document.getElementById('btn-chap-9');
+  if (btnChap9) btnChap9.onclick = () => goToChapter(10);
+
   const reasonsList = [
     "1. Your contagious smile.", "2. Your unmatched kindness.", "3. How genuine you are.",
     "4. Your warm presence.", "5. The way you make people feel seen.", "6. Your resilience.",
@@ -380,17 +430,24 @@ document.addEventListener('DOMContentLoaded', () => {
   ];
   let rIdx = 0;
 
-  document.getElementById('reason-card-el').onclick = () => {
-    triggerHaptic(20);
-    rIdx = (rIdx + 1) % reasonsList.length;
-    document.getElementById('reason-idx').textContent = `Reason ${rIdx + 1} of 19 (Tap card)`;
-    document.getElementById('reason-text-el').textContent = reasonsList[rIdx];
-  };
+  const reasonCard = document.getElementById('reason-card-el');
+  if (reasonCard) {
+    reasonCard.onclick = () => {
+      triggerHaptic(20);
+      rIdx = (rIdx + 1) % reasonsList.length;
+      const idxEl = document.getElementById('reason-idx');
+      const textEl = document.getElementById('reason-text-el');
+      if (idxEl) idxEl.textContent = `Reason ${rIdx + 1} of 19 (Tap card)`;
+      if (textEl) textEl.textContent = reasonsList[rIdx];
+    };
+  }
 
   function initScratchCanvas() {
     const scratchCanvas = document.getElementById('scratch-canvas');
     if (!scratchCanvas) return;
     const scratchCtx = scratchCanvas.getContext('2d');
+    if (!scratchCtx) return;
+
     scratchCtx.globalCompositeOperation = 'source-over';
     scratchCtx.fillStyle = '#d4af37';
     scratchCtx.fillRect(0, 0, 240, 110);
@@ -420,29 +477,34 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   initScratchCanvas();
 
-  document.getElementById('btn-chap-10').onclick = () => goToChapter(11);
-  document.getElementById('btn-chap-11').onclick = () => goToChapter(12);
+  const btnChap10 = document.getElementById('btn-chap-10');
+  if (btnChap10) btnChap10.onclick = () => goToChapter(11);
 
-  /* Screen Capture Button */
-  document.getElementById('nav-capture-btn').onclick = () => {
-    triggerHaptic(50);
-    html2canvas(document.body).then(canvas => {
-      const a = document.createElement('a');
-      a.download = 'Samrudhi-19th-Birthday.png';
-      a.href = canvas.toDataURL();
-      a.click();
-    });
-  };
+  const btnChap11 = document.getElementById('btn-chap-11');
+  if (btnChap11) btnChap11.onclick = () => goToChapter(12);
 
-  /* Synchronized Visual & Audio Fireworks Canvas Engine */
+  const captureBtn = document.getElementById('nav-capture-btn');
+  if (captureBtn) {
+    captureBtn.onclick = () => {
+      triggerHaptic(50);
+      if (window.html2canvas) {
+        html2canvas(document.body).then(canvas => {
+          const a = document.createElement('a');
+          a.download = 'Samrudhi-19th-Birthday.png';
+          a.href = canvas.toDataURL();
+          a.click();
+        });
+      }
+    };
+  }
+
   const fwCanvas = document.getElementById('fireworks-canvas');
-  const fwCtx = fwCanvas.getContext('2d');
-  let bw = (fwCanvas.width = window.innerWidth);
-  let bh = (fwCanvas.height = window.innerHeight);
+  const fwCtx = fwCanvas ? fwCanvas.getContext('2d') : null;
+  let bw = fwCanvas ? (fwCanvas.width = window.innerWidth) : window.innerWidth;
+  let bh = fwCanvas ? (fwCanvas.height = window.innerHeight) : window.innerHeight;
 
   let particles = [];
   function createFirework(x, y) {
-    // Play explosion sound precisely when particles burst visually!
     playSynchronizedExplosionSound();
 
     const colors = ['#ff4d6d', '#c9184a', '#ffd700', '#ffffff', '#ff758f'];
@@ -457,36 +519,35 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function renderFireworks() {
-    fwCtx.clearRect(0, 0, bw, bh);
-    if (fwCanvas.classList.contains('active') && Math.random() < 0.08) {
-      createFirework(Math.random() * (bw * 0.8) + bw * 0.1, Math.random() * (bh * 0.5) + bh * 0.1);
-    }
-    particles.forEach((p, index) => {
-      p.x += p.vx; p.y += p.vy;
-      p.vy += 0.05; p.alpha -= p.decay;
-
-      if (p.alpha <= 0) {
-        particles.splice(index, 1);
-      } else {
-        fwCtx.fillStyle = p.color;
-        fwCtx.globalAlpha = p.alpha;
-        fwCtx.beginPath();
-        fwCtx.arc(p.x, p.y, 2.8, 0, Math.PI * 2);
-        fwCtx.fill();
+    if (fwCtx && fwCanvas) {
+      fwCtx.clearRect(0, 0, bw, bh);
+      if (fwCanvas.classList.contains('active') && Math.random() < 0.08) {
+        createFirework(Math.random() * (bw * 0.8) + bw * 0.1, Math.random() * (bh * 0.5) + bh * 0.1);
       }
-    });
-    fwCtx.globalAlpha = 1;
+      particles.forEach((p, index) => {
+        p.x += p.vx; p.y += p.vy;
+        p.vy += 0.05; p.alpha -= p.decay;
+
+        if (p.alpha <= 0) {
+          particles.splice(index, 1);
+        } else {
+          fwCtx.fillStyle = p.color;
+          fwCtx.globalAlpha = p.alpha;
+          fwCtx.beginPath();
+          fwCtx.arc(p.x, p.y, 2.8, 0, Math.PI * 2);
+          fwCtx.fill();
+        }
+      });
+      fwCtx.globalAlpha = 1;
+    }
     requestAnimationFrame(renderFireworks);
   }
   renderFireworks();
 
   window.onresize = () => {
-    bw = fwCanvas.width = window.innerWidth;
-    bh = fwCanvas.height = window.innerHeight;
+    bw = fwCanvas ? (fwCanvas.width = window.innerWidth) : window.innerWidth;
+    bh = fwCanvas ? (fwCanvas.height = window.innerHeight) : window.innerHeight;
   };
 
-  // Initial State Reset
   resetAllStates();
-
 });
-
