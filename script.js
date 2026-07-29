@@ -9,6 +9,87 @@ document.addEventListener('DOMContentLoaded', () => {
     if ('vibrate' in navigator) navigator.vibrate(pattern);
   }
 
+  /* Ribbon Particles Engine */
+  function spawnRibbonParticles() {
+    const layer = document.getElementById('ribbon-particles-layer');
+    if (!layer) return;
+    layer.innerHTML = '';
+    const count = 18;
+    for (let i = 0; i < count; i++) {
+      const el = document.createElement('div');
+      el.className = 'ribbon-particle';
+      el.textContent = '🎀';
+      el.style.left = Math.random() * 95 + 'vw';
+      el.style.animationDelay = (Math.random() * 8) + 's';
+      el.style.animationDuration = (6 + Math.random() * 6) + 's';
+      el.style.fontSize = (14 + Math.random() * 12) + 'px';
+      layer.appendChild(el);
+    }
+  }
+  spawnRibbonParticles();
+
+  /* Universal State Reset Engine */
+  function resetAllStates() {
+    // 1. Reset Cake & Slicing State
+    isCandleBlown = false;
+    isCakeCut = false;
+    const flame = document.getElementById('candle-flame');
+    if (flame) flame.style.display = 'block';
+    
+    const knife = document.getElementById('cake-knife');
+    if (knife) knife.classList.remove('cutting');
+    
+    const leftHalf = document.getElementById('cake-left');
+    const rightHalf = document.getElementById('cake-right');
+    if (leftHalf) leftHalf.classList.remove('cut');
+    if (rightHalf) rightHalf.classList.remove('cut');
+
+    const hint = document.getElementById('cake-action-hint');
+    if (hint) hint.textContent = "Tap candle to blow out! 🔥";
+
+    // 2. Reset Excitement Gate No Button
+    const noBtn = document.getElementById('btn-excited-no');
+    if (noBtn) {
+      noBtn.style.transform = 'none';
+      noBtn.style.position = 'relative';
+    }
+
+    // 3. Reset Envelope & Fullscreen Modal Letter
+    typingStarted = false;
+    const env = document.getElementById('envelope-el');
+    if (env) env.classList.remove('open');
+    
+    const modal = document.getElementById('fullscreen-letter-modal');
+    if (modal) modal.classList.remove('active');
+    
+    const textBox = document.getElementById('typing-text-box');
+    if (textBox) textBox.innerHTML = '';
+    
+    const btn6 = document.getElementById('btn-chap-6');
+    if (btn6) btn6.style.display = 'none';
+
+    const btn7 = document.getElementById('btn-chap-7');
+    if (btn7) btn7.style.display = 'none';
+
+    // 4. Reset Gift Box
+    const giftBoxBtn = document.getElementById('btn-chap-6');
+    if (giftBoxBtn) giftBoxBtn.style.display = 'none';
+
+    // 5. Reset Polaroid Gallery & Stats
+    pIdx = 0;
+    renderPhoto();
+    const statsOverlay = document.getElementById('stats-overlay');
+    if (statsOverlay) statsOverlay.style.display = 'none';
+
+    // 6. Reset Scratch Canvas
+    initScratchCanvas();
+
+    // 7. Reset Audio & Fireworks
+    stopFirecrackerSynth();
+    const fwCanvas = document.getElementById('fireworks-canvas');
+    if (fwCanvas) fwCanvas.classList.remove('active');
+  }
+
   function goToChapter(num) {
     if (num < 1 || num > TOTAL_CHAPS) return;
     triggerHaptic(40);
@@ -18,13 +99,15 @@ document.addEventListener('DOMContentLoaded', () => {
     if (next) next.classList.add('active');
     currentChap = num;
 
-    if (num === 3) startFireworksLoop();
-    if (num === 10) isPetalsActive = true;
+    if (num === 5) startFireworksLoop();
     if (num === 12) triggerHaptic([60, 120, 60]);
   }
 
   document.getElementById('nav-back-btn').addEventListener('click', () => goToChapter(currentChap - 1));
-  document.getElementById('nav-replay-btn').addEventListener('click', () => goToChapter(1));
+  document.getElementById('nav-replay-btn').addEventListener('click', () => {
+    resetAllStates();
+    goToChapter(1);
+  });
 
   /* Web Audio Synthesizers */
   const AudioCtx = window.AudioContext || window.webkitAudioContext;
@@ -35,7 +118,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (audioCtx.state === 'suspended') audioCtx.resume();
   }
 
-  /* REAL FIRECRACKER SYNTHESIZER */
+  /* Real Firecracker Synthesizer */
   let firecrackerInterval = null;
   function startFirecrackerSynth() {
     initAudio();
@@ -72,7 +155,7 @@ document.addEventListener('DOMContentLoaded', () => {
       noiseGain.connect(audioCtx.destination);
       noise.start(now);
 
-    }, 250);
+    }, 280);
   }
 
   function stopFirecrackerSynth() {
@@ -92,7 +175,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  /* Chap 1 Loading */
+  /* Chap 1 Preloader */
   setTimeout(() => {
     document.getElementById('load-bar').style.width = '100%';
     setTimeout(() => { document.getElementById('btn-chap-1').style.display = 'inline-block'; }, 1200);
@@ -100,7 +183,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   document.getElementById('btn-chap-1').onclick = () => { startMainAudio(); goToChapter(2); };
 
-  /* Chap 2 Countdown & Secret Passcode */
+  /* Chap 2 Countdown Gate & Secret Passcode */
   function checkTimerAndAutoUnlock() {
     const diff = TARGET_DATE - new Date();
     if (diff <= 0) {
@@ -124,38 +207,62 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   };
 
-  /* Chap 3 Fireworks */
-  function startFireworksLoop() {
-    startFirecrackerSynth();
-    document.getElementById('fireworks-canvas').classList.add('active');
+  /* Chap 3 Excitement Gate (Kawaii Bears + Runaway No Button) */
+  const runawayBtn = document.getElementById('btn-excited-no');
+  function dodgeNoButton() {
+    triggerHaptic(20);
+    const x = (Math.random() - 0.5) * 160;
+    const y = (Math.random() - 0.5) * 100;
+    runawayBtn.style.transform = `translate(${x}px, ${y}px)`;
   }
 
-  document.getElementById('btn-chap-3').onclick = () => {
-    stopFirecrackerSynth();
-    document.getElementById('fireworks-canvas').classList.remove('active');
+  if (runawayBtn) {
+    runawayBtn.addEventListener('mouseover', dodgeNoButton);
+    runawayBtn.addEventListener('touchstart', (e) => { e.preventDefault(); dodgeNoButton(); });
+    runawayBtn.addEventListener('click', dodgeNoButton);
+  }
+
+  document.getElementById('btn-excited-yes').onclick = () => {
+    triggerHaptic(50);
     goToChapter(4);
   };
 
-  /* Chap 4 Cake Blow/Tap */
+  /* Chap 4 Cake Blow & Knife Slicing Physics */
   let isCandleBlown = false;
-  function blowCandle() {
-    if (isCandleBlown) return;
-    isCandleBlown = true;
-    document.getElementById('candle-flame').style.display = 'none';
+  let isCakeCut = false;
 
-    mainAudio.pause();
-    hbdAudio.play().catch(() => {});
+  function handleCakeInteraction() {
+    if (!isCandleBlown) {
+      // Step 1: Blow Candle Flame
+      isCandleBlown = true;
+      document.getElementById('candle-flame').style.display = 'none';
+      document.getElementById('cake-action-hint').textContent = "Candle blown out! Tap again to slice cake 🔪";
+      triggerHaptic(50);
+    } else if (!isCakeCut) {
+      // Step 2: Slice Cake with Knife & Split Halves
+      isCakeCut = true;
+      const knife = document.getElementById('cake-knife');
+      knife.classList.add('cutting');
 
-    setTimeout(() => { document.getElementById('btn-chap-4').style.display = 'inline-block'; }, 1000);
+      setTimeout(() => {
+        document.getElementById('cake-left').classList.add('cut');
+        document.getElementById('cake-right').classList.add('cut');
+        triggerHaptic([40, 60, 40]);
+
+        mainAudio.pause();
+        hbdAudio.play().catch(() => {});
+
+        // Step 3: Transition to Celebration Pop-Up Chapter
+        setTimeout(() => {
+          goToChapter(5);
+        }, 1200);
+      }, 500);
+    }
   }
 
-  document.getElementById('cake-touch-area').onclick = blowCandle;
-  document.getElementById('btn-chap-4').onclick = () => {
-    hbdAudio.pause();
-    startMainAudio();
-    goToChapter(5);
-  };
+  document.getElementById('cake-touch-area').onclick = handleCakeInteraction;
 
+  // Mic Blow Detection
   if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
     navigator.mediaDevices.getUserMedia({ audio: true }).then(stream => {
       const micCtx = new AudioCtx();
@@ -165,16 +272,46 @@ document.addEventListener('DOMContentLoaded', () => {
       const data = new Uint8Array(analyser.frequencyBinCount);
 
       function checkMic() {
-        analyser.getByteFrequencyData(data);
-        let avg = data.reduce((a, b) => a + b) / data.length;
-        if (avg > 35) blowCandle();
+        if (!isCandleBlown && currentChap === 4) {
+          analyser.getByteFrequencyData(data);
+          let avg = data.reduce((a, b) => a + b) / data.length;
+          if (avg > 35) handleCakeInteraction();
+        }
         requestAnimationFrame(checkMic);
       }
       checkMic();
     }).catch(() => {});
   }
 
-  /* Chap 5 Envelope & Handwritten Scroll Line-by-Line Typing */
+  /* Chap 5 Celebration Fireworks Loop */
+  function startFireworksLoop() {
+    startFirecrackerSynth();
+    document.getElementById('fireworks-canvas').classList.add('active');
+  }
+
+  document.getElementById('btn-chap-5').onclick = () => {
+    stopFirecrackerSynth();
+    document.getElementById('fireworks-canvas').classList.remove('active');
+    goToChapter(6);
+  };
+
+  /* Chap 6 Surprise Gift Box */
+  document.getElementById('surprise-box-trigger').onclick = () => {
+    triggerHaptic([50, 100, 50]);
+    document.getElementById('gift-box-el').style.transform = 'scale(1.15) rotate(5deg)';
+    setTimeout(() => {
+      document.getElementById('gift-box-el').style.transform = 'scale(1)';
+      document.getElementById('btn-chap-6').style.display = 'inline-block';
+    }, 300);
+  };
+
+  document.getElementById('btn-chap-6').onclick = () => {
+    hbdAudio.pause();
+    startMainAudio();
+    goToChapter(7);
+  };
+
+  /* Chap 7 Ribbon Envelope & Fullscreen Modal Letter */
   const fullLetterLines = [
     "Dearest Samrudhi,\n",
     "Welcome to Level 19! Today marks the start of another beautiful chapter in your life, and I wanted to make sure you were surrounded by all the light, warmth, and joy you so effortlessly give to everyone around you.\n\n",
@@ -199,24 +336,31 @@ document.addEventListener('DOMContentLoaded', () => {
         p.textContent = fullLetterLines[lineIdx];
         container.appendChild(p);
         lineIdx++;
-        setTimeout(typeNextLine, 650);
+        setTimeout(typeNextLine, 600);
       } else {
-        document.getElementById('btn-chap-5').style.display = 'inline-block';
+        document.getElementById('btn-chap-7').style.display = 'inline-block';
       }
     }
     typeNextLine();
   }
 
   document.getElementById('envelope-wrapper').onclick = () => {
+    triggerHaptic(40);
     document.getElementById('envelope-el').classList.add('open');
     setTimeout(() => {
-      document.getElementById('scroll-el').classList.add('unrolled');
-      setTimeout(typeWriterLetter, 500);
-    }, 400);
+      document.getElementById('fullscreen-letter-modal').classList.add('active');
+      typeWriterLetter();
+    }, 500);
   };
-  document.getElementById('btn-chap-5').onclick = () => goToChapter(6);
 
-  /* Chap 6 Polaroid Gallery */
+  document.getElementById('close-letter-btn').onclick = () => {
+    document.getElementById('fullscreen-letter-modal').classList.remove('active');
+    document.getElementById('btn-chap-7').style.display = 'inline-block';
+  };
+
+  document.getElementById('btn-chap-7').onclick = () => goToChapter(8);
+
+  /* Chap 8 Polaroid Gallery */
   const photoList = [
     { cap: "Bright Smiles & Warm Memories", note: "Some moments stay golden forever." },
     { cap: "Laughter & Pure Joy", note: "Your happiness lights up every room." },
@@ -237,16 +381,22 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('polaroid-el').classList.remove('flipped');
   }
 
-  document.getElementById('polaroid-el').onclick = () => { document.getElementById('polaroid-el').classList.toggle('flipped'); };
+  document.getElementById('polaroid-el').onclick = () => {
+    triggerHaptic(30);
+    document.getElementById('polaroid-el').classList.toggle('flipped');
+  };
   document.getElementById('next-photo-btn').onclick = () => { pIdx = (pIdx + 1) % photoList.length; renderPhoto(); };
   document.getElementById('prev-photo-btn').onclick = () => { pIdx = (pIdx - 1 + photoList.length) % photoList.length; renderPhoto(); };
-  document.getElementById('btn-chap-6').onclick = () => goToChapter(7);
+  document.getElementById('btn-chap-8').onclick = () => goToChapter(9);
 
-  /* Chap 7 Certificate Seal Tap */
-  document.getElementById('seal-el').onclick = () => { document.getElementById('stats-overlay').style.display = 'block'; };
-  document.getElementById('btn-chap-7').onclick = () => goToChapter(8);
+  /* Chap 9 Certificate Seal Tap */
+  document.getElementById('seal-el').onclick = () => {
+    triggerHaptic(50);
+    document.getElementById('stats-overlay').style.display = 'block';
+  };
+  document.getElementById('btn-chap-9').onclick = () => goToChapter(10);
 
-  /* Chap 8 Reasons Deck */
+  /* Chap 10 Reasons Deck & Scratch Canvas */
   const reasonsList = [
     "1. Your contagious smile.", "2. Your unmatched kindness.", "3. How genuine you are.",
     "4. Your warm presence.", "5. The way you make people feel seen.", "6. Your resilience.",
@@ -259,51 +409,51 @@ document.addEventListener('DOMContentLoaded', () => {
   let rIdx = 0;
 
   document.getElementById('reason-card-el').onclick = () => {
+    triggerHaptic(20);
     rIdx = (rIdx + 1) % reasonsList.length;
     document.getElementById('reason-idx').textContent = `Reason ${rIdx + 1} of 19 (Tap card)`;
     document.getElementById('reason-text-el').textContent = reasonsList[rIdx];
   };
-  document.getElementById('btn-chap-8').onclick = () => goToChapter(9);
 
-  /* Chap 9 Scratch Canvas */
-  const scratchCanvas = document.getElementById('scratch-canvas');
-  const scratchCtx = scratchCanvas.getContext('2d');
-  scratchCtx.fillStyle = '#d4af37';
-  scratchCtx.fillRect(0, 0, 240, 120);
-  scratchCtx.fillStyle = '#ffffff';
-  scratchCtx.font = '11px Poppins';
-  scratchCtx.fillText('Scratch Here ✨', 78, 65);
+  function initScratchCanvas() {
+    const scratchCanvas = document.getElementById('scratch-canvas');
+    if (!scratchCanvas) return;
+    const scratchCtx = scratchCanvas.getContext('2d');
+    scratchCtx.globalCompositeOperation = 'source-over';
+    scratchCtx.fillStyle = '#d4af37';
+    scratchCtx.fillRect(0, 0, 240, 110);
+    scratchCtx.fillStyle = '#ffffff';
+    scratchCtx.font = '11px Poppins';
+    scratchCtx.fillText('Scratch Here ✨', 78, 60);
 
-  let isScratching = false;
-  function scratchScratch(e) {
-    if (!isScratching) return;
-    const rect = scratchCanvas.getBoundingClientRect();
-    const x = (e.touches ? e.touches[0].clientX : e.clientX) - rect.left;
-    const y = (e.touches ? e.touches[0].clientY : e.clientY) - rect.top;
+    let isScratching = false;
+    function scratchScratch(e) {
+      if (!isScratching) return;
+      const rect = scratchCanvas.getBoundingClientRect();
+      const x = (e.touches ? e.touches[0].clientX : e.clientX) - rect.left;
+      const y = (e.touches ? e.touches[0].clientY : e.clientY) - rect.top;
 
-    scratchCtx.globalCompositeOperation = 'destination-out';
-    scratchCtx.beginPath();
-    scratchCtx.arc(x, y, 18, 0, Math.PI * 2);
-    scratchCtx.fill();
+      scratchCtx.globalCompositeOperation = 'destination-out';
+      scratchCtx.beginPath();
+      scratchCtx.arc(x, y, 18, 0, Math.PI * 2);
+      scratchCtx.fill();
+    }
+
+    scratchCanvas.onmousedown = () => isScratching = true;
+    scratchCanvas.onmouseup = () => isScratching = false;
+    scratchCanvas.onmousemove = scratchScratch;
+    scratchCanvas.ontouchstart = () => isScratching = true;
+    scratchCanvas.ontouchend = () => isScratching = false;
+    scratchCanvas.ontouchmove = scratchScratch;
   }
+  initScratchCanvas();
 
-  scratchCanvas.addEventListener('mousedown', () => isScratching = true);
-  scratchCanvas.addEventListener('mouseup', () => isScratching = false);
-  scratchCanvas.addEventListener('mousemove', scratchScratch);
-  scratchCanvas.addEventListener('touchstart', () => isScratching = true);
-  scratchCanvas.addEventListener('touchend', () => isScratching = false);
-  scratchCanvas.addEventListener('touchmove', scratchScratch);
-
-  document.getElementById('btn-chap-9').onclick = () => goToChapter(10);
   document.getElementById('btn-chap-10').onclick = () => goToChapter(11);
+  document.getElementById('btn-chap-11').onclick = () => goToChapter(12);
 
-  document.getElementById('btn-chap-11').onclick = () => {
-    const wishVal = document.getElementById('wish-input').value;
-    if (wishVal) localStorage.setItem('samrudhi_19_wish', wishVal);
-    goToChapter(12);
-  };
-
+  /* Screen Capture Button */
   document.getElementById('nav-capture-btn').onclick = () => {
+    triggerHaptic(50);
     html2canvas(document.body).then(canvas => {
       const a = document.createElement('a');
       a.download = 'Samrudhi-19th-Birthday.png';
@@ -312,60 +462,11 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   };
 
-  /* Canvases */
-  const bCanvas = document.getElementById('bokeh-canvas');
-  const bCtx = bCanvas.getContext('2d');
-  let bw = (bCanvas.width = window.innerWidth);
-  let bh = (bCanvas.height = window.innerHeight);
-
-  const bDots = Array.from({ length: 24 }, () => ({
-    x: Math.random() * bw, y: Math.random() * bh,
-    r: Math.random() * 4 + 2, alpha: Math.random() * 0.4 + 0.15, vy: Math.random() * 0.3 + 0.1
-  }));
-
-  function renderBokeh() {
-    bCtx.clearRect(0, 0, bw, bh);
-    bDots.forEach(d => {
-      d.y -= d.vy;
-      if (d.y < -10) d.y = bh + 10;
-      bCtx.fillStyle = `rgba(255, 77, 109, ${d.alpha})`;
-      bCtx.beginPath();
-      bCtx.arc(d.x, d.y, d.r, 0, Math.PI * 2);
-      bCtx.fill();
-    });
-    requestAnimationFrame(renderBokeh);
-  }
-  renderBokeh();
-
-  let isPetalsActive = false;
-  const pCanvas = document.getElementById('petals-canvas');
-  const pCtx = pCanvas.getContext('2d');
-  pCanvas.width = bw; pCanvas.height = bh;
-
-  const petals = Array.from({ length: 22 }, () => ({
-    x: Math.random() * bw, y: Math.random() * bh,
-    r: Math.random() * 5 + 3, vy: Math.random() * 1 + 0.5, vx: Math.sin(Math.random() * Math.PI) * 0.5
-  }));
-
-  function renderPetals() {
-    pCtx.clearRect(0, 0, bw, bh);
-    if (isPetalsActive) {
-      petals.forEach(p => {
-        p.y += p.vy; p.x += p.vx;
-        if (p.y > bh) p.y = -10;
-        pCtx.fillStyle = 'rgba(255, 183, 3, 0.65)';
-        pCtx.beginPath();
-        pCtx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-        pCtx.fill();
-      });
-    }
-    requestAnimationFrame(renderPetals);
-  }
-  renderPetals();
-
+  /* Fireworks Canvas Engine */
   const fwCanvas = document.getElementById('fireworks-canvas');
   const fwCtx = fwCanvas.getContext('2d');
-  fwCanvas.width = bw; fwCanvas.height = bh;
+  let bw = (fwCanvas.width = window.innerWidth);
+  let bh = (fwCanvas.height = window.innerHeight);
 
   let particles = [];
   function createFirework(x, y) {
@@ -405,9 +506,12 @@ document.addEventListener('DOMContentLoaded', () => {
   renderFireworks();
 
   window.onresize = () => {
-    bw = bCanvas.width = pCanvas.width = fwCanvas.width = window.innerWidth;
-    bh = bCanvas.height = pCanvas.height = fwCanvas.height = window.innerHeight;
+    bw = fwCanvas.width = window.innerWidth;
+    bh = fwCanvas.height = window.innerHeight;
   };
+
+  // Initial State Reset
+  resetAllStates();
 
 });
         
