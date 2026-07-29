@@ -61,51 +61,42 @@
       </div>
     </section>
 
-    <!-- Chap 4: 3D Cake with Knife & Physical Slicing Split -->
+    <!-- Chap 4: Realistic 3D Cake with Finger-Drag 360° Spin -->
     <section class="chapter" id="chap-4">
       <div class="glass-card">
         <h2 class="heading-regal" style="font-size:20px;">Make a Wish</h2>
-        <p class="subheading" style="font-size:11px; margin-bottom:8px;">Blow into mic or tap cake to slice! (Spin 180° enabled)</p>
+        <p class="subheading" style="font-size:11px; margin-bottom:8px;">👈 Drag finger left/right to spin 360°! Tap to cut! 👉</p>
 
         <div class="cake-3d-stage" id="cake-stage">
-          <!-- Floating Gliding Knife -->
-          <div class="knife-el" id="cake-knife"></div>
+          <div class="knife-el" id="cake-knife">🔪</div>
           
-          <div class="cake-display" id="cake-touch-area">
-            <div class="candle"><div class="flame" id="candle-flame"></div></div>
-            <div class="cake-body" id="cake-split-box">
-              <div class="cake-layer tier-top"><div class="drip-icing"></div></div>
-              <div class="cake-layer tier-mid"><div class="drip-icing"></div></div>
-              <div class="cake-layer tier-base"><div class="drip-icing"></div></div>
-            </div>
-            <div class="gold-stand"></div>
+          <div class="cake-display 3d-spin-box" id="cake-touch-area">
+            <div class="candle-glow-flame" id="candle-flame"></div>
+            <img src="https://images.unsplash.com/photo-1535141192574-5d4897c13136?q=80&w=800&auto=format&fit=crop" 
+                 alt="Realistic Birthday Cake" 
+                 class="realistic-cake-img" 
+                 id="cake-split-box">
           </div>
         </div>
 
-        <div style="display:flex; justify-content:center; gap:10px; margin-top:10px;">
-          <button class="nav-btn-sm" id="spin-cake-btn">🔄 Rotate 180°</button>
-        </div>
-        <button class="btn-gold" id="btn-chap-4" style="display:none; margin-top:12px;">Open Gift Box</button>
+        <button class="btn-gold" id="btn-chap-4" style="display:none; margin-top:14px;">Open Gift Box</button>
       </div>
     </section>
 
-    <!-- Chap 5: 3D Interactive Gift Box -->
+    <!-- Chap 5: Realistic 3D Gift Box with Finger-Drag 360° Spin -->
     <section class="chapter" id="chap-5">
       <div class="glass-card">
         <h2 class="heading-regal" style="font-size:20px;">Unwrap Your Gift</h2>
-        <p class="subheading" style="font-size:11px; margin-bottom:8px;">Tap to open! (Spin 180° enabled)</p>
+        <p class="subheading" style="font-size:11px; margin-bottom:8px;">👈 Drag finger to spin 360°! Tap box to open! 👉</p>
         
-        <div class="gift-3d-stage" id="gift-stage">
-          <div class="gift-box-container" id="gift-box-3d">
+        <div class="gift-3d-stage">
+          <div class="gift-box-container 3d-spin-box" id="gift-box-3d">
             <div class="gift-lid-3d"><div class="satin-bow"></div></div>
             <div class="gift-base-3d"><div class="satin-ribbon-v"></div></div>
           </div>
         </div>
 
-        <div style="display:flex; justify-content:center; gap:10px; margin-top:10px;">
-          <button class="nav-btn-sm" id="spin-box-btn">🔄 Rotate 180°</button>
-        </div>
-        <button class="btn-gold" id="btn-chap-5" style="display:none; margin-top:12px;">Open Envelope</button>
+        <button class="btn-gold" id="btn-chap-5" style="display:none; margin-top:14px;">Open Envelope</button>
       </div>
     </section>
 
@@ -121,7 +112,6 @@
             <div class="wax-seal-3d" id="wax-seal">19</div>
             <div class="envelope-flap-top"></div>
             
-            <!-- Twirled Scroll that ejects & unrolls -->
             <div class="twirled-scroll" id="scroll-el">
               <div class="scroll-paper-body">
                 <div class="scroll-text-container" id="typing-text-box"></div>
@@ -162,18 +152,15 @@
     <!-- Chap 8: REALISTIC Award Diploma Certificate -->
     <section class="chapter" id="chap-8">
       <div class="realistic-diploma-paper">
-        <!-- SVG Vector Guilloché Frame -->
         <svg class="guilloche-frame" viewBox="0 0 400 520" preserveAspectRatio="none">
           <rect x="8" y="8" width="384" height="504" rx="8" fill="none" stroke="#d4af37" stroke-width="2"/>
           <rect x="14" y="14" width="372" height="492" rx="6" fill="none" stroke="#b8860b" stroke-width="1" stroke-dasharray="4 2"/>
-          <!-- Corner Filigree Flourishes -->
           <path d="M 20 40 Q 20 20 40 20 L 70 20 Q 30 30 20 70 Z" fill="#d4af37"/>
           <path d="M 380 40 Q 380 20 360 20 L 330 20 Q 370 30 380 70 Z" fill="#d4af37"/>
           <path d="M 20 480 Q 20 500 40 500 L 70 500 Q 30 490 20 450 Z" fill="#d4af37"/>
           <path d="M 380 480 Q 380 500 360 500 L 330 500 Q 370 490 380 450 Z" fill="#d4af37"/>
         </svg>
 
-        <!-- Translucent Watermark -->
         <div class="watermark-crest">19</div>
 
         <div class="diploma-content">
@@ -250,7 +237,7 @@
       </div>
     </section>
 
-        <!-- Chap 11: Real HD Bouquet & Garden Theme Shift -->
+    <!-- Chap 11: Real HD Bouquet & Garden Theme Shift -->
     <section class="chapter" id="chap-11">
       <div class="glass-card">
         <div class="bouquet-art-container">
@@ -265,8 +252,6 @@
         <button class="btn-gold" id="btn-chap-11">Make a Time Wish</button>
       </div>
     </section>
-    
-    
 
     <!-- Chap 12: Time-Capsule Wish Bottle -->
     <section class="chapter" id="chap-12">
@@ -328,5 +313,4 @@
 
   <script src="script.js"></script>
 </body>
-          </html>
-          
+</html>
