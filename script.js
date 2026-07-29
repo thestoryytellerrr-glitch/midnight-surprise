@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (num < 1 || num > TOTAL_CHAPS) return;
     triggerHaptic(40);
     document.querySelectorAll('.chapter').forEach(c => c.classList.remove('active'));
-    
+
     const next = document.getElementById('chap-' + num);
     if (next) next.classList.add('active');
     currentChap = num;
@@ -38,7 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (audioCtx.state === 'suspended') audioCtx.resume();
   }
 
-  /* REAL FIRECRACKER NOISE SYNTHESIZER */
+  /* REAL FIRECRACKER SYNTHESIZER */
   let firecrackerInterval = null;
   function startFirecrackerSynth() {
     initAudio();
@@ -46,8 +46,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     firecrackerInterval = setInterval(() => {
       const now = audioCtx.currentTime;
-      
-      // Explosion Boom
+
+      // Sub-bass Boom
       const boom = audioCtx.createOscillator();
       const boomGain = audioCtx.createGain();
       boom.type = 'sine';
@@ -60,7 +60,7 @@ document.addEventListener('DOMContentLoaded', () => {
       boom.start(now);
       boom.stop(now + 0.35);
 
-      // Crackle Noise
+      // Crackle Noise Tail
       const bufferSize = audioCtx.sampleRate * 0.1;
       const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
       const data = buffer.getChannelData(0);
@@ -85,30 +85,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  function playPaperSlideSynth() {
-    initAudio();
-    if (!audioCtx) return;
-    const now = audioCtx.currentTime;
-    const bufferSize = audioCtx.sampleRate * 0.25;
-    const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
-    const data = buffer.getChannelData(0);
-    for (let i = 0; i < bufferSize; i++) data[i] = Math.random() * 2 - 1;
-
-    const noise = audioCtx.createBufferSource();
-    noise.buffer = buffer;
-    const filter = audioCtx.createBiquadFilter();
-    filter.type = 'bandpass';
-    filter.frequency.value = 1200;
-    const gain = audioCtx.createGain();
-    gain.gain.setValueAtTime(0.3, now);
-    gain.gain.exponentialRampToValueAtTime(0.01, now + 0.25);
-
-    noise.connect(filter);
-    filter.connect(gain);
-    gain.connect(audioCtx.destination);
-    noise.start(now);
-  }
-
   const mainAudio = document.getElementById('audio-main');
   const hbdAudio = document.getElementById('audio-hbd');
 
@@ -127,7 +103,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   document.getElementById('btn-chap-1').onclick = () => { startMainAudio(); goToChapter(2); };
 
-  /* Chap 2 Countdown & Auto Unlock */
+  /* Chap 2 Countdown & Secret Passcode */
   function checkTimerAndAutoUnlock() {
     const diff = TARGET_DATE - new Date();
     if (diff <= 0) {
@@ -163,18 +139,26 @@ document.addEventListener('DOMContentLoaded', () => {
     goToChapter(4);
   };
 
-  /* Chap 4 Cake */
+  /* Chap 4 Cake Rotation & Slicing */
+  document.getElementById('spin-cake-btn').onclick = () => {
+    document.getElementById('cake-touch-area').classList.toggle('rotated');
+  };
+
   let isCakeCut = false;
   function cutCake() {
     if (isCakeCut) return;
     isCakeCut = true;
-    document.getElementById('cake-split-box').classList.add('sliced');
-    document.getElementById('candle-flame').style.display = 'none';
+    document.getElementById('cake-stage').classList.add('slicing');
 
-    mainAudio.pause();
-    hbdAudio.play().catch(() => {});
+    setTimeout(() => {
+      document.getElementById('cake-split-box').classList.add('sliced');
+      document.getElementById('candle-flame').style.display = 'none';
 
-    setTimeout(() => { document.getElementById('btn-chap-4').style.display = 'inline-block'; }, 1800);
+      mainAudio.pause();
+      hbdAudio.play().catch(() => {});
+
+      setTimeout(() => { document.getElementById('btn-chap-4').style.display = 'inline-block'; }, 1500);
+    }, 600);
   }
 
   document.getElementById('cake-touch-area').onclick = cutCake;
@@ -202,22 +186,60 @@ document.addEventListener('DOMContentLoaded', () => {
     }).catch(() => {});
   }
 
-  /* Chap 5 Gift Box */
+  /* Chap 5 Gift Box Rotation & Unwrapping */
+  document.getElementById('spin-box-btn').onclick = () => {
+    document.getElementById('gift-box-3d').classList.toggle('rotated');
+  };
+
   document.getElementById('gift-box-3d').onclick = () => {
     document.getElementById('gift-box-3d').classList.add('opened');
     setTimeout(() => { document.getElementById('btn-chap-5').style.display = 'inline-block'; }, 600);
   };
   document.getElementById('btn-chap-5').onclick = () => goToChapter(6);
 
-  /* Chap 6 Envelope */
-  document.getElementById('envelope-el').onclick = () => {
-    playPaperSlideSynth();
+  /* Chap 6 Envelope, Unrolling Scroll & Line-by-Line Typing */
+  const fullLetterLines = [
+    "Dearest Samrudhi,\n",
+    "Welcome to Level 19! Today marks the start of another beautiful chapter in your life, and I wanted to make sure you were surrounded by all the light, warmth, and joy you so effortlessly give to everyone around you.\n\n",
+    "From your infectious smile to your unmatched grace, you have a rare gift for making every room brighter and every moment sweeter. Watching you grow, achieve, and inspire has been nothing short of amazing.\n\n",
+    "As you step into this new year, I wish you endless laughter, peace, unforgettable adventures, and the courage to chase every single dream you hold in your heart.\n\n",
+    "Thank you for being the wonderful, genuine, and radiant person you are. Happy 19th Birthday! ✨\n\n",
+    "Always cheering for you,\nGoldiee"
+  ];
+
+  let typingStarted = false;
+  function typeWriterLetter() {
+    if (typingStarted) return;
+    typingStarted = true;
+    const container = document.getElementById('typing-text-box');
+    container.innerHTML = "";
+    let lineIdx = 0;
+
+    function typeNextLine() {
+      if (lineIdx < fullLetterLines.length) {
+        const p = document.createElement('p');
+        p.style.marginBottom = "8px";
+        p.textContent = fullLetterLines[lineIdx];
+        container.appendChild(p);
+        lineIdx++;
+        setTimeout(typeNextLine, 700);
+      } else {
+        document.getElementById('btn-chap-6').style.display = 'inline-block';
+      }
+    }
+    typeNextLine();
+  }
+
+  document.getElementById('envelope-wrapper').onclick = () => {
     document.getElementById('envelope-el').classList.add('open');
-    setTimeout(() => { document.getElementById('btn-chap-6').style.display = 'inline-block'; }, 700);
+    setTimeout(() => {
+      document.getElementById('scroll-el').classList.add('unrolled');
+      setTimeout(typeWriterLetter, 600);
+    }, 400);
   };
   document.getElementById('btn-chap-6').onclick = () => goToChapter(7);
 
-  /* Chap 7 Gallery */
+  /* Chap 7 Polaroid Gallery */
   const photoList = [
     { cap: "Bright Smiles & Warm Memories", note: "Some moments stay golden forever." },
     { cap: "Laughter & Pure Joy", note: "Your happiness lights up every room." },
@@ -243,11 +265,11 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('prev-photo-btn').onclick = () => { pIdx = (pIdx - 1 + photoList.length) % photoList.length; renderPhoto(); };
   document.getElementById('btn-chap-7').onclick = () => goToChapter(8);
 
-  /* Chap 8 Certificate */
+  /* Chap 8 Certificate Seal Tap */
   document.getElementById('seal-el').onclick = () => { document.getElementById('stats-overlay').style.display = 'block'; };
   document.getElementById('btn-chap-8').onclick = () => goToChapter(9);
 
-  /* Chap 9 Reasons */
+  /* Chap 9 Reasons Deck */
   const reasonsList = [
     "1. Your contagious smile.", "2. Your unmatched kindness.", "3. How genuine you are.",
     "4. Your warm presence.", "5. The way you make people feel seen.", "6. Your resilience.",
@@ -271,9 +293,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const scratchCtx = scratchCanvas.getContext('2d');
   scratchCtx.fillStyle = '#d4af37';
   scratchCtx.fillRect(0, 0, 250, 125);
-  scratchCtx.fillStyle = '#1a0826';
-  scratchCtx.font = '12px Poppins';
-  scratchCtx.fillText('Scratch Here ✨', 80, 68);
+  scratchCtx.fillStyle = '#120318';
+  scratchCtx.font = '11px Poppins';
+  scratchCtx.fillText('Scratch Here ✨', 82, 68);
 
   let isScratching = false;
   function scratchScratch(e) {
@@ -327,11 +349,9 @@ document.addEventListener('DOMContentLoaded', () => {
   let bw = (bCanvas.width = window.innerWidth);
   let bh = (bCanvas.height = window.innerHeight);
 
-  const bDots = Array.from({ length: 30 }, () => ({
+  const bDots = Array.from({ length: 28 }, () => ({
     x: Math.random() * bw, y: Math.random() * bh,
-    r: Math.random() * 4 + 2,
-    alpha: Math.random() * 0.5 + 0.2,
-    vy: Math.random() * 0.4 + 0.15
+    r: Math.random() * 4 + 2, alpha: Math.random() * 0.5 + 0.2, vy: Math.random() * 0.4 + 0.15
   }));
 
   function renderBokeh() {
@@ -353,11 +373,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const pCtx = pCanvas.getContext('2d');
   pCanvas.width = bw; pCanvas.height = bh;
 
-  const petals = Array.from({ length: 25 }, () => ({
+  const petals = Array.from({ length: 22 }, () => ({
     x: Math.random() * bw, y: Math.random() * bh,
-    r: Math.random() * 5 + 3,
-    vy: Math.random() * 1 + 0.5,
-    vx: Math.sin(Math.random() * Math.PI) * 0.5
+    r: Math.random() * 5 + 3, vy: Math.random() * 1 + 0.5, vx: Math.sin(Math.random() * Math.PI) * 0.5
   }));
 
   function renderPetals() {
@@ -366,7 +384,7 @@ document.addEventListener('DOMContentLoaded', () => {
       petals.forEach(p => {
         p.y += p.vy; p.x += p.vx;
         if (p.y > bh) p.y = -10;
-        pCtx.fillStyle = 'rgba(255, 183, 3, 0.6)';
+        pCtx.fillStyle = 'rgba(255, 183, 3, 0.65)';
         pCtx.beginPath();
         pCtx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
         pCtx.fill();
@@ -383,16 +401,12 @@ document.addEventListener('DOMContentLoaded', () => {
   let particles = [];
   function createFirework(x, y) {
     const colors = ['#ffd700', '#ff007f', '#9d4edd', '#00f5d4', '#ffffff'];
-    for (let i = 0; i < 40; i++) {
+    for (let i = 0; i < 35; i++) {
       const angle = Math.random() * Math.PI * 2;
       const speed = Math.random() * 5 + 2;
       particles.push({
-        x, y,
-        vx: Math.cos(angle) * speed,
-        vy: Math.sin(angle) * speed,
-        color: colors[Math.floor(Math.random() * colors.length)],
-        alpha: 1,
-        decay: Math.random() * 0.02 + 0.015
+        x, y, vx: Math.cos(angle) * speed, vy: Math.sin(angle) * speed,
+        color: colors[Math.floor(Math.random() * colors.length)], alpha: 1, decay: Math.random() * 0.02 + 0.015
       });
     }
   }
