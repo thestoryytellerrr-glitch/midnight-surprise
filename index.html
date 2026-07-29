@@ -6,7 +6,7 @@
   <title>Samrudhi's 19th Birthday Experience</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Great+Vibes&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Great+Vibes&family=Playfair+Display:ital,wght@0,600;0,700;1,400&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <link rel="stylesheet" href="style.css">
 </head>
@@ -17,14 +17,14 @@
     🎧 Best Experience Tip (Aug 2): Set Ringing Mode ON & Volume Full!
   </div>
 
-  <!-- Background & Canvases -->
+  <!-- Dynamic Backgrounds -->
   <div class="bg-container" id="bg-layer"></div>
   <canvas id="bokeh-canvas"></canvas>
   <canvas id="petals-canvas"></canvas>
   <canvas id="fireworks-canvas"></canvas>
 
   <main id="app">
-    <!-- Chap 1: Loading -->
+    <!-- Chap 1: Preloader -->
     <section class="chapter active" id="chap-1">
       <div class="glass-card">
         <h1 class="heading-regal">Samrudhi's Surprise</h1>
@@ -36,7 +36,7 @@
       </div>
     </section>
 
-    <!-- Chap 2: Countdown (Auto Unlocks Midnight Aug 2, or 3-tap title for passcode 1809) -->
+    <!-- Chap 2: Countdown & Secret Passcode 1809 -->
     <section class="chapter" id="chap-2">
       <div class="glass-card">
         <h1 class="heading-regal" id="secret-title" style="cursor:pointer;">Counting Down</h1>
@@ -51,61 +51,86 @@
       </div>
     </section>
 
-    <!-- Chap 3: Continuous Real Firecrackers Reveal -->
+    <!-- Chap 3: Continuous Real Firecrackers -->
     <section class="chapter" id="chap-3">
       <div style="z-index:10;">
         <h2 class="cursive-gold">Happy Birthday</h2>
-        <h1 class="heading-regal" style="font-size:40px; color:#fefae0;">Samrudhi</h1>
+        <h1 class="heading-regal" style="font-size:42px; color:#fefae0;">Samrudhi</h1>
         <p class="subheading" style="margin-top:10px; color:#e0b1cb; font-size:14px;">Level 19 Unlocked ✨</p>
         <button class="btn-gold" id="btn-chap-3" style="margin-top:25px;">Proceed to Cake</button>
       </div>
     </section>
 
-    <!-- Chap 4: Realistic 3D Birthday Cake & Slicing Split -->
+    <!-- Chap 4: 3D Cake with Knife & Physical Slicing Split -->
     <section class="chapter" id="chap-4">
       <div class="glass-card">
         <h2 class="heading-regal" style="font-size:20px;">Make a Wish</h2>
-        <p class="subheading" style="font-size:11.5px; margin-bottom:10px;">Blow into your mic or tap the cake to cut!</p>
+        <p class="subheading" style="font-size:11px; margin-bottom:8px;">Blow into mic or tap cake to slice! (Spin 180° enabled)</p>
 
-        <div class="cake-display" id="cake-touch-area">
-          <div class="candle"><div class="flame" id="candle-flame"></div></div>
-          <div class="cake-body" id="cake-split-box">
-            <div class="cake-layer tier-top"><div class="drip-icing"></div></div>
-            <div class="cake-layer tier-mid"><div class="drip-icing"></div></div>
-            <div class="cake-layer tier-base"><div class="drip-icing"></div></div>
+        <div class="cake-3d-stage" id="cake-stage">
+          <!-- Floating Gliding Knife -->
+          <div class="knife-el" id="cake-knife"></div>
+          
+          <div class="cake-display" id="cake-touch-area">
+            <div class="candle"><div class="flame" id="candle-flame"></div></div>
+            <div class="cake-body" id="cake-split-box">
+              <div class="cake-layer tier-top"><div class="drip-icing"></div></div>
+              <div class="cake-layer tier-mid"><div class="drip-icing"></div></div>
+              <div class="cake-layer tier-base"><div class="drip-icing"></div></div>
+            </div>
+            <div class="gold-stand"></div>
           </div>
-          <div class="gold-stand"></div>
         </div>
 
-        <button class="btn-gold" id="btn-chap-4" style="display:none; margin-top:15px;">Open Gift Box</button>
+        <div style="display:flex; justify-content:center; gap:10px; margin-top:10px;">
+          <button class="nav-btn-sm" id="spin-cake-btn">🔄 Rotate 180°</button>
+        </div>
+        <button class="btn-gold" id="btn-chap-4" style="display:none; margin-top:12px;">Open Gift Box</button>
       </div>
     </section>
 
-    <!-- Chap 5: 3D Unwrapping Gift Box -->
+    <!-- Chap 5: 3D Interactive Gift Box -->
     <section class="chapter" id="chap-5">
       <div class="glass-card">
         <h2 class="heading-regal" style="font-size:20px;">Unwrap Your Gift</h2>
-        <div class="gift-box-container" id="gift-box-3d">
-          <div class="gift-lid-3d"><div class="satin-bow"></div></div>
-          <div class="gift-base-3d"><div class="satin-ribbon-v"></div></div>
+        <p class="subheading" style="font-size:11px; margin-bottom:8px;">Tap to open! (Spin 180° enabled)</p>
+        
+        <div class="gift-3d-stage" id="gift-stage">
+          <div class="gift-box-container" id="gift-box-3d">
+            <div class="gift-lid-3d"><div class="satin-bow"></div></div>
+            <div class="gift-base-3d"><div class="satin-ribbon-v"></div></div>
+          </div>
         </div>
-        <button class="btn-gold" id="btn-chap-5" style="display:none; margin-top:15px;">Open Envelope</button>
+
+        <div style="display:flex; justify-content:center; gap:10px; margin-top:10px;">
+          <button class="nav-btn-sm" id="spin-box-btn">🔄 Rotate 180°</button>
+        </div>
+        <button class="btn-gold" id="btn-chap-5" style="display:none; margin-top:12px;">Open Envelope</button>
       </div>
     </section>
 
-    <!-- Chap 6: Lined Envelope & Unfolding Parchment Letter -->
+    <!-- Chap 6: Real Envelope & Unrolling Twirled Scroll Letter -->
     <section class="chapter" id="chap-6">
       <div class="glass-card">
-        <h2 class="heading-regal" style="font-size:20px;">A Special Note</h2>
-        <div class="envelope-container" id="envelope-el">
-          <div class="envelope-top-flap"></div>
-          <div class="parchment-letter-slide" id="letter-sheet">
-            <p style="font-size:12px; color:#2b0c3d; line-height:1.7; padding:12px; font-weight:500;">
-              Welcome to your 19th birthday journey, Samrudhi! Every single chapter was created specially to celebrate you. ✨
-            </p>
+        <h2 class="heading-regal" style="font-size:20px;">A Special Delivery</h2>
+        <p class="subheading" style="font-size:11px; margin-bottom:10px;">Tap the wax seal to break open!</p>
+        
+        <div class="real-envelope-wrapper" id="envelope-wrapper">
+          <div class="envelope-real-body" id="envelope-el">
+            <div class="envelope-pocket-bg"></div>
+            <div class="wax-seal-3d" id="wax-seal">19</div>
+            <div class="envelope-flap-top"></div>
+            
+            <!-- Twirled Scroll that ejects & unrolls -->
+            <div class="twirled-scroll" id="scroll-el">
+              <div class="scroll-paper-body">
+                <div class="scroll-text-container" id="typing-text-box"></div>
+              </div>
+            </div>
           </div>
         </div>
-        <button class="btn-gold" id="btn-chap-6" style="display:none; margin-top:20px;">View Memories</button>
+
+        <button class="btn-gold" id="btn-chap-6" style="display:none; margin-top:18px;">View Memories</button>
       </div>
     </section>
 
@@ -134,46 +159,64 @@
       </div>
     </section>
 
-    <!-- Chap 8: Formal Award Diploma Certificate (No Photo) -->
+    <!-- Chap 8: REALISTIC Award Diploma Certificate -->
     <section class="chapter" id="chap-8">
-      <div class="glass-card certificate-realistic-award">
-        <div class="cert-border-inner">
-          <div class="cert-header">CERTIFICATE OF EXCELLENCE</div>
-          <div class="cert-subheader">THIS HONOR IS PROUDLY PRESENTED TO</div>
-          
-          <h1 class="cert-name">Samrudhi</h1>
-          
-          <p class="cert-description">
+      <div class="realistic-diploma-paper">
+        <!-- SVG Vector Guilloché Frame -->
+        <svg class="guilloche-frame" viewBox="0 0 400 520" preserveAspectRatio="none">
+          <rect x="8" y="8" width="384" height="504" rx="8" fill="none" stroke="#d4af37" stroke-width="2"/>
+          <rect x="14" y="14" width="372" height="492" rx="6" fill="none" stroke="#b8860b" stroke-width="1" stroke-dasharray="4 2"/>
+          <!-- Corner Filigree Flourishes -->
+          <path d="M 20 40 Q 20 20 40 20 L 70 20 Q 30 30 20 70 Z" fill="#d4af37"/>
+          <path d="M 380 40 Q 380 20 360 20 L 330 20 Q 370 30 380 70 Z" fill="#d4af37"/>
+          <path d="M 20 480 Q 20 500 40 500 L 70 500 Q 30 490 20 450 Z" fill="#d4af37"/>
+          <path d="M 380 480 Q 380 500 360 500 L 330 500 Q 370 490 380 450 Z" fill="#d4af37"/>
+        </svg>
+
+        <!-- Translucent Watermark -->
+        <div class="watermark-crest">19</div>
+
+        <div class="diploma-content">
+          <div class="diploma-header">CERTIFICATE OF EXCELLENCE</div>
+          <div class="diploma-subheader">THIS HONOR IS PROUDLY PRESENTED TO</div>
+
+          <h1 class="diploma-name">Samrudhi</h1>
+
+          <p class="diploma-body-text">
             In official recognition of 19 extraordinary years of brilliance, unmatched grace, and spreading light to everyone around you.
           </p>
-          
-          <div class="cert-footer-grid">
-            <div class="cert-sig-block">
-              <div class="cert-signature">Always Cheering</div>
-              <div class="cert-sig-line"></div>
-              <div class="cert-sig-label">OFFICIAL ISSUER</div>
+
+          <div class="diploma-footer-grid">
+            <div class="diploma-sig-col">
+              <div class="diploma-sig-script">Goldiee</div>
+              <div class="diploma-sig-line"></div>
+              <div class="diploma-label">OFFICIAL ISSUER</div>
             </div>
-            
-            <div class="cert-seal-block" id="seal-el">
-              <div class="gold-award-seal">
-                <span style="font-size:8px; display:block; letter-spacing:1px;">LEVEL</span>
-                <strong style="font-size:16px;">19</strong>
+
+            <div class="diploma-seal-col" id="seal-el">
+              <div class="rosette-3d-seal">
+                <div class="seal-inner">
+                  <span style="font-size:7px; letter-spacing:1px; display:block;">LEVEL</span>
+                  <strong style="font-size:16px;">19</strong>
+                </div>
               </div>
+              <div class="ribbon-tails"></div>
             </div>
-            
-            <div class="cert-sig-block">
-              <div class="cert-date">02 / 08 / 2026</div>
-              <div class="cert-sig-line"></div>
-              <div class="cert-sig-label">DATE ISSUED</div>
+
+            <div class="diploma-sig-col">
+              <div class="diploma-date-val">02 / 08 / 2026</div>
+              <div class="diploma-sig-line"></div>
+              <div class="diploma-label">DATE ISSUED</div>
             </div>
           </div>
-          
+
+          <div class="diploma-doc-id">DOC NO: CERT-2026-SAM-19</div>
           <div id="stats-overlay" class="cert-stats-badge" style="display:none;">
             ✦ 6,939 Days • 166,536 Hours of Excellence ✦
           </div>
         </div>
-        <button class="btn-gold" id="btn-chap-8" style="margin-top:16px;">View 19 Reasons</button>
       </div>
+      <button class="btn-gold" id="btn-chap-8" style="margin-top:14px;">View 19 Reasons</button>
     </section>
 
     <!-- Chap 9: 19 Reasons Deck -->
@@ -184,20 +227,22 @@
         <div class="reasons-stack" id="reason-card-el">
           <div class="reason-card" id="reason-text-el">1. Your contagious smile that brightens any room.</div>
         </div>
-        <button class="btn-gold" id="btn-chap-9">Scratch Your Card</button>
+        <button class="btn-gold" id="btn-chap-9">Scratch Your Voucher</button>
       </div>
     </section>
 
-    <!-- Chap 10: Scratch-Off Card (High-Contrast Glowing Wish Reveal) -->
+    <!-- Chap 10: Scratch-Off Voucher (High Contrast Glow Reveal) -->
     <section class="chapter" id="chap-10">
       <div class="glass-card">
-        <h2 class="heading-regal" style="font-size:17px;">Scratch Your Surprise</h2>
-        <p class="subheading" style="font-size:10.5px; margin-bottom:8px;">Scratch off the foil with your finger!</p>
+        <h2 class="heading-regal" style="font-size:17px;">Scratch Your Voucher</h2>
+        <p class="subheading" style="font-size:10.5px; margin-bottom:8px;">Scratch off the metallic foil with your finger!</p>
         <div class="scratch-wrapper">
           <div class="scratch-secret">
-            <span style="font-size:24px; margin-bottom:2px;">🎂</span>
-            <strong style="color:#ffffff; font-size:14px; text-shadow:0 0 12px #ffd700;">Claim 1 Free Birthday Wish!</strong>
-            <span style="font-size:10px; color:#ffe082; margin-top:2px;">Guaranteed to come true in Level 19 ✨</span>
+            <span style="font-size:26px; margin-bottom:2px;">🎂</span>
+            <strong style="color:#ffffff; font-size:13.5px; text-shadow:0 0 10px #ffd700; line-height:1.4;">
+              1 Free Favorite Treat +<br>1 Special Memory Recreated!
+            </strong>
+            <span style="font-size:9.5px; color:#ffe082; margin-top:4px;">Redeemable anytime during Level 19 ✨</span>
           </div>
           <canvas id="scratch-canvas" width="250" height="125"></canvas>
         </div>
@@ -205,13 +250,15 @@
       </div>
     </section>
 
-    <!-- Chap 11: Realistic Floral Artwork & Garden Theme Shift -->
+    <!-- Chap 11: Realistic Bouquet & Enchanted Garden Theme Shift -->
     <section class="chapter" id="chap-11">
       <div class="glass-card">
         <div class="bouquet-art-container">
-          <svg viewBox="0 0 200 220" width="150" height="150">
+          <svg viewBox="0 0 200 220" width="160" height="160">
+            <!-- Bouquet Ribbon & Stems -->
             <path d="M70 140 C85 180, 115 180, 130 140" stroke="#2d6a4f" stroke-width="6" fill="none"/>
-            <polygon points="90,135 110,135 100,185" fill="#e0a96d"/>
+            <polygon points="85,135 115,135 100,190" fill="#d4af37"/>
+            <!-- Center Sunflower -->
             <circle cx="100" cy="70" r="18" fill="#3d2314"/>
             <circle cx="100" cy="70" r="14" fill="#582f0e"/>
             <path d="M100 40 L104 52 L96 52 Z" fill="#ffb703"/>
@@ -220,20 +267,22 @@
             <path d="M130 70 L118 74 L118 66 Z" fill="#ffb703"/>
             <path d="M78 48 L88 58 L82 62 Z" fill="#ffb703"/>
             <path d="M122 48 L112 58 L118 62 Z" fill="#ffb703"/>
-            <path d="M60 85 C50 60, 70 50, 70 75 Z" fill="#ff4d6d"/>
-            <path d="M140 85 C150 60, 130 50, 130 75 Z" fill="#ff758f"/>
-            <path d="M100 115 C85 95, 115 95, 100 115 Z" fill="#ffb703"/>
+            <!-- Crimson Velvet Roses -->
+            <path d="M60 85 C50 60, 70 50, 70 75 Z" fill="#c1121f"/>
+            <path d="M140 85 C150 60, 130 50, 130 75 Z" fill="#780000"/>
+            <!-- Pink Tulips -->
+            <path d="M100 115 C85 95, 115 95, 100 115 Z" fill="#ff758f"/>
           </svg>
         </div>
-        <h2 class="heading-regal" style="font-size:18px; margin-top:8px;">For You, Samrudhi</h2>
-        <p style="font-size:12px; color:#fefae0; line-height:1.7; margin:12px 0; font-style:italic;">
+        <h2 class="heading-regal" style="font-size:18px; margin-top:6px;">For You, Samrudhi</h2>
+        <p style="font-size:12px; color:#fefae0; line-height:1.7; margin:10px 0; font-style:italic;">
           "Flowers may fade with time, but the warmth, grace, and light you bring into every room lasts forever."
         </p>
         <button class="btn-gold" id="btn-chap-11">Make a Time Wish</button>
       </div>
     </section>
 
-    <!-- Chap 12: Time Capsule Bottle -->
+    <!-- Chap 12: Time-Capsule Wish Bottle -->
     <section class="chapter" id="chap-12">
       <div class="glass-card">
         <h2 class="heading-regal" style="font-size:17px;">Time-Capsule Bottle</h2>
@@ -243,22 +292,20 @@
       </div>
     </section>
 
-    <!-- Chap 13: Working Firefly Jar -->
+    <!-- Chap 13: Firefly Wishing Jar -->
     <section class="chapter" id="chap-13">
       <div class="glass-card">
         <h2 class="heading-regal" style="font-size:17px;">Firefly Wishing Jar</h2>
         <div class="jar-3d-box" id="jar-el">
           <div class="jar-lid" id="jar-cap-el"></div>
-          <div class="jar-body">
-            <div class="jar-inner-glow"></div>
-          </div>
+          <div class="jar-body"><div class="jar-inner-glow"></div></div>
         </div>
         <p class="subheading" style="font-size:10.5px;" id="jar-status">Tap jar to release glowing fireflies!</p>
         <button class="btn-gold" id="btn-chap-13" style="display:none;">Read Final Letter</button>
       </div>
     </section>
 
-    <!-- Chap 14: Grand Finale Apology & Birthday Message -->
+    <!-- Chap 14: Grand Finale Letter -->
     <section class="chapter" id="chap-14">
       <div class="parchment-card-finale">
         <h2 class="cursive-gold" style="font-size:38px; color:#fefae0;">Dearest Samrudhi,</h2>
@@ -278,7 +325,12 @@
     </section>
   </main>
 
-  <!-- Navigation Control Bar -->
+  <!-- Website Footer Stamp -->
+  <footer class="app-footer">
+    Made with ❤️ -Goldieee
+  </footer>
+
+  <!-- Fixed Navigation Control Bar -->
   <div class="nav-bar-fixed">
     <button class="nav-btn" id="nav-back-btn">◀ Go Back</button>
     <button class="nav-btn" id="nav-replay-btn">⭐ Replay</button>
@@ -290,5 +342,5 @@
 
   <script src="script.js"></script>
 </body>
-</html>
-
+          </html>
+          
