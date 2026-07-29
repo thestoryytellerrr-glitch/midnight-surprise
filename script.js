@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
 
   let currentChap = 1;
-  const TOTAL_CHAPS = 14;
+  const TOTAL_CHAPS = 12;
   const TARGET_DATE = new Date("2026-08-02T00:00:00");
   const SECRET_PIN = "1809";
 
@@ -19,51 +19,12 @@ document.addEventListener('DOMContentLoaded', () => {
     currentChap = num;
 
     if (num === 3) startFireworksLoop();
-    if (num === 11) {
-      isPetalsActive = true;
-      document.getElementById('bg-layer').classList.add('floral-theme');
-    }
-    if (num === 14) triggerHaptic([60, 120, 60]);
+    if (num === 10) isPetalsActive = true;
+    if (num === 12) triggerHaptic([60, 120, 60]);
   }
 
   document.getElementById('nav-back-btn').addEventListener('click', () => goToChapter(currentChap - 1));
   document.getElementById('nav-replay-btn').addEventListener('click', () => goToChapter(1));
-
-  /* FINGER TOUCH-DRAG 360° / 180° ROTATION ENGINE */
-  function enableFingerDragSpin(elementId) {
-    const el = document.getElementById(elementId);
-    if (!el) return;
-    let isDragging = false;
-    let startX = 0;
-    let currentRotationY = 0;
-
-    const startDrag = (e) => {
-      isDragging = true;
-      startX = e.touches ? e.touches[0].clientX : e.clientX;
-    };
-
-    const moveDrag = (e) => {
-      if (!isDragging) return;
-      const currentX = e.touches ? e.touches[0].clientX : e.clientX;
-      const deltaX = currentX - startX;
-      currentRotationY += deltaX * 0.85; // rotation speed multiplier
-      startX = currentX;
-      el.style.transform = `rotateY(${currentRotationY}deg)`;
-    };
-
-    const stopDrag = () => { isDragging = false; };
-
-    el.addEventListener('mousedown', startDrag);
-    window.addEventListener('mousemove', moveDrag);
-    window.addEventListener('mouseup', stopDrag);
-
-    el.addEventListener('touchstart', startDrag, { passive: true });
-    window.addEventListener('touchmove', moveDrag, { passive: true });
-    window.addEventListener('touchend', stopDrag);
-  }
-
-  enableFingerDragSpin('cake-touch-area');
-  enableFingerDragSpin('gift-box-3d');
 
   /* Web Audio Synthesizers */
   const AudioCtx = window.AudioContext || window.webkitAudioContext;
@@ -89,7 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
       boom.type = 'sine';
       boom.frequency.setValueAtTime(150, now);
       boom.frequency.exponentialRampToValueAtTime(25, now + 0.35);
-      boomGain.gain.setValueAtTime(0.9, now);
+      boomGain.gain.setValueAtTime(0.8, now);
       boomGain.gain.exponentialRampToValueAtTime(0.01, now + 0.35);
       boom.connect(boomGain);
       boomGain.connect(audioCtx.destination);
@@ -105,13 +66,13 @@ document.addEventListener('DOMContentLoaded', () => {
       const noise = audioCtx.createBufferSource();
       noise.buffer = buffer;
       const noiseGain = audioCtx.createGain();
-      noiseGain.gain.setValueAtTime(0.4, now);
+      noiseGain.gain.setValueAtTime(0.3, now);
       noiseGain.gain.exponentialRampToValueAtTime(0.01, now + 0.1);
       noise.connect(noiseGain);
       noiseGain.connect(audioCtx.destination);
       noise.start(now);
 
-    }, 220);
+    }, 250);
   }
 
   function stopFirecrackerSynth() {
@@ -175,25 +136,20 @@ document.addEventListener('DOMContentLoaded', () => {
     goToChapter(4);
   };
 
-  /* Chap 4 Cake Slicing */
-  let isCakeCut = false;
-  function cutCake() {
-    if (isCakeCut) return;
-    isCakeCut = true;
-    document.getElementById('cake-stage').classList.add('slicing');
+  /* Chap 4 Cake Blow/Tap */
+  let isCandleBlown = false;
+  function blowCandle() {
+    if (isCandleBlown) return;
+    isCandleBlown = true;
+    document.getElementById('candle-flame').style.display = 'none';
 
-    setTimeout(() => {
-      document.getElementById('cake-split-box').classList.add('sliced');
-      document.getElementById('candle-flame').style.display = 'none';
+    mainAudio.pause();
+    hbdAudio.play().catch(() => {});
 
-      mainAudio.pause();
-      hbdAudio.play().catch(() => {});
-
-      setTimeout(() => { document.getElementById('btn-chap-4').style.display = 'inline-block'; }, 1500);
-    }, 600);
+    setTimeout(() => { document.getElementById('btn-chap-4').style.display = 'inline-block'; }, 1000);
   }
 
-  document.getElementById('cake-touch-area').onclick = cutCake;
+  document.getElementById('cake-touch-area').onclick = blowCandle;
   document.getElementById('btn-chap-4').onclick = () => {
     hbdAudio.pause();
     startMainAudio();
@@ -211,21 +167,14 @@ document.addEventListener('DOMContentLoaded', () => {
       function checkMic() {
         analyser.getByteFrequencyData(data);
         let avg = data.reduce((a, b) => a + b) / data.length;
-        if (avg > 35) cutCake();
+        if (avg > 35) blowCandle();
         requestAnimationFrame(checkMic);
       }
       checkMic();
     }).catch(() => {});
   }
 
-  /* Chap 5 Gift Box Unwrapping */
-  document.getElementById('gift-box-3d').onclick = () => {
-    document.getElementById('gift-box-3d').classList.add('opened');
-    setTimeout(() => { document.getElementById('btn-chap-5').style.display = 'inline-block'; }, 600);
-  };
-  document.getElementById('btn-chap-5').onclick = () => goToChapter(6);
-
-  /* Chap 6 Envelope, Unrolling Scroll & Line-by-Line Typing */
+  /* Chap 5 Envelope & Handwritten Scroll Line-by-Line Typing */
   const fullLetterLines = [
     "Dearest Samrudhi,\n",
     "Welcome to Level 19! Today marks the start of another beautiful chapter in your life, and I wanted to make sure you were surrounded by all the light, warmth, and joy you so effortlessly give to everyone around you.\n\n",
@@ -250,9 +199,9 @@ document.addEventListener('DOMContentLoaded', () => {
         p.textContent = fullLetterLines[lineIdx];
         container.appendChild(p);
         lineIdx++;
-        setTimeout(typeNextLine, 700);
+        setTimeout(typeNextLine, 650);
       } else {
-        document.getElementById('btn-chap-6').style.display = 'inline-block';
+        document.getElementById('btn-chap-5').style.display = 'inline-block';
       }
     }
     typeNextLine();
@@ -262,12 +211,12 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('envelope-el').classList.add('open');
     setTimeout(() => {
       document.getElementById('scroll-el').classList.add('unrolled');
-      setTimeout(typeWriterLetter, 600);
+      setTimeout(typeWriterLetter, 500);
     }, 400);
   };
-  document.getElementById('btn-chap-6').onclick = () => goToChapter(7);
+  document.getElementById('btn-chap-5').onclick = () => goToChapter(6);
 
-  /* Chap 7 Polaroid Gallery */
+  /* Chap 6 Polaroid Gallery */
   const photoList = [
     { cap: "Bright Smiles & Warm Memories", note: "Some moments stay golden forever." },
     { cap: "Laughter & Pure Joy", note: "Your happiness lights up every room." },
@@ -291,13 +240,13 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('polaroid-el').onclick = () => { document.getElementById('polaroid-el').classList.toggle('flipped'); };
   document.getElementById('next-photo-btn').onclick = () => { pIdx = (pIdx + 1) % photoList.length; renderPhoto(); };
   document.getElementById('prev-photo-btn').onclick = () => { pIdx = (pIdx - 1 + photoList.length) % photoList.length; renderPhoto(); };
+  document.getElementById('btn-chap-6').onclick = () => goToChapter(7);
+
+  /* Chap 7 Certificate Seal Tap */
+  document.getElementById('seal-el').onclick = () => { document.getElementById('stats-overlay').style.display = 'block'; };
   document.getElementById('btn-chap-7').onclick = () => goToChapter(8);
 
-  /* Chap 8 Certificate Seal Tap */
-  document.getElementById('seal-el').onclick = () => { document.getElementById('stats-overlay').style.display = 'block'; };
-  document.getElementById('btn-chap-8').onclick = () => goToChapter(9);
-
-  /* Chap 9 Reasons Deck */
+  /* Chap 8 Reasons Deck */
   const reasonsList = [
     "1. Your contagious smile.", "2. Your unmatched kindness.", "3. How genuine you are.",
     "4. Your warm presence.", "5. The way you make people feel seen.", "6. Your resilience.",
@@ -314,16 +263,16 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('reason-idx').textContent = `Reason ${rIdx + 1} of 19 (Tap card)`;
     document.getElementById('reason-text-el').textContent = reasonsList[rIdx];
   };
-  document.getElementById('btn-chap-9').onclick = () => goToChapter(10);
+  document.getElementById('btn-chap-8').onclick = () => goToChapter(9);
 
-  /* Chap 10 Scratch Canvas */
+  /* Chap 9 Scratch Canvas */
   const scratchCanvas = document.getElementById('scratch-canvas');
   const scratchCtx = scratchCanvas.getContext('2d');
   scratchCtx.fillStyle = '#d4af37';
-  scratchCtx.fillRect(0, 0, 250, 125);
-  scratchCtx.fillStyle = '#120318';
+  scratchCtx.fillRect(0, 0, 240, 120);
+  scratchCtx.fillStyle = '#ffffff';
   scratchCtx.font = '11px Poppins';
-  scratchCtx.fillText('Scratch Here ✨', 82, 68);
+  scratchCtx.fillText('Scratch Here ✨', 78, 65);
 
   let isScratching = false;
   function scratchScratch(e) {
@@ -345,22 +294,14 @@ document.addEventListener('DOMContentLoaded', () => {
   scratchCanvas.addEventListener('touchend', () => isScratching = false);
   scratchCanvas.addEventListener('touchmove', scratchScratch);
 
+  document.getElementById('btn-chap-9').onclick = () => goToChapter(10);
   document.getElementById('btn-chap-10').onclick = () => goToChapter(11);
-  document.getElementById('btn-chap-11').onclick = () => goToChapter(12);
 
-  document.getElementById('btn-chap-12').onclick = () => {
+  document.getElementById('btn-chap-11').onclick = () => {
     const wishVal = document.getElementById('wish-input').value;
     if (wishVal) localStorage.setItem('samrudhi_19_wish', wishVal);
-    goToChapter(13);
+    goToChapter(12);
   };
-
-  /* Chap 13 Firefly Jar */
-  document.getElementById('jar-el').onclick = () => {
-    document.getElementById('jar-el').classList.add('opened');
-    document.getElementById('jar-status').textContent = "✨ Fireflies released into the night sky!";
-    document.getElementById('btn-chap-13').style.display = 'inline-block';
-  };
-  document.getElementById('btn-chap-13').onclick = () => goToChapter(14);
 
   document.getElementById('nav-capture-btn').onclick = () => {
     html2canvas(document.body).then(canvas => {
@@ -377,9 +318,9 @@ document.addEventListener('DOMContentLoaded', () => {
   let bw = (bCanvas.width = window.innerWidth);
   let bh = (bCanvas.height = window.innerHeight);
 
-  const bDots = Array.from({ length: 28 }, () => ({
+  const bDots = Array.from({ length: 24 }, () => ({
     x: Math.random() * bw, y: Math.random() * bh,
-    r: Math.random() * 4 + 2, alpha: Math.random() * 0.5 + 0.2, vy: Math.random() * 0.4 + 0.15
+    r: Math.random() * 4 + 2, alpha: Math.random() * 0.4 + 0.15, vy: Math.random() * 0.3 + 0.1
   }));
 
   function renderBokeh() {
@@ -387,7 +328,7 @@ document.addEventListener('DOMContentLoaded', () => {
     bDots.forEach(d => {
       d.y -= d.vy;
       if (d.y < -10) d.y = bh + 10;
-      bCtx.fillStyle = `rgba(212, 175, 55, ${d.alpha})`;
+      bCtx.fillStyle = `rgba(255, 77, 109, ${d.alpha})`;
       bCtx.beginPath();
       bCtx.arc(d.x, d.y, d.r, 0, Math.PI * 2);
       bCtx.fill();
@@ -428,7 +369,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   let particles = [];
   function createFirework(x, y) {
-    const colors = ['#ffd700', '#ff007f', '#9d4edd', '#00f5d4', '#ffffff'];
+    const colors = ['#ff4d6d', '#c9184a', '#ffd700', '#ffffff', '#ff758f'];
     for (let i = 0; i < 35; i++) {
       const angle = Math.random() * Math.PI * 2;
       const speed = Math.random() * 5 + 2;
@@ -469,4 +410,3 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
 });
-  
