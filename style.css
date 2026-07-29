@@ -26,7 +26,6 @@ html, body {
   font-family: 'Poppins', sans-serif;
 }
 
-/* SOFT LUXURY BLUSH PINK BACKGROUND */
 .bg-container {
   position: fixed;
   inset: 0;
@@ -35,7 +34,6 @@ html, body {
   transition: all 1.5s ease;
 }
 
-/* FLOATING RIBBON PARTICLES LAYER */
 #ribbon-particles-layer {
   position: fixed;
   inset: 0;
@@ -117,7 +115,7 @@ html, body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 20px;
+  padding: 16px;
   text-align: center;
   opacity: 0;
   visibility: hidden;
@@ -132,21 +130,22 @@ html, body {
   transform: scale(1) translateY(0);
 }
 
-/* PORCELAIN WHITE CARD DESIGN */
 .glass-card {
   background: var(--card-bg);
   border-radius: 26px;
-  padding: 24px 20px;
+  padding: 22px 18px;
   box-shadow: var(--card-shadow);
   border: 1px solid rgba(255, 255, 255, 0.9);
   width: 92%;
   max-width: 400px;
+  max-height: 82vh;
+  overflow-y: auto;
   position: relative;
   margin: 0 auto;
 }
 
 .preloader-card {
-  padding: 30px 22px;
+  padding: 28px 20px;
 }
 
 .heading-serif {
@@ -191,7 +190,6 @@ html, body {
   color: var(--accent-rose);
 }
 
-/* CORAL-ROSE PILL BUTTON */
 .btn-coral {
   background: linear-gradient(135deg, #ff4d6d 0%, #c9184a 100%);
   color: #ffffff;
@@ -233,7 +231,6 @@ html, body {
   transition: width 2s ease;
 }
 
-/* TIMER GRID */
 .timer-grid {
   display: flex;
   gap: 8px;
@@ -261,7 +258,6 @@ html, body {
   margin-top: 2px;
 }
 
-/* EXCITEMENT GATE & RUNAWAY BUTTON */
 .excitement-card {
   position: relative;
   overflow: hidden;
@@ -292,7 +288,6 @@ html, body {
   box-shadow: 0 4px 10px rgba(0,0,0,0.05);
 }
 
-/* CAKE & KNIFE SLICING PHYSICS */
 .cake-vector-stage {
   position: relative;
   width: 200px;
@@ -388,7 +383,6 @@ html, body {
   box-shadow: 0 4px 10px rgba(0,0,0,0.08);
 }
 
-/* GRID PAPER SURPRISE BOX CARD */
 .grid-paper-card {
   background-color: #fffaf0;
   background-image: 
@@ -437,7 +431,6 @@ html, body {
   pointer-events: none;
 }
 
-/* ENVELOPE & FULLSCREEN MODAL LETTER */
 .envelope-container {
   width: 220px;
   height: 140px;
@@ -539,7 +532,6 @@ html, body {
   margin-top: 10px;
 }
 
-/* POLAROID GALLERY */
 .polaroid-card {
   width: 240px;
   background: #ffffff;
@@ -587,7 +579,6 @@ html, body {
   font-weight: 600;
 }
 
-/* REALISTIC AWARD DIPLOMA (SEAMLESS ROSE-GOLD) */
 .realistic-diploma-paper {
   position: relative;
   width: 94%;
@@ -744,7 +735,6 @@ html, body {
   font-family: 'Poppins', sans-serif;
 }
 
-/* REASONS & SCRATCH CARD */
 .reasons-stack {
   width: 240px;
   height: 110px;
@@ -796,16 +786,14 @@ html, body {
   cursor: pointer;
 }
 
-/* BOUQUET WRAPPER */
 .bouquet-realistic-container {
   margin: 10px 0;
   filter: drop-shadow(0 10px 20px rgba(201, 24, 74, 0.15));
 }
 
-/* ANCHORED FOOTER STAMP ABOVE NAV BUTTONS */
 .app-footer {
   position: fixed;
-  bottom: 56px;
+  bottom: 54px;
   left: 0;
   right: 0;
   text-align: center;
@@ -839,5 +827,5 @@ html, body {
   backdrop-filter: blur(10px);
   font-weight: 600;
   box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-}
-
+  }
+    
