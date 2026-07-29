@@ -51,16 +51,10 @@ html, body {
 }
 
 @keyframes floatRibbon {
-  0% {
-    transform: translateY(105vh) rotate(0deg);
-    opacity: 0.1;
-  }
+  0% { transform: translateY(105vh) rotate(0deg); opacity: 0.1; }
   20% { opacity: 0.5; }
   80% { opacity: 0.5; }
-  100% {
-    transform: translateY(-10vh) rotate(360deg);
-    opacity: 0;
-  }
+  100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
 }
 
 #fireworks-canvas {
@@ -144,9 +138,7 @@ html, body {
   margin: 0 auto;
 }
 
-.preloader-card {
-  padding: 28px 20px;
-}
+.preloader-card { padding: 28px 20px; }
 
 .heading-serif {
   font-family: 'Playfair Display', serif;
@@ -204,9 +196,7 @@ html, body {
   transition: all 0.3s ease;
   display: inline-block;
 }
-.btn-coral:active {
-  transform: scale(0.95);
-}
+.btn-coral:active { transform: scale(0.95); }
 
 .btn-wrapper-loader {
   margin-top: 18px;
@@ -258,13 +248,8 @@ html, body {
   margin-top: 2px;
 }
 
-.excitement-card {
-  position: relative;
-  overflow: hidden;
-}
-.kawaii-bears-stage {
-  margin: 10px 0;
-}
+.excitement-card { position: relative; overflow: hidden; }
+.kawaii-bears-stage { margin: 10px 0; }
 .excited-btn-group {
   display: flex;
   justify-content: center;
@@ -357,20 +342,11 @@ html, body {
   justify-content: flex-end;
   transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
-.cake-half.left-half.cut {
-  transform: translateX(-24px) rotate(-6deg);
-}
-.cake-half.right-half.cut {
-  transform: translateX(24px) rotate(6deg);
-}
+.cake-half.left-half.cut { transform: translateX(-24px) rotate(-6deg); }
+.cake-half.right-half.cut { transform: translateX(24px) rotate(6deg); }
 
-.cut-inner-texture {
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-.cake-half.cut .cut-inner-texture {
-  opacity: 1;
-}
+.cut-inner-texture { opacity: 0; transition: opacity 0.3s ease; }
+.cake-half.cut .cut-inner-texture { opacity: 1; }
 
 .cake-plate {
   width: 180px;
@@ -391,6 +367,98 @@ html, body {
   background-size: 20px 20px;
   border: 1px solid #ffcad4;
 }
+
+/* CANVA GRID PAPER ENVELOPE CARD (CHAP 7 EXCLUSIVES) */
+.grid-paper-envelope-card {
+  background-color: #fffaf5;
+  background-image: 
+    linear-gradient(rgba(244, 172, 183, 0.3) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(244, 172, 183, 0.3) 1px, transparent 1px);
+  background-size: 22px 22px;
+  border: 1px solid #ffcad4;
+  padding: 30px 20px 25px 20px;
+  position: relative;
+}
+
+.envelope-canva-wrapper {
+  width: 230px;
+  height: 145px;
+  margin: 10px auto;
+  perspective: 1000px;
+  cursor: pointer;
+}
+
+.pink-envelope-canva {
+  width: 100%;
+  height: 100%;
+  background: #f4b8c5;
+  border-radius: 12px;
+  position: relative;
+  box-shadow: 0 10px 25px rgba(176, 66, 93, 0.2);
+  border: 1px solid #e89cae;
+  overflow: hidden;
+}
+
+.envelope-top-flap {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 70px;
+  background: #e89cae;
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+  transform-origin: top;
+  transition: transform 0.6s ease;
+  z-index: 5;
+}
+
+.horizontal-ribbon-wrap {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 18px;
+  background: #b0425d;
+  transform: translateY(-50%);
+  z-index: 6;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+}
+
+.satin-bow-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+  transition: all 0.5s ease;
+  filter: drop-shadow(0 3px 8px rgba(0,0,0,0.2));
+}
+
+.pink-envelope-canva.open .envelope-top-flap {
+  transform: rotateX(180deg);
+}
+.pink-envelope-canva.open .satin-bow-center {
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0);
+}
+
+.tap-to-open-cursive {
+  font-family: 'Caveat', cursive;
+  font-size: 26px;
+  color: #5c3a44;
+  font-weight: 700;
+  margin-top: 14px;
+  letter-spacing: 0.5px;
+}
+
+.flower-doodle-bottom-right {
+  position: absolute;
+  bottom: 12px;
+  right: 14px;
+  opacity: 0.7;
+  pointer-events: none;
+}
+
 .handwritten-title-cursive {
   font-family: 'Caveat', cursive;
   font-size: 28px;
@@ -405,12 +473,8 @@ html, body {
   margin: 10px auto;
   cursor: pointer;
 }
-.gift-box-3d-vector {
-  transition: transform 0.4s ease;
-}
-.gift-box-3d-vector:hover, .gift-box-3d-vector:active {
-  transform: scale(1.06);
-}
+.gift-box-3d-vector { transition: transform 0.4s ease; }
+.gift-box-3d-vector:hover, .gift-box-3d-vector:active { transform: scale(1.06); }
 .tap-here-callout {
   position: absolute;
   bottom: 25px;
@@ -429,54 +493,6 @@ html, body {
   right: -10px;
   transform: rotate(8deg);
   pointer-events: none;
-}
-
-.envelope-container {
-  width: 220px;
-  height: 140px;
-  margin: 15px auto;
-  position: relative;
-  perspective: 1000px;
-}
-.pink-envelope {
-  width: 100%;
-  height: 100%;
-  background: #ffcad4;
-  border: 1px solid #f4acb7;
-  border-radius: 14px;
-  position: relative;
-  cursor: pointer;
-  box-shadow: 0 8px 20px rgba(255, 77, 109, 0.15);
-}
-.envelope-flap {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 70px;
-  background: #f4acb7;
-  clip-path: polygon(0 0, 100% 0, 50% 100%);
-  transform-origin: top;
-  transition: transform 0.6s ease;
-  z-index: 8;
-}
-.ribbon-bow-3d {
-  font-size: 32px;
-  position: absolute;
-  top: 45px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 10;
-  transition: all 0.5s ease;
-  filter: drop-shadow(0 2px 6px rgba(0,0,0,0.15));
-}
-
-.pink-envelope.open .envelope-flap {
-  transform: rotateX(180deg);
-}
-.pink-envelope.open .ribbon-bow-3d {
-  opacity: 0;
-  transform: translateX(-50%) scale(0);
 }
 
 .fullscreen-letter-overlay {
@@ -550,9 +566,7 @@ html, body {
   transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   transform-style: preserve-3d;
 }
-.polaroid-card.flipped .polaroid-inner {
-  transform: rotateY(180deg);
-}
+.polaroid-card.flipped .polaroid-inner { transform: rotateY(180deg); }
 .polaroid-front, .polaroid-back {
   position: absolute;
   inset: 0;
@@ -652,10 +666,7 @@ html, body {
   align-items: flex-end;
   margin-top: 10px;
 }
-.diploma-sig-col {
-  flex: 1;
-  text-align: center;
-}
+.diploma-sig-col { flex: 1; text-align: center; }
 .diploma-sig-script {
   font-family: 'Great Vibes', cursive;
   font-size: 18px;
@@ -827,5 +838,4 @@ html, body {
   backdrop-filter: blur(10px);
   font-weight: 600;
   box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-  }
-    
+                                }
