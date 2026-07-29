@@ -17,7 +17,7 @@
     🎧 Best Experience Tip (Aug 2): Set Ringing Mode ON & Volume Full!
   </div>
 
-  <!-- Background Ribbon Particles & Canvas Layers -->
+  <!-- Background Layers -->
   <div class="bg-container" id="bg-layer"></div>
   <div id="ribbon-particles-layer"></div>
   <canvas id="fireworks-canvas"></canvas>
@@ -54,14 +54,13 @@
       </div>
     </section>
 
-    <!-- Chap 3: Excitement Gate (Kawaii Bears + Runaway No Button) -->
+    <!-- Chap 3: Excitement Gate -->
     <section class="chapter" id="chap-3">
       <div class="glass-card excitement-card">
         <h2 class="cursive-rose" style="font-size:36px; margin-bottom:4px;">Happy Birthday, Samrudhi 💕</h2>
         
         <div class="kawaii-bears-stage">
           <svg viewBox="0 0 200 120" width="180" height="110">
-            <!-- Festive Bunting Banner -->
             <polygon points="10,10 30,25 50,10" fill="#ff758f"/>
             <polygon points="50,10 70,25 90,10" fill="#ffd700"/>
             <polygon points="90,10 110,25 130,10" fill="#70e000"/>
@@ -69,7 +68,6 @@
             <polygon points="170,10 190,25 200,10" fill="#f72585"/>
             <line x1="10" y1="10" x2="190" y2="10" stroke="#5c3a44" stroke-width="1.5"/>
 
-            <!-- Left Bear -->
             <ellipse cx="60" cy="80" rx="25" ry="22" fill="#d4a373"/>
             <circle cx="42" cy="62" r="8" fill="#d4a373"/>
             <circle cx="78" cy="62" r="8" fill="#d4a373"/>
@@ -79,7 +77,6 @@
             <circle cx="67" cy="78" r="2.5" fill="#2b1e23"/>
             <ellipse cx="60" cy="83" rx="4" ry="3" fill="#2b1e23"/>
 
-            <!-- Right Panda -->
             <ellipse cx="140" cy="80" rx="25" ry="22" fill="#ffffff" stroke="#2b1e23" stroke-width="1.5"/>
             <circle cx="122" cy="62" r="8" fill="#2b1e23"/>
             <circle cx="158" cy="62" r="8" fill="#2b1e23"/>
@@ -88,7 +85,6 @@
             <circle cx="133" cy="77" r="1.5" fill="#ffffff"/>
             <circle cx="147" cy="77" r="1.5" fill="#ffffff"/>
 
-            <!-- Mini Birthday Cake between them -->
             <rect x="88" y="85" width="24" height="15" rx="3" fill="#ffcad4"/>
             <rect x="92" y="75" width="16" height="10" rx="2" fill="#f4acb7"/>
             <line x1="100" y1="70" x2="100" y2="75" stroke="#c9184a" stroke-width="2"/>
@@ -105,7 +101,7 @@
       </div>
     </section>
 
-    <!-- Chap 4: Cake & Slicing Physics -->
+    <!-- Chap 4: Multi-Layer 3D Cake & Slicing Stage -->
     <section class="chapter" id="chap-4">
       <div class="glass-card">
         <h2 class="heading-serif" style="font-size:22px;">Blow the candle, SAMRUDHI</h2>
@@ -115,18 +111,29 @@
           <div class="candle-el">
             <div class="flame-el" id="candle-flame"></div>
           </div>
-          <!-- Golden Knife Slicer -->
           <div class="knife-el" id="cake-knife">🔪</div>
           
-          <!-- Cake Split Halves -->
+          <!-- Detailed 3D Vector Cake -->
           <div class="aesthetic-cake-container" id="cake-whole">
             <div class="cake-half left-half" id="cake-left">
-              <div class="cake-layer-top"></div>
-              <div class="cake-layer-base"></div>
+              <svg viewBox="0 0 100 120" width="100%" height="100%">
+                <path d="M 10 110 L 100 110 L 100 50 C 100 45, 90 40, 80 40 L 20 40 C 10 40, 10 45, 10 50 Z" fill="#ffcad4"/>
+                <path d="M 10 50 Q 50 65 100 50 L 100 40 L 10 40 Z" fill="#f4acb7"/>
+                <path d="M 10 50 Q 20 65 30 50 Q 40 65 50 50 Q 60 65 70 50 Q 80 65 90 50 Q 100 65 100 50" fill="#ffffff"/>
+                <!-- Internal Layer Texture on Cut Side -->
+                <rect x="92" y="55" width="8" height="50" fill="#ffd1dc" class="cut-inner-texture"/>
+                <rect x="92" y="70" width="8" height="6" fill="#ff4d6d" class="cut-inner-texture"/>
+              </svg>
             </div>
             <div class="cake-half right-half" id="cake-right">
-              <div class="cake-layer-top"></div>
-              <div class="cake-layer-base"></div>
+              <svg viewBox="0 0 100 120" width="100%" height="100%">
+                <path d="M 0 110 L 90 110 C 90 110, 90 45, 80 40 L 0 40 Z" fill="#ffcad4"/>
+                <path d="M 0 50 Q 50 65 90 50 L 90 40 L 0 40 Z" fill="#f4acb7"/>
+                <path d="M 0 50 Q 10 65 20 50 Q 30 65 40 50 Q 50 65 60 50 Q 70 65 80 50 Q 90 65 90 50" fill="#ffffff"/>
+                <!-- Internal Layer Texture on Cut Side -->
+                <rect x="0" y="55" width="8" height="50" fill="#ffd1dc" class="cut-inner-texture"/>
+                <rect x="0" y="70" width="8" height="6" fill="#ff4d6d" class="cut-inner-texture"/>
+              </svg>
             </div>
             <div class="cake-plate"></div>
           </div>
@@ -136,7 +143,7 @@
       </div>
     </section>
 
-    <!-- Chap 5: Birthday Pop-Up Celebration (Appears AFTER cake slicing!) -->
+    <!-- Chap 5: Birthday Pop-Up Celebration -->
     <section class="chapter" id="chap-5">
       <div class="glass-card celebration-pop-card">
         <h2 class="cursive-rose" style="font-size:46px;">Happy Birthday</h2>
@@ -155,25 +162,25 @@
           <div class="gift-box-3d-vector" id="gift-box-el">
             <svg viewBox="0 0 200 200" width="160" height="160">
               <defs>
-                <linearGradient id="boxGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <linearGradient id="boxGrad" x1="0%" y1="0%" x2="100%" y2="100%">
                   <stop offset="0%" stop-color="#e89cae"/>
                   <stop offset="100%" stop-color="#c96b82"/>
                 </linearGradient>
-                <linearGradient id="ribbonGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <linearGradient id="ribGrad" x1="0%" y1="0%" x2="100%" y2="100%">
                   <stop offset="0%" stop-color="#ffb3c1"/>
                   <stop offset="100%" stop-color="#ff4d6d"/>
                 </linearGradient>
               </defs>
               <ellipse cx="100" cy="180" rx="70" ry="12" fill="rgba(201, 24, 74, 0.15)"/>
-              <polygon points="30,80 100,115 170,80 170,150 100,180 30,150" fill="url(#boxGradient)"/>
+              <polygon points="30,80 100,115 170,80 170,150 100,180 30,150" fill="url(#boxGrad)"/>
               <polygon points="100,115 170,80 170,150 100,180" fill="rgba(0,0,0,0.08)"/>
-              <polygon points="90,110 110,120 110,180 90,175" fill="url(#ribbonGrad)"/>
+              <polygon points="90,110 110,120 110,180 90,175" fill="url(#ribGrad)"/>
               <polygon points="20,70 100,105 180,70 100,35" fill="#f4acb7"/>
               <polygon points="20,70 100,105 100,115 20,80" fill="#e89cae"/>
               <polygon points="100,105 180,70 180,80 100,115" fill="#c96b82"/>
-              <polygon points="88,40 112,51 112,100 88,89" fill="url(#ribbonGrad)"/>
-              <path d="M100 35 C70 10, 50 40, 90 42 Z" fill="url(#ribbonGrad)"/>
-              <path d="M100 35 C130 10, 150 40, 110 42 Z" fill="url(#ribbonGrad)"/>
+              <polygon points="88,40 112,51 112,100 88,89" fill="url(#ribGrad)"/>
+              <path d="M100 35 C70 10, 50 40, 90 42 Z" fill="url(#ribGrad)"/>
+              <path d="M100 35 C130 10, 150 40, 110 42 Z" fill="url(#ribGrad)"/>
               <circle cx="100" cy="38" r="8" fill="#ff4d6d"/>
             </svg>
           </div>
@@ -208,7 +215,7 @@
       </div>
     </section>
 
-    <!-- Chap 7: Ribbon Envelope & Full-Screen Handwritten Letter -->
+    <!-- Chap 7: Envelope & Full-Screen Modal Letter -->
     <section class="chapter" id="chap-7">
       <div class="glass-card">
         <h2 class="heading-serif" style="font-size:20px;">A Message From My Heart</h2>
@@ -224,7 +231,6 @@
         <button class="btn-coral" id="btn-chap-7" style="display:none; margin-top:20px;">📸 View Memories</button>
       </div>
 
-      <!-- Full Screen Letter Modal Overlay -->
       <div class="fullscreen-letter-overlay" id="fullscreen-letter-modal">
         <div class="letter-scroll-paper">
           <button class="close-letter-btn" id="close-letter-btn">✕ Close</button>
@@ -233,7 +239,7 @@
       </div>
     </section>
 
-    <!-- Chap 8: Polaroid Memory Gallery -->
+    <!-- Chap 8: Polaroid Gallery -->
     <section class="chapter" id="chap-8">
       <div style="width:100%; max-width:320px;">
         <p style="font-size:11.5px; color:#5c3a44; margin-bottom:8px; font-weight:600;" id="photo-counter">Memory 1 of 8 (Tap to Flip)</p>
@@ -258,7 +264,7 @@
       </div>
     </section>
 
-    <!-- Chap 9: REALISTIC Award Diploma Certificate -->
+    <!-- Chap 9: Seamless Rose-Gold Award Certificate -->
     <section class="chapter" id="chap-9">
       <div class="realistic-diploma-paper">
         <svg class="guilloche-frame" viewBox="0 0 400 520" preserveAspectRatio="none">
@@ -315,7 +321,7 @@
       <button class="btn-coral" id="btn-chap-9" style="margin-top:14px;">💖 View 19 Reasons</button>
     </section>
 
-    <!-- Chap 10: 19 Reasons Deck & Scratch Voucher -->
+    <!-- Chap 10: 19 Reasons & Scratch Voucher -->
     <section class="chapter" id="chap-10">
       <div class="glass-card">
         <h2 class="heading-serif" style="font-size:18px;">19 Reasons You're Special</h2>
@@ -341,45 +347,73 @@
         <button class="btn-coral" id="btn-chap-10" style="margin-top:12px;">💐 Receive Bouquet</button>
       </div>
     </section>
- <!-- Chap 11: Realistic Wrapped Rose Bouquet -->
+<!-- Chap 11: Multi-Layer Realistic Vector Rose Bouquet -->
     <section class="chapter" id="chap-11">
       <div class="glass-card">
         <h2 class="cursive-rose" style="font-size:36px; margin-bottom:4px;">Your Rose Bouquet 🌹</h2>
         
         <div class="bouquet-realistic-container">
-          <svg viewBox="0 0 240 280" width="200" height="230">
+          <svg viewBox="0 0 240 280" width="220" height="240">
+            <!-- Bouquet Kraft Paper Wrapping Base -->
             <polygon points="60,180 180,180 140,270 100,270" fill="#d7b899"/>
             <polygon points="40,120 200,120 180,180 60,180" fill="#e8d3c1"/>
             <polygon points="50,110 190,110 180,180 60,180" fill="#f2e3d5"/>
             <path d="M 40 120 Q 100 140 120 270" fill="none" stroke="#c4a282" stroke-width="2"/>
             <path d="M 200 120 Q 140 140 120 270" fill="none" stroke="#c4a282" stroke-width="2"/>
 
-            <ellipse cx="70" cy="90" rx="20" ry="12" fill="#2d6a4f" transform="rotate(-30 70 90)"/>
-            <ellipse cx="170" cy="90" rx="20" ry="12" fill="#2d6a4f" transform="rotate(30 170 90)"/>
-            <ellipse cx="120" cy="60" rx="22" ry="12" fill="#40916c"/>
+            <!-- Green Leaves Background -->
+            <ellipse cx="65" cy="85" rx="22" ry="12" fill="#1b4332" transform="rotate(-35 65 85)"/>
+            <ellipse cx="175" cy="85" rx="22" ry="12" fill="#1b4332" transform="rotate(35 175 85)"/>
+            <ellipse cx="120" cy="55" rx="24" ry="12" fill="#2d6a4f"/>
 
-            <circle cx="75" cy="85" r="18" fill="#a4133c"/>
-            <circle cx="75" cy="85" r="12" fill="#c9184a"/>
-            <circle cx="75" cy="85" r="6" fill="#ff4d6d"/>
+            <!-- Layered Crimson Spiral Roses -->
+            <!-- Rose Left -->
+            <g transform="translate(65, 80)">
+              <circle cx="0" cy="0" r="22" fill="#800f2f"/>
+              <path d="M-12,-8 C-5,-18 10,-15 15,-5 C20,8 5,18 -8,15 C-18,10 -18,-2 -12,-8 Z" fill="#a4133c"/>
+              <path d="M-6,-4 C-2,-10 6,-8 8,-2 C10,4 2,10 -4,8 Z" fill="#c9184a"/>
+              <circle cx="0" cy="0" r="5" fill="#ff4d6d"/>
+            </g>
 
-            <circle cx="165" cy="85" r="18" fill="#a4133c"/>
-            <circle cx="165" cy="85" r="12" fill="#c9184a"/>
-            <circle cx="165" cy="85" r="6" fill="#ff4d6d"/>
+            <!-- Rose Right -->
+            <g transform="translate(175, 80)">
+              <circle cx="0" cy="0" r="22" fill="#800f2f"/>
+              <path d="M-12,-8 C-5,-18 10,-15 15,-5 C20,8 5,18 -8,15 C-18,10 -18,-2 -12,-8 Z" fill="#a4133c"/>
+              <path d="M-6,-4 C-2,-10 6,-8 8,-2 C10,4 2,10 -4,8 Z" fill="#c9184a"/>
+              <circle cx="0" cy="0" r="5" fill="#ff4d6d"/>
+            </g>
 
-            <circle cx="120" cy="70" r="22" fill="#800f2f"/>
-            <circle cx="120" cy="70" r="15" fill="#c9184a"/>
-            <circle cx="120" cy="70" r="8" fill="#ff758f"/>
+            <!-- Rose Center Top -->
+            <g transform="translate(120, 65)">
+              <circle cx="0" cy="0" r="26" fill="#590d22"/>
+              <path d="M-15,-10 C-6,-22 12,-18 18,-6 C24,10 6,22 -10,18 C-22,12 -22,-2 -15,-10 Z" fill="#800f2f"/>
+              <path d="M-8,-5 C-2,-12 8,-10 10,-2 C12,6 3,12 -5,10 Z" fill="#c9184a"/>
+              <circle cx="0" cy="0" r="6" fill="#ff758f"/>
+            </g>
 
-            <circle cx="120" cy="100" r="24" fill="#a4133c"/>
-            <circle cx="120" cy="100" r="16" fill="#ff4d6d"/>
-            <circle cx="120" cy="100" r="9" fill="#ff8fa3"/>
+            <!-- Rose Center Front -->
+            <g transform="translate(120, 105)">
+              <circle cx="0" cy="0" r="28" fill="#800f2f"/>
+              <path d="M-16,-12 C-7,-24 14,-20 20,-7 C26,12 7,24 -11,20 C-24,14 -24,-2 -16,-12 Z" fill="#a4133c"/>
+              <path d="M-9,-6 C-2,-14 9,-12 11,-2 C13,7 3,14 -6,11 Z" fill="#ff4d6d"/>
+              <circle cx="0" cy="0" r="7" fill="#ff8fa3"/>
+            </g>
 
-            <circle cx="95" cy="95" r="19" fill="#c9184a"/>
-            <circle cx="95" cy="95" r="11" fill="#ff4d6d"/>
+            <!-- Rose Mid Left -->
+            <g transform="translate(90, 95)">
+              <circle cx="0" cy="0" r="21" fill="#a4133c"/>
+              <path d="M-10,-7 C-4,-15 8,-12 12,-4 C16,6 4,15 -6,12 Z" fill="#c9184a"/>
+              <circle cx="0" cy="0" r="5" fill="#ff758f"/>
+            </g>
 
-            <circle cx="145" cy="95" r="19" fill="#c9184a"/>
-            <circle cx="145" cy="95" r="11" fill="#ff4d6d"/>
+            <!-- Rose Mid Right -->
+            <g transform="translate(150, 95)">
+              <circle cx="0" cy="0" r="21" fill="#a4133c"/>
+              <path d="M-10,-7 C-4,-15 8,-12 12,-4 C16,6 4,15 -6,12 Z" fill="#c9184a"/>
+              <circle cx="0" cy="0" r="5" fill="#ff758f"/>
+            </g>
 
+            <!-- Satin Ribbon Tied Bow -->
             <path d="M120 180 C80 160, 60 200, 110 188 Z" fill="#ff4d6d"/>
             <path d="M120 180 C160 160, 180 200, 130 188 Z" fill="#ff4d6d"/>
             <circle cx="120" cy="184" r="7" fill="#c9184a"/>
