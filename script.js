@@ -29,6 +29,42 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('nav-back-btn').addEventListener('click', () => goToChapter(currentChap - 1));
   document.getElementById('nav-replay-btn').addEventListener('click', () => goToChapter(1));
 
+  /* FINGER TOUCH-DRAG 360° / 180° ROTATION ENGINE */
+  function enableFingerDragSpin(elementId) {
+    const el = document.getElementById(elementId);
+    if (!el) return;
+    let isDragging = false;
+    let startX = 0;
+    let currentRotationY = 0;
+
+    const startDrag = (e) => {
+      isDragging = true;
+      startX = e.touches ? e.touches[0].clientX : e.clientX;
+    };
+
+    const moveDrag = (e) => {
+      if (!isDragging) return;
+      const currentX = e.touches ? e.touches[0].clientX : e.clientX;
+      const deltaX = currentX - startX;
+      currentRotationY += deltaX * 0.85; // rotation speed multiplier
+      startX = currentX;
+      el.style.transform = `rotateY(${currentRotationY}deg)`;
+    };
+
+    const stopDrag = () => { isDragging = false; };
+
+    el.addEventListener('mousedown', startDrag);
+    window.addEventListener('mousemove', moveDrag);
+    window.addEventListener('mouseup', stopDrag);
+
+    el.addEventListener('touchstart', startDrag, { passive: true });
+    window.addEventListener('touchmove', moveDrag, { passive: true });
+    window.addEventListener('touchend', stopDrag);
+  }
+
+  enableFingerDragSpin('cake-touch-area');
+  enableFingerDragSpin('gift-box-3d');
+
   /* Web Audio Synthesizers */
   const AudioCtx = window.AudioContext || window.webkitAudioContext;
   let audioCtx = null;
@@ -139,11 +175,7 @@ document.addEventListener('DOMContentLoaded', () => {
     goToChapter(4);
   };
 
-  /* Chap 4 Cake Rotation & Slicing */
-  document.getElementById('spin-cake-btn').onclick = () => {
-    document.getElementById('cake-touch-area').classList.toggle('rotated');
-  };
-
+  /* Chap 4 Cake Slicing */
   let isCakeCut = false;
   function cutCake() {
     if (isCakeCut) return;
@@ -186,11 +218,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }).catch(() => {});
   }
 
-  /* Chap 5 Gift Box Rotation & Unwrapping */
-  document.getElementById('spin-box-btn').onclick = () => {
-    document.getElementById('gift-box-3d').classList.toggle('rotated');
-  };
-
+  /* Chap 5 Gift Box Unwrapping */
   document.getElementById('gift-box-3d').onclick = () => {
     document.getElementById('gift-box-3d').classList.add('opened');
     setTimeout(() => { document.getElementById('btn-chap-5').style.display = 'inline-block'; }, 600);
@@ -441,3 +469,4 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
 });
+  
