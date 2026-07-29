@@ -41,7 +41,7 @@
     <section class="chapter" id="chap-2">
       <div class="glass-card">
         <h1 class="heading-serif" id="secret-title" style="cursor:pointer;">Counting down to Samrudhi's special day</h1>
-        <p style="font-size: 24px; margin: 6px 0;">🎂</p>
+        <p style="font-size: 26px; margin: 6px 0;">🎂</p>
         <p class="subheading-heartfelt">Every second bringing us closer to celebrating the most wonderful soul ✨</p>
         
         <div class="timer-grid">
@@ -50,7 +50,10 @@
           <div class="timer-box"><span id="td-mins">00</span><label>MINUTES</label></div>
           <div class="timer-box"><span id="td-secs">00</span><label>SECONDS</label></div>
         </div>
-        <p style="font-size:11px; color:#c9184a; margin-top:12px; font-weight:500;">✨ A special celebration awaits you at midnight... ✨</p>
+        
+        <button class="btn-coral" id="btn-chap-2-preview" style="margin-top:12px; font-size:10.5px; padding:8px 20px;">
+          ✨ Preview Experience
+        </button>
       </div>
     </section>
 
@@ -101,7 +104,7 @@
       </div>
     </section>
 
-    <!-- Chap 4: Multi-Layer 3D Cake & Slicing Stage -->
+    <!-- Chap 4: 3D Cake & Slicing Stage -->
     <section class="chapter" id="chap-4">
       <div class="glass-card">
         <h2 class="heading-serif" style="font-size:22px;">Blow the candle, SAMRUDHI</h2>
@@ -113,26 +116,27 @@
           </div>
           <div class="knife-el" id="cake-knife">🔪</div>
           
-          <!-- Detailed 3D Vector Cake -->
           <div class="aesthetic-cake-container" id="cake-whole">
             <div class="cake-half left-half" id="cake-left">
               <svg viewBox="0 0 100 120" width="100%" height="100%">
                 <path d="M 10 110 L 100 110 L 100 50 C 100 45, 90 40, 80 40 L 20 40 C 10 40, 10 45, 10 50 Z" fill="#ffcad4"/>
                 <path d="M 10 50 Q 50 65 100 50 L 100 40 L 10 40 Z" fill="#f4acb7"/>
-                <path d="M 10 50 Q 20 65 30 50 Q 40 65 50 50 Q 60 65 70 50 Q 80 65 90 50 Q 100 65 100 50" fill="#ffffff"/>
-                <!-- Internal Layer Texture on Cut Side -->
+                <path d="M 10 50 Q 25 65 40 50 Q 55 65 70 50 Q 85 65 100 50" fill="#ffffff"/>
+                <circle cx="30" cy="40" r="5" fill="#e63946"/>
+                <circle cx="65" cy="40" r="5" fill="#e63946"/>
                 <rect x="92" y="55" width="8" height="50" fill="#ffd1dc" class="cut-inner-texture"/>
-                <rect x="92" y="70" width="8" height="6" fill="#ff4d6d" class="cut-inner-texture"/>
+                <rect x="92" y="75" width="8" height="6" fill="#ff4d6d" class="cut-inner-texture"/>
               </svg>
             </div>
             <div class="cake-half right-half" id="cake-right">
               <svg viewBox="0 0 100 120" width="100%" height="100%">
                 <path d="M 0 110 L 90 110 C 90 110, 90 45, 80 40 L 0 40 Z" fill="#ffcad4"/>
                 <path d="M 0 50 Q 50 65 90 50 L 90 40 L 0 40 Z" fill="#f4acb7"/>
-                <path d="M 0 50 Q 10 65 20 50 Q 30 65 40 50 Q 50 65 60 50 Q 70 65 80 50 Q 90 65 90 50" fill="#ffffff"/>
-                <!-- Internal Layer Texture on Cut Side -->
+                <path d="M 0 50 Q 15 65 30 50 Q 45 65 60 50 Q 75 65 90 50" fill="#ffffff"/>
+                <circle cx="35" cy="40" r="5" fill="#e63946"/>
+                <circle cx="70" cy="40" r="5" fill="#e63946"/>
                 <rect x="0" y="55" width="8" height="50" fill="#ffd1dc" class="cut-inner-texture"/>
-                <rect x="0" y="70" width="8" height="6" fill="#ff4d6d" class="cut-inner-texture"/>
+                <rect x="0" y="75" width="8" height="6" fill="#ff4d6d" class="cut-inner-texture"/>
               </svg>
             </div>
             <div class="cake-plate"></div>
@@ -264,7 +268,7 @@
       </div>
     </section>
 
-    <!-- Chap 9: Seamless Rose-Gold Award Certificate -->
+    <!-- Chap 9: Rose-Gold Award Certificate -->
     <section class="chapter" id="chap-9">
       <div class="realistic-diploma-paper">
         <svg class="guilloche-frame" viewBox="0 0 400 520" preserveAspectRatio="none">
@@ -347,27 +351,23 @@
         <button class="btn-coral" id="btn-chap-10" style="margin-top:12px;">💐 Receive Bouquet</button>
       </div>
     </section>
-<!-- Chap 11: Multi-Layer Realistic Vector Rose Bouquet -->
+ <!-- Chap 11: Multi-Layer Rose Bouquet -->
     <section class="chapter" id="chap-11">
       <div class="glass-card">
         <h2 class="cursive-rose" style="font-size:36px; margin-bottom:4px;">Your Rose Bouquet 🌹</h2>
         
         <div class="bouquet-realistic-container">
           <svg viewBox="0 0 240 280" width="220" height="240">
-            <!-- Bouquet Kraft Paper Wrapping Base -->
             <polygon points="60,180 180,180 140,270 100,270" fill="#d7b899"/>
             <polygon points="40,120 200,120 180,180 60,180" fill="#e8d3c1"/>
             <polygon points="50,110 190,110 180,180 60,180" fill="#f2e3d5"/>
             <path d="M 40 120 Q 100 140 120 270" fill="none" stroke="#c4a282" stroke-width="2"/>
             <path d="M 200 120 Q 140 140 120 270" fill="none" stroke="#c4a282" stroke-width="2"/>
 
-            <!-- Green Leaves Background -->
             <ellipse cx="65" cy="85" rx="22" ry="12" fill="#1b4332" transform="rotate(-35 65 85)"/>
             <ellipse cx="175" cy="85" rx="22" ry="12" fill="#1b4332" transform="rotate(35 175 85)"/>
             <ellipse cx="120" cy="55" rx="24" ry="12" fill="#2d6a4f"/>
 
-            <!-- Layered Crimson Spiral Roses -->
-            <!-- Rose Left -->
             <g transform="translate(65, 80)">
               <circle cx="0" cy="0" r="22" fill="#800f2f"/>
               <path d="M-12,-8 C-5,-18 10,-15 15,-5 C20,8 5,18 -8,15 C-18,10 -18,-2 -12,-8 Z" fill="#a4133c"/>
@@ -375,7 +375,6 @@
               <circle cx="0" cy="0" r="5" fill="#ff4d6d"/>
             </g>
 
-            <!-- Rose Right -->
             <g transform="translate(175, 80)">
               <circle cx="0" cy="0" r="22" fill="#800f2f"/>
               <path d="M-12,-8 C-5,-18 10,-15 15,-5 C20,8 5,18 -8,15 C-18,10 -18,-2 -12,-8 Z" fill="#a4133c"/>
@@ -383,7 +382,6 @@
               <circle cx="0" cy="0" r="5" fill="#ff4d6d"/>
             </g>
 
-            <!-- Rose Center Top -->
             <g transform="translate(120, 65)">
               <circle cx="0" cy="0" r="26" fill="#590d22"/>
               <path d="M-15,-10 C-6,-22 12,-18 18,-6 C24,10 6,22 -10,18 C-22,12 -22,-2 -15,-10 Z" fill="#800f2f"/>
@@ -391,7 +389,6 @@
               <circle cx="0" cy="0" r="6" fill="#ff758f"/>
             </g>
 
-            <!-- Rose Center Front -->
             <g transform="translate(120, 105)">
               <circle cx="0" cy="0" r="28" fill="#800f2f"/>
               <path d="M-16,-12 C-7,-24 14,-20 20,-7 C26,12 7,24 -11,20 C-24,14 -24,-2 -16,-12 Z" fill="#a4133c"/>
@@ -399,21 +396,18 @@
               <circle cx="0" cy="0" r="7" fill="#ff8fa3"/>
             </g>
 
-            <!-- Rose Mid Left -->
             <g transform="translate(90, 95)">
               <circle cx="0" cy="0" r="21" fill="#a4133c"/>
               <path d="M-10,-7 C-4,-15 8,-12 12,-4 C16,6 4,15 -6,12 Z" fill="#c9184a"/>
               <circle cx="0" cy="0" r="5" fill="#ff758f"/>
             </g>
 
-            <!-- Rose Mid Right -->
             <g transform="translate(150, 95)">
               <circle cx="0" cy="0" r="21" fill="#a4133c"/>
               <path d="M-10,-7 C-4,-15 8,-12 12,-4 C16,6 4,15 -6,12 Z" fill="#c9184a"/>
               <circle cx="0" cy="0" r="5" fill="#ff758f"/>
             </g>
 
-            <!-- Satin Ribbon Tied Bow -->
             <path d="M120 180 C80 160, 60 200, 110 188 Z" fill="#ff4d6d"/>
             <path d="M120 180 C160 160, 180 200, 130 188 Z" fill="#ff4d6d"/>
             <circle cx="120" cy="184" r="7" fill="#c9184a"/>
@@ -451,12 +445,10 @@
     </section>
   </main>
 
-  <!-- Website Footer Stamp -->
   <footer class="app-footer">
     Made with ❤️ -Goldieee
   </footer>
 
-  <!-- Fixed Navigation Control Bar -->
   <div class="nav-bar-fixed">
     <button class="nav-btn" id="nav-back-btn">◀ Go Back</button>
     <button class="nav-btn" id="nav-replay-btn">⭐ Replay</button>
