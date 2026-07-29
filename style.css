@@ -18,12 +18,13 @@ html, body {
 }
 
 .bg-container {
-  position: fixed; inset: 0; background: var(--bg-gradient); z-index: 1; transition: background 1.5s ease;
+  position: fixed; inset: 0; background: var(--bg-gradient); z-index: 1; transition: all 1.5s ease;
 }
 
-/* Enchanted Garden Theme Morph */
+/* REAL ENCHANTED GARDEN BACKGROUND WALLPAPER */
 .bg-container.floral-theme {
-  background: linear-gradient(135deg, #1d0928 0%, #4c1138 40%, #6e1644 70%, #260a2b 100%);
+  background: linear-gradient(rgba(18, 3, 24, 0.65), rgba(18, 3, 24, 0.75)),
+              url('https://images.unsplash.com/photo-1518709268805-4e9042af9f23?q=80&w=1600&auto=format&fit=crop') center/cover no-repeat !important;
 }
 
 #bokeh-canvas, #petals-canvas, #fireworks-canvas {
@@ -77,6 +78,16 @@ html, body {
   margin-top: 12px; display: inline-block;
 }
 .btn-gold:active { transform: scale(0.95); }
+
+/* Realistic Bouquet Image Styling */
+.bouquet-art-container {
+  width: 100%; max-width: 220px; height: 180px; margin: 0 auto;
+  border-radius: 20px; overflow: hidden; border: 1px solid var(--gold-accent);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.6);
+}
+.realistic-bouquet-img {
+  width: 100%; height: 100%; object-fit: cover; display: block;
+}
 
 /* Timer */
 .timer-grid { display: flex; gap: 8px; justify-content: center; margin: 16px 0; }
@@ -190,9 +201,14 @@ html, body {
 .parchment-card-finale { background: linear-gradient(145deg, #1c0836, #0d021c); border: 1px solid var(--gold-accent); border-radius: 24px; padding: 22px 16px; box-shadow: 0 0 40px var(--purple-accent); text-align: center; width: 92%; max-width: 410px; }
 .parchment-card-finale p { font-size: 12.5px; line-height: 1.7; color: #f3e5f5; margin-bottom: 10px; }
 
-/* Website Footer */
-.app-footer { position: fixed; bottom: 48px; left: 0; right: 0; text-align: center; font-size: 10.5px; color: #e0b1cb; letter-spacing: 1px; z-index: 100; pointer-events: none; }
+/* FIXED FOOTER POSITIONING ABOVE NAV BUTTONS */
+.app-footer {
+  position: fixed; bottom: 58px; left: 0; right: 0;
+  text-align: center; font-size: 11px; color: #fefae0;
+  letter-spacing: 1px; z-index: 100; pointer-events: none;
+  text-shadow: 0 2px 6px rgba(0,0,0,0.8);
+}
 
 .nav-bar-fixed { position: fixed; bottom: 12px; left: 50%; transform: translateX(-50%); display: flex; gap: 8px; z-index: 120; }
-.nav-btn { background: rgba(20, 8, 38, 0.88); border: 1px solid var(--gold-accent); color: #fefae0; padding: 7px 14px; border-radius: 30px; font-size: 10px; letter-spacing: 1px; cursor: pointer; backdrop-filter: blur(10px); }
+.nav-btn { background: rgba(20, 8, 38, 0.92); border: 1px solid var(--gold-accent); color: #fefae0; padding: 7px 14px; border-radius: 30px; font-size: 10px; letter-spacing: 1px; cursor: pointer; backdrop-filter: blur(10px); }
 .nav-btn-sm { background: rgba(0,0,0,0.5); border: 1px solid var(--gold-accent); color: #fefae0; padding: 4px 10px; border-radius: 20px; font-size: 9.5px; cursor: pointer; }
