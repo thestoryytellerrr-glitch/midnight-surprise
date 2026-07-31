@@ -307,101 +307,194 @@ html, body {
   box-shadow: 0 4px 10px rgba(0,0,0,0.05);
 }
 
-/* CAKE & SLICING STAGE */
-.cake-vector-stage {
+/* ==========================================
+   ULTRA-AESTHETIC ANIMATED LAYER-DROP CAKE
+========================================== */
+.aesthetic-cake-wrapper {
   position: relative;
-  width: 200px;
-  height: 160px;
-  margin: 10px auto;
-  cursor: pointer;
-}
-.candle-el {
-  width: 6px;
-  height: 24px;
-  background: #c9184a;
-  border-radius: 3px;
-  position: absolute;
-  top: 12px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 10;
-}
-.flame-el {
-  width: 12px;
-  height: 16px;
-  background: #ff9e00;
-  border-radius: 50% 50% 20% 20%;
-  position: absolute;
-  top: -14px;
-  left: -3px;
-  box-shadow: 0 0 12px #ff9e00;
-  animation: flicker 0.6s infinite alternate ease-in-out;
-}
-@keyframes flicker {
-  0% { transform: scale(0.85); }
-  100% { transform: scale(1.15); }
-}
-
-.knife-el {
-  position: absolute;
-  top: -20px;
-  left: 50%;
-  transform: translateX(-50%) rotate(-45deg);
-  font-size: 32px;
-  opacity: 0;
-  z-index: 20;
-  transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-.knife-el.cutting {
-  opacity: 1;
-  top: 45px;
-  transform: translateX(-50%) rotate(15deg);
-}
-
-.aesthetic-cake-container {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  height: 110px;
-  display: flex;
-  justify-content: center;
-  align-items: flex-end;
-}
-
-.cake-half {
-  width: 75px;
-  height: 90px;
+  width: 240px;
+  height: 220px;
+  margin: 25px auto 15px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-end;
-  transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  cursor: pointer;
+  perspective: 1000px;
 }
-.cake-half.left-half.cut { transform: translateX(-24px) rotate(-6deg); }
-.cake-half.right-half.cut { transform: translateX(24px) rotate(6deg); }
 
-.cut-inner-texture { opacity: 0; transition: opacity 0.3s ease; }
-.cake-half.cut .cut-inner-texture { opacity: 1; }
-
-.cake-plate {
-  width: 180px;
-  height: 10px;
-  background: #eaeaea;
-  border-radius: 20px;
+/* Ambient Radial Glow */
+.cake-glow-bg {
   position: absolute;
-  bottom: 0;
-  z-index: -1;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+  bottom: 10px;
+  width: 180px;
+  height: 120px;
+  background: radial-gradient(circle, rgba(255, 182, 193, 0.5) 0%, rgba(255, 255, 255, 0) 70%);
+  z-index: 0;
+  pointer-events: none;
 }
 
-.grid-paper-card {
-  background-color: #fffaf0;
-  background-image: 
-    linear-gradient(rgba(244, 172, 183, 0.25) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(244, 172, 183, 0.25) 1px, transparent 1px);
-  background-size: 20px 20px;
-  border: 1px solid #ffcad4;
+/* --- SEQUENTIAL LAYER DROP ANIMATION --- */
+.drop-element {
+  opacity: 0;
+  animation: dropAndBounce 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
 }
+
+.delay-0 { animation-delay: 0.1s; }
+.delay-1 { animation-delay: 0.35s; }
+.delay-2 { animation-delay: 0.65s; }
+.delay-3 { animation-delay: 0.95s; }
+.delay-4 { animation-delay: 1.25s; }
+
+@keyframes dropAndBounce {
+  0% {
+    opacity: 0;
+    transform: translateY(-120px) scale(0.85);
+  }
+  70% {
+    opacity: 1;
+    transform: translateY(6px) scale(1.03);
+  }
+  85% {
+    transform: translateY(-3px) scale(0.98);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* CAKE LAYERS */
+.cake-layer {
+  position: relative;
+  border-radius: 14px 14px 8px 8px;
+  box-shadow: 0 6px 14px rgba(154, 13, 52, 0.18), inset 0 -4px 0 rgba(0, 0, 0, 0.08);
+}
+
+.layer-top {
+  width: 110px;
+  height: 42px;
+  background: linear-gradient(135deg, #ffb3c1, #ff758f);
+  z-index: 3;
+}
+
+.layer-middle {
+  width: 155px;
+  height: 48px;
+  background: linear-gradient(135deg, #ff8fa3, #c9184a);
+  margin-top: -6px;
+  z-index: 2;
+}
+
+.layer-bottom {
+  width: 195px;
+  height: 52px;
+  background: linear-gradient(135deg, #ff4d6d, #800f2f);
+  margin-top: -6px;
+  z-index: 1;
+}
+
+/* CREAM ICING ACCENTS */
+.icing-wave {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 14px;
+  background: #ffffff;
+  border-radius: 10px 10px 14px 14px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.06);
+}
+
+/* SPRINKLES & PEARLS */
+.sprinkles {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+}
+
+.s-dot {
+  position: absolute;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.s1 { top: 20px; left: 20%; background: #ffd166; }
+.s2 { top: 26px; right: 25%; background: #ffffff; }
+.s3 { top: 18px; left: 60%; background: #ffb703; }
+
+.cherry-top {
+  position: absolute;
+  top: -18px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 22px;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+}
+
+/* CANDLE & REAL FLAME */
+.cake-candle {
+  position: absolute;
+  top: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 10;
+}
+
+.candle-stick {
+  width: 10px;
+  height: 36px;
+  background: repeating-linear-gradient(
+    45deg,
+    #ff4d6d,
+    #ff4d6d 6px,
+    #ffffff 6px,
+    #ffffff 12px
+  );
+  border-radius: 4px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+}
+
+.candle-flame {
+  width: 14px;
+  height: 22px;
+  background: radial-gradient(ellipse at bottom, #ffbe0b 0%, #fb5607 60%, transparent 100%);
+  border-radius: 50% 50% 35% 35%;
+  margin-bottom: -2px;
+  box-shadow: 0 0 16px #ffbe0b, 0 0 28px #fb5607;
+  animation: flickerFlame 1.2s ease-in-out infinite alternate;
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.candle-flame.out {
+  opacity: 0 !important;
+  transform: scale(0.1);
+}
+
+@keyframes flickerFlame {
+  0% { transform: scale(1) rotate(-2deg); opacity: 0.95; }
+  100% { transform: scale(1.18) rotate(2deg); opacity: 1; }
+}
+
+/* ELEGANT PLATE BASE */
+.cake-plate {
+  width: 230px;
+  height: 14px;
+  background: linear-gradient(180deg, #ffffff, #e9ecef);
+  border-radius: 50%;
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.18);
+  margin-top: -4px;
+  z-index: 0;
+}
+
+
 
 /* CANVA GRID PAPER ENVELOPE CARD (CHAPTER 7) */
 .grid-paper-envelope-card {
