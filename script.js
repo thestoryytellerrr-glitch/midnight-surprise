@@ -207,8 +207,7 @@ function initApp() {
   setInterval(checkTimerAndAutoUnlock, 1000);
   checkTimerAndAutoUnlock();
 
-  const btnChap2Preview = document.getElementById('btn-chap-2-preview');
-  if (btnChap2Preview) btnChap2Preview.onclick = () => goToChapter(3);
+  
 
   let secretTap = 0;
   const secretTitle = document.getElementById('secret-title');
