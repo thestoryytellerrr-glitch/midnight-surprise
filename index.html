@@ -111,48 +111,50 @@
     </section>
     
 
-    <!-- Chap 4: 3D Cake & Slicing Stage -->
-    <section class="chapter" id="chap-4">
-      <div class="glass-card">
-        <h2 class="heading-serif" style="font-size:22px;">Blow the candle, SAMRUDHI</h2>
-        <p class="subheading" style="font-size:11.5px; margin-bottom:12px;">Blow into your mic or tap the candle!</p>
+            <!-- Animated Layer-Drop Luxury Birthday Cake -->
+        <div class="aesthetic-cake-wrapper" id="cake-trigger">
+          <div class="cake-glow-bg"></div>
 
-        <div class="cake-vector-stage" id="cake-touch-area">
-          <div class="candle-el">
-            <div class="flame-el" id="candle-flame"></div>
+          <!-- 4. Candle & Flickering Flame (Drops Last) -->
+          <div class="cake-candle drop-element delay-4" id="candle-element">
+            <div class="candle-flame" id="flame-element"></div>
+            <div class="candle-stick"></div>
           </div>
-          <div class="knife-el" id="cake-knife">🔪</div>
-          
-          <div class="aesthetic-cake-container" id="cake-whole">
-            <div class="cake-half left-half" id="cake-left">
-              <svg viewBox="0 0 100 120" width="100%" height="100%">
-                <path d="M 10 110 L 100 110 L 100 50 C 100 45, 90 40, 80 40 L 20 40 C 10 40, 10 45, 10 50 Z" fill="#ffcad4"/>
-                <path d="M 10 50 Q 50 65 100 50 L 100 40 L 10 40 Z" fill="#f4acb7"/>
-                <path d="M 10 50 Q 25 65 40 50 Q 55 65 70 50 Q 85 65 100 50" fill="#ffffff"/>
-                <circle cx="30" cy="40" r="5" fill="#e63946"/>
-                <circle cx="65" cy="40" r="5" fill="#e63946"/>
-                <rect x="92" y="55" width="8" height="50" fill="#ffd1dc" class="cut-inner-texture"/>
-                <rect x="92" y="75" width="8" height="6" fill="#ff4d6d" class="cut-inner-texture"/>
-              </svg>
+
+          <!-- 3. Top Tier Layer (Drops Third) -->
+          <div class="cake-layer layer-top drop-element delay-3">
+            <div class="icing-wave"></div>
+            <div class="sprinkles">
+              <span class="s-dot s1"></span>
+              <span class="s-dot s2"></span>
+              <span class="s-dot s3"></span>
             </div>
-            <div class="cake-half right-half" id="cake-right">
-              <svg viewBox="0 0 100 120" width="100%" height="100%">
-                <path d="M 0 110 L 90 110 C 90 110, 90 45, 80 40 L 0 40 Z" fill="#ffcad4"/>
-                <path d="M 0 50 Q 50 65 90 50 L 90 40 L 0 40 Z" fill="#f4acb7"/>
-                <path d="M 0 50 Q 15 65 30 50 Q 45 65 60 50 Q 75 65 90 50" fill="#ffffff"/>
-                <circle cx="35" cy="40" r="5" fill="#e63946"/>
-                <circle cx="70" cy="40" r="5" fill="#e63946"/>
-                <rect x="0" y="55" width="8" height="50" fill="#ffd1dc" class="cut-inner-texture"/>
-                <rect x="0" y="75" width="8" height="6" fill="#ff4d6d" class="cut-inner-texture"/>
-              </svg>
-            </div>
-            <div class="cake-plate"></div>
+            <div class="cherry-top">🍒</div>
           </div>
+
+          <!-- 2. Middle Tier Layer (Drops Second) -->
+          <div class="cake-layer layer-middle drop-element delay-2">
+            <div class="icing-wave"></div>
+            <div class="sprinkles">
+              <span class="s-dot s1"></span>
+              <span class="s-dot s2"></span>
+            </div>
+          </div>
+
+          <!-- 1. Bottom Tier Layer (Drops First) -->
+          <div class="cake-layer layer-bottom drop-element delay-1">
+            <div class="icing-wave"></div>
+            <div class="sprinkles">
+              <span class="s-dot s1"></span>
+              <span class="s-dot s2"></span>
+              <span class="s-dot s3"></span>
+            </div>
+          </div>
+
+          <!-- Plate Base -->
+          <div class="cake-plate drop-element delay-0"></div>
         </div>
-
-        <p id="cake-action-hint" style="font-size:11px; color:#c9184a; font-weight:600; margin-top:8px;">Tap candle to blow out! 🔥</p>
-      </div>
-    </section>
+    
 
     <!-- Chap 5: Birthday Pop-Up Celebration -->
     <section class="chapter" id="chap-5">
