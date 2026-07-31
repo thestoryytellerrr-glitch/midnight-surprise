@@ -180,13 +180,23 @@ function initApp() {
   const mainAudio = document.getElementById('audio-main');
   const hbdAudio = document.getElementById('audio-hbd');
 
-  function startMainAudio() {
+    function startMainAudio() {
     initAudio();
-    if (mainAudio && mainAudio.paused) {
+    if (mainAudio) {
+      // Set volume
       mainAudio.volume = 1.0;
-      mainAudio.play().catch(() => {});
+      
+      // If the audio hasn't reached 7 seconds yet, skip directly to 07s
+      if (mainAudio.currentTime < 7) {
+        mainAudio.currentTime = 7;
+      }
+
+      if (mainAudio.paused) {
+        mainAudio.play().catch(() => {});
+      }
     }
-  }
+    }
+  
 
   // --- PRELOADER LOADER ANIMATION FIX ---
   const loadBar = document.getElementById('load-bar');
