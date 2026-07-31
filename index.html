@@ -382,68 +382,115 @@
         <button class="btn-coral" id="btn-chap-10" style="margin-top:12px;">💐 Receive Bouquet</button>
       </div>
     </section>
-<!-- Chap 11: Multi-Layer Rose Bouquet -->
+
+        <!-- Chap 11: Multi-Layer Realistic Rose Bouquet -->
     <section class="chapter" id="chap-11">
       <div class="glass-card">
-        <h2 class="cursive-rose" style="font-size:36px; margin-bottom:4px;">Your Rose Bouquet 🌹</h2>
+        <h2 class="cursive-rose" style="font-size:38px; margin-bottom:4px;">Your Rose Bouquet 🌹</h2>
         
         <div class="bouquet-realistic-container">
-          <svg viewBox="0 0 240 280" width="220" height="240">
-            <polygon points="60,180 180,180 140,270 100,270" fill="#d7b899"/>
-            <polygon points="40,120 200,120 180,180 60,180" fill="#e8d3c1"/>
-            <polygon points="50,110 190,110 180,180 60,180" fill="#f2e3d5"/>
-            <path d="M 40 120 Q 100 140 120 270" fill="none" stroke="#c4a282" stroke-width="2"/>
-            <path d="M 200 120 Q 140 140 120 270" fill="none" stroke="#c4a282" stroke-width="2"/>
+          <svg viewBox="0 0 280 320" width="240" height="260">
+            <defs>
+              <linearGradient id="wrapperPaper" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#f2dfce"/>
+                <stop offset="50%" stop-color="#e3caa5"/>
+                <stop offset="100%" stop-color="#c9ab81"/>
+              </linearGradient>
+              <linearGradient id="wrapperInner" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#d9b891"/>
+                <stop offset="100%" stop-color="#ab855b"/>
+              </linearGradient>
+              <linearGradient id="roseVelvet" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#ff4d6d"/>
+                <stop offset="40%" stop-color="#c9184a"/>
+                <stop offset="100%" stop-color="#590d22"/>
+              </linearGradient>
+              <linearGradient id="roseDark" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#a4133c"/>
+                <stop offset="70%" stop-color="#800f2f"/>
+                <stop offset="100%" stop-color="#38040e"/>
+              </linearGradient>
+              <linearGradient id="leafGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#40916c"/>
+                <stop offset="100%" stop-color="#1b4332"/>
+              </linearGradient>
+              <filter id="softShadow" x="-10%" y="-10%" width="120%" height="120%">
+                <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#590d22" flood-opacity="0.25"/>
+              </filter>
+            </defs>
 
-            <ellipse cx="65" cy="85" rx="22" ry="12" fill="#1b4332" transform="rotate(-35 65 85)"/>
-            <ellipse cx="175" cy="85" rx="22" ry="12" fill="#1b4332" transform="rotate(35 175 85)"/>
-            <ellipse cx="120" cy="55" rx="24" ry="12" fill="#2d6a4f"/>
+            <!-- Shadow backdrop -->
+            <ellipse cx="140" cy="295" rx="60" ry="10" fill="rgba(89, 13, 34, 0.15)"/>
 
-            <g transform="translate(65, 80)">
-              <circle cx="0" cy="0" r="22" fill="#800f2f"/>
-              <path d="M-12,-8 C-5,-18 10,-15 15,-5 C20,8 5,18 -8,15 C-18,10 -18,-2 -12,-8 Z" fill="#a4133c"/>
-              <path d="M-6,-4 C-2,-10 6,-8 8,-2 C10,4 2,10 -4,8 Z" fill="#c9184a"/>
-              <circle cx="0" cy="0" r="5" fill="#ff4d6d"/>
+            <!-- Kraft Paper Outer & Inner Folds -->
+            <polygon points="50,140 230,140 180,300 100,300" fill="url(#wrapperInner)"/>
+            <polygon points="30,120 250,120 185,300 95,300" fill="url(#wrapperPaper)" filter="url(#softShadow)"/>
+            <path d="M 30 120 Q 140 160 250 120 L 185 300 Q 140 310 95 300 Z" fill="url(#wrapperPaper)"/>
+
+            <!-- Organic Deep Green Leaves -->
+            <path d="M 60 110 Q 30 70 80 80 Z" fill="url(#leafGrad)"/>
+            <path d="M 220 110 Q 250 70 200 80 Z" fill="url(#leafGrad)"/>
+            <path d="M 140 70 Q 140 20 165 40 Z" fill="url(#leafGrad)"/>
+            <path d="M 100 80 Q 80 30 115 50 Z" fill="url(#leafGrad)"/>
+
+            <!-- Baby's Breath Accent Flowers -->
+            <circle cx="75" cy="70" r="3" fill="#ffffff" opacity="0.9"/>
+            <circle cx="82" cy="65" r="2.5" fill="#ffffff" opacity="0.8"/>
+            <circle cx="205" cy="70" r="3" fill="#ffffff" opacity="0.9"/>
+            <circle cx="198" cy="65" r="2.5" fill="#ffffff" opacity="0.8"/>
+            <circle cx="140" cy="35" r="3" fill="#ffffff" opacity="0.9"/>
+
+            <!-- Realistic Layered Rose Blooms -->
+            <!-- Rose 1: Left Back -->
+            <g transform="translate(85, 95)">
+              <path d="M-22,0 C-25,-25 25,-25 22,0 C25,25 -25,25 -22,0 Z" fill="url(#roseDark)"/>
+              <path d="M-15,-8 C-10,-20 12,-18 15,-5 C18,8 5,18 -8,15 Z" fill="url(#roseVelvet)"/>
+              <path d="M-8,-4 C-2,-12 8,-10 10,-2 C12,6 2,10 -4,8 Z" fill="#ff4d6d"/>
             </g>
 
-            <g transform="translate(175, 80)">
-              <circle cx="0" cy="0" r="22" fill="#800f2f"/>
-              <path d="M-12,-8 C-5,-18 10,-15 15,-5 C20,8 5,18 -8,15 C-18,10 -18,-2 -12,-8 Z" fill="#a4133c"/>
-              <path d="M-6,-4 C-2,-10 6,-8 8,-2 C10,4 2,10 -4,8 Z" fill="#c9184a"/>
-              <circle cx="0" cy="0" r="5" fill="#ff4d6d"/>
+            <!-- Rose 2: Right Back -->
+            <g transform="translate(195, 95)">
+              <path d="M-22,0 C-25,-25 25,-25 22,0 C25,25 -25,25 -22,0 Z" fill="url(#roseDark)"/>
+              <path d="M-15,-8 C-10,-20 12,-18 15,-5 C18,8 5,18 -8,15 Z" fill="url(#roseVelvet)"/>
+              <path d="M-8,-4 C-2,-12 8,-10 10,-2 C12,6 2,10 -4,8 Z" fill="#ff4d6d"/>
             </g>
 
-            <g transform="translate(120, 65)">
-              <circle cx="0" cy="0" r="26" fill="#590d22"/>
-              <path d="M-15,-10 C-6,-22 12,-18 18,-6 C24,10 6,22 -10,18 C-22,12 -22,-2 -15,-10 Z" fill="#800f2f"/>
-              <path d="M-8,-5 C-2,-12 8,-10 10,-2 C12,6 3,12 -5,10 Z" fill="#c9184a"/>
-              <circle cx="0" cy="0" r="6" fill="#ff758f"/>
+            <!-- Rose 3: Top Center -->
+            <g transform="translate(140, 65)">
+              <path d="M-26,0 C-30,-30 30,-30 26,0 C30,30 -30,30 -26,0 Z" fill="url(#roseDark)"/>
+              <path d="M-18,-10 C-12,-24 15,-22 18,-6 C22,10 6,22 -10,18 Z" fill="url(#roseVelvet)"/>
+              <path d="M-10,-5 C-3,-14 10,-12 12,-3 C14,7 3,12 -5,10 Z" fill="#ff758f"/>
             </g>
 
-            <g transform="translate(120, 105)">
-              <circle cx="0" cy="0" r="28" fill="#800f2f"/>
-              <path d="M-16,-12 C-7,-24 14,-20 20,-7 C26,12 7,24 -11,20 C-24,14 -24,-2 -16,-12 Z" fill="#a4133c"/>
-              <path d="M-9,-6 C-2,-14 9,-12 11,-2 C13,7 3,14 -6,11 Z" fill="#ff4d6d"/>
-              <circle cx="0" cy="0" r="7" fill="#ff8fa3"/>
+            <!-- Rose 4: Center Main Bloom -->
+            <g transform="translate(140, 115)">
+              <path d="M-32,0 C-35,-38 35,-38 32,0 C35,38 -35,38 -32,0 Z" fill="url(#roseDark)"/>
+              <path d="M-22,-12 C-14,-28 18,-26 22,-8 C26,12 8,26 -12,22 Z" fill="url(#roseVelvet)"/>
+              <path d="M-12,-6 C-4,-16 12,-14 14,-4 C16,8 4,14 -6,12 Z" fill="#ff4d6d"/>
+              <circle cx="0" cy="0" r="5" fill="#ff8fa3"/>
             </g>
 
-            <g transform="translate(90, 95)">
-              <circle cx="0" cy="0" r="21" fill="#a4133c"/>
-              <path d="M-10,-7 C-4,-15 8,-12 12,-4 C16,6 4,15 -6,12 Z" fill="#c9184a"/>
-              <circle cx="0" cy="0" r="5" fill="#ff758f"/>
+            <!-- Rose 5: Front Left -->
+            <g transform="translate(100, 125)">
+              <path d="M-24,0 C-28,-28 28,-28 24,0 C28,28 -28,28 -24,0 Z" fill="url(#roseDark)"/>
+              <path d="M-16,-9 C-10,-22 14,-20 17,-6 C20,9 6,20 -9,16 Z" fill="url(#roseVelvet)"/>
+              <path d="M-8,-4 C-2,-12 8,-10 10,-2 Z" fill="#ff758f"/>
             </g>
 
-            <g transform="translate(150, 95)">
-              <circle cx="0" cy="0" r="21" fill="#a4133c"/>
-              <path d="M-10,-7 C-4,-15 8,-12 12,-4 C16,6 4,15 -6,12 Z" fill="#c9184a"/>
-              <circle cx="0" cy="0" r="5" fill="#ff758f"/>
+            <!-- Rose 6: Front Right -->
+            <g transform="translate(180, 125)">
+              <path d="M-24,0 C-28,-28 28,-28 24,0 C28,28 -28,28 -24,0 Z" fill="url(#roseDark)"/>
+              <path d="M-16,-9 C-10,-22 14,-20 17,-6 C20,9 6,20 -9,16 Z" fill="url(#roseVelvet)"/>
+              <path d="M-8,-4 C-2,-12 8,-10 10,-2 Z" fill="#ff758f"/>
             </g>
 
-            <path d="M120 180 C80 160, 60 200, 110 188 Z" fill="#ff4d6d"/>
-            <path d="M120 180 C160 160, 180 200, 130 188 Z" fill="#ff4d6d"/>
-            <circle cx="120" cy="184" r="7" fill="#c9184a"/>
-            <path d="M116 188 Q 95 220 85 240 L 98 235 Q 108 215 120 188 Z" fill="#ff4d6d"/>
-            <path d="M124 188 Q 145 220 155 240 L 142 235 Q 132 215 120 188 Z" fill="#ff4d6d"/>
+            <!-- Tied Satin Ribbon & Bow -->
+            <path d="M 100 200 Q 140 215 180 200 L 175 218 Q 140 230 105 218 Z" fill="#c9184a"/>
+            <path d="M 140 208 C 110 185 80 220 130 212 Z" fill="#ff4d6d"/>
+            <path d="M 140 208 C 170 185 200 220 150 212 Z" fill="#ff4d6d"/>
+            <circle cx="140" cy="210" r="8" fill="#800f2f"/>
+            <path d="M 135 215 Q 110 260 98 280 L 112 275 Q 128 245 140 215 Z" fill="#ff4d6d"/>
+            <path d="M 145 215 Q 170 260 182 280 L 168 275 Q 152 245 140 215 Z" fill="#ff4d6d"/>
           </svg>
         </div>
 
@@ -453,6 +500,7 @@
         <button class="btn-coral" id="btn-chap-11">✨ Read Final Message</button>
       </div>
     </section>
+    
 
     <!-- Chap 12: Grand Finale Letter -->
     <section class="chapter" id="chap-12">
