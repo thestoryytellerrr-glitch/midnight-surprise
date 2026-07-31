@@ -1,5 +1,4 @@
-document.addEventListener('DOMContentLoaded', () => {
-
+function initApp() {
   let currentChap = 1;
   const TOTAL_CHAPS = 12;
   const TARGET_DATE = new Date("2026-08-02T00:00:00");
@@ -179,17 +178,15 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  // --- PRELOADER LOADER ANIMATION FIX ---
+  const loadBar = document.getElementById('load-bar');
+  const btn1 = document.getElementById('btn-chap-1');
+  if (loadBar) loadBar.style.width = '100%';
   setTimeout(() => {
-    const loadBar = document.getElementById('load-bar');
-    if (loadBar) loadBar.style.width = '100%';
-    setTimeout(() => {
-      const btn1 = document.getElementById('btn-chap-1');
-      if (btn1) btn1.style.display = 'inline-block';
-    }, 1200);
-  }, 300);
+    if (btn1) btn1.style.display = 'inline-block';
+  }, 1000);
 
-  const btnChap1 = document.getElementById('btn-chap-1');
-  if (btnChap1) btnChap1.onclick = () => { startMainAudio(); goToChapter(2); };
+  if (btn1) btn1.onclick = () => { startMainAudio(); goToChapter(2); };
 
   function checkTimerAndAutoUnlock() {
     const diff = TARGET_DATE - new Date();
@@ -337,7 +334,6 @@ document.addEventListener('DOMContentLoaded', () => {
     };
   }
 
-  // --- FIXED ULTRA-SMOOTH CHARACTER-BY-CHARACTER TYPEWRITER ---
   const fullLetterText = 
     "Dearest Samrudhi,\n\n" +
     "Welcome to Level 19! Today marks the start of another beautiful chapter in your life, and I wanted to make sure you were surrounded by all the light, warmth, and joy you so effortlessly give to everyone around you.\n\n" +
@@ -408,7 +404,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const btnChap7 = document.getElementById('btn-chap-7');
   if (btnChap7) btnChap7.onclick = () => goToChapter(8);
 
-  // --- POLAROID GALLERY ---
   const photoList = [
     { cap: "Bright Smiles & Warm Memories", note: "Some moments stay golden forever." },
     { cap: "Laughter & Pure Joy", note: "Your happiness lights up every room." },
@@ -515,7 +510,15 @@ document.addEventListener('DOMContentLoaded', () => {
       scratchCtx.fill();
       unlockAchievement('scratch', '🎟️', 'Voucher Winner', 'Unlocked birthday reward!');
     }
-   initScratchCanvas();
+
+    scratchCanvas.onmousedown = () => isScratching = true;
+    scratchCanvas.onmouseup = () => isScratching = false;
+    scratchCanvas.onmousemove = scratchScratch;
+    scratchCanvas.ontouchstart = () => isScratching = true;
+    scratchCanvas.ontouchend = () => isScratching = false;
+    scratchCanvas.ontouchmove = scratchScratch;
+  }
+  initScratchCanvas();
 
   const btnChap10 = document.getElementById('btn-chap-10');
   if (btnChap10) btnChap10.onclick = () => goToChapter(11);
@@ -538,7 +541,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
   }
 
-  // --- HYPER-REALISTIC FIREWORKS PHYSICS ENGINE ---
+ // --- FIREWORKS ENGINE ---
   const fwCanvas = document.getElementById('fireworks-canvas');
   const fwCtx = fwCanvas ? fwCanvas.getContext('2d') : null;
   let bw = fwCanvas ? (fwCanvas.width = window.innerWidth) : window.innerWidth;
@@ -562,14 +565,11 @@ document.addEventListener('DOMContentLoaded', () => {
   function explodeRocket(x, y) {
     playSynchronizedExplosionSound();
     const colors = ['#ff4d6d', '#c9184a', '#ffd700', '#ffffff', '#ff758f'];
-    const particleCount = 45;
-
-    for (let i = 0; i < particleCount; i++) {
+    for (let i = 0; i < 45; i++) {
       const angle = Math.random() * Math.PI * 2;
       const speed = Math.random() * 6 + 2;
       fwParticles.push({
-        x: x,
-        y: y,
+        x: x, y: y,
         vx: Math.cos(angle) * speed,
         vy: Math.sin(angle) * speed,
         color: colors[Math.floor(Math.random() * colors.length)],
@@ -603,8 +603,7 @@ document.addEventListener('DOMContentLoaded', () => {
       });
 
       fwParticles.forEach((p, idx) => {
-        p.x += p.vx;
-        p.y += p.vy;
+        p.x += p.vx; p.y += p.vy;
         p.vy += p.gravity;
         p.vx *= 0.98;
         p.alpha -= p.decay;
@@ -631,5 +630,11 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   resetAllStates();
-});
-    
+}
+
+// --- SAFE DOM READY EXECUTION ENGINE ---
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initApp);
+} else {
+  initApp();
+}
