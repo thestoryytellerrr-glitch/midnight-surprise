@@ -5,7 +5,7 @@
   --text-secondary: #5c3a44;
   --accent-coral: #ff4d6d;
   --accent-rose: #c9184a;
-  --accent-gold: #d4af37;
+  --accent-rosegold: #e89cae;
   --card-shadow: 0 15px 35px rgba(255, 77, 109, 0.12), 0 5px 15px rgba(0, 0, 0, 0.04);
 }
 
@@ -26,6 +26,7 @@ html, body {
   font-family: 'Poppins', sans-serif;
 }
 
+/* BACKGROUND & TOUCH LAYER */
 .bg-container {
   position: fixed;
   inset: 0;
@@ -55,6 +56,7 @@ html, body {
   100% { transform: translate3d(0, -40px, 0) scale(1.2) rotate(45deg); opacity: 0; }
 }
 
+/* FIREWORKS CANVAS */
 #fireworks-canvas {
   position: fixed;
   inset: 0;
@@ -77,8 +79,8 @@ html, body {
   left: 50%;
   transform: translate3d(-50%, 80px, 0);
   background: rgba(255, 255, 255, 0.95);
-  border: 1px solid rgba(212, 175, 55, 0.5);
-  box-shadow: 0 10px 25px rgba(212, 175, 55, 0.25);
+  border: 1px solid rgba(201, 24, 74, 0.35);
+  box-shadow: 0 10px 25px rgba(201, 24, 74, 0.2);
   backdrop-filter: blur(12px);
   padding: 8px 16px;
   border-radius: 30px;
@@ -95,9 +97,10 @@ html, body {
   opacity: 1;
 }
 .toast-icon { font-size: 20px; }
-.toast-title { font-size: 11px; font-weight: 700; color: #8b6508; }
+.toast-title { font-size: 11px; font-weight: 700; color: #800f2f; }
 .toast-desc { font-size: 9.5px; color: #5c3a44; font-weight: 500; }
 
+/* MAIN APP CONTAINERS */
 #app {
   position: relative;
   z-index: 10;
@@ -167,6 +170,7 @@ html, body {
 
 .preloader-card { padding: 28px 20px; }
 
+/* TYPOGRAPHY */
 .heading-serif {
   font-family: 'Playfair Display', serif;
   font-size: clamp(20px, 5.5vw, 25px);
@@ -209,6 +213,7 @@ html, body {
   color: var(--accent-rose);
 }
 
+/* BUTTONS */
 .btn-coral {
   background: linear-gradient(135deg, #ff4d6d 0%, #c9184a 100%);
   color: #ffffff;
@@ -248,6 +253,7 @@ html, body {
   transition: width 2s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
+/* TIMER GRID */
 .timer-grid {
   display: flex;
   gap: 8px;
@@ -275,6 +281,7 @@ html, body {
   margin-top: 2px;
 }
 
+/* EXCITEMENT GATE & RUNAWAY BUTTON */
 .excitement-card { position: relative; overflow: hidden; }
 .kawaii-bears-stage { margin: 10px 0; }
 .excited-btn-group {
@@ -300,6 +307,7 @@ html, body {
   box-shadow: 0 4px 10px rgba(0,0,0,0.05);
 }
 
+/* CAKE & SLICING STAGE */
 .cake-vector-stage {
   position: relative;
   width: 200px;
@@ -395,7 +403,7 @@ html, body {
   border: 1px solid #ffcad4;
 }
 
-/* CANVA GRID PAPER ENVELOPE CARD */
+/* CANVA GRID PAPER ENVELOPE CARD (CHAPTER 7 - PAGE 5 REPLICA) */
 .grid-paper-envelope-card {
   background-color: #fffaf5;
   background-image: 
@@ -522,7 +530,7 @@ html, body {
   pointer-events: none;
 }
 
-/* ULTRA-SMOOTH FIXED LETTER MODAL */
+/* ULTRA-SMOOTH FIXED LETTER OVERLAY */
 .fullscreen-letter-overlay {
   position: fixed;
   inset: 0;
@@ -641,7 +649,7 @@ html, body {
   font-weight: 600;
 }
 
-/* SEAMLESS BLUSH PARCHMENT DIPLOMA */
+/* SEAMLESS METALLIC ROSE GOLD DIPLOMA (CHAPTER 9) */
 .realistic-diploma-paper {
   position: relative;
   width: 96%;
@@ -652,12 +660,12 @@ html, body {
   color: #2b1e23;
   margin: 0 auto;
   box-shadow: 
-    0 12px 30px rgba(255, 77, 109, 0.12),
-    0 4px 12px rgba(212, 175, 55, 0.15),
+    0 12px 30px rgba(255, 77, 109, 0.15),
+    0 4px 12px rgba(201, 24, 74, 0.12),
     inset 0 0 20px rgba(255, 255, 255, 0.8);
   font-family: 'Playfair Display', serif;
   overflow: hidden;
-  border: 1.5px solid rgba(212, 175, 55, 0.4);
+  border: 1.5px solid rgba(201, 24, 74, 0.3);
   backdrop-filter: blur(5px);
 }
 .guilloche-frame {
@@ -688,7 +696,7 @@ html, body {
   font-family: 'Cinzel', serif;
   font-size: 13px;
   font-weight: 800;
-  color: #9e7811;
+  color: #c9184a;
   letter-spacing: 2px;
 }
 .diploma-subheader {
@@ -736,7 +744,7 @@ html, body {
 }
 .diploma-sig-line {
   height: 1px;
-  background: linear-gradient(90deg, transparent, #b8860b, transparent);
+  background: linear-gradient(90deg, transparent, #c9184a, transparent);
   width: 85%;
   margin: 0 auto 3px auto;
 }
@@ -760,12 +768,12 @@ html, body {
 .rosette-3d-seal {
   width: 46px;
   height: 46px;
-  background: linear-gradient(135deg, #ffe066 0%, #d4af37 50%, #9e7811 100%);
+  background: linear-gradient(135deg, #ffcad4 0%, #e89cae 50%, #c9184a 100%);
   border-radius: 50%;
   display: flex;
   justify-content: center;
   align-items: center;
-  box-shadow: 0 4px 12px rgba(212, 175, 55, 0.5);
+  box-shadow: 0 4px 12px rgba(201, 24, 74, 0.35);
   border: 2px solid #ffffff;
   z-index: 2;
   transition: transform 0.3s ease;
@@ -774,7 +782,7 @@ html, body {
 
 .seal-inner {
   text-align: center;
-  color: #2b1e23;
+  color: #ffffff;
   font-family: 'Cinzel', serif;
 }
 .ribbon-tails {
@@ -796,16 +804,17 @@ html, body {
 }
 .cert-stats-badge {
   font-size: 9.5px;
-  color: #8b6508;
+  color: #800f2f;
   margin-top: 8px;
   padding: 6px 10px;
-  background: rgba(212, 175, 55, 0.12);
+  background: rgba(201, 24, 74, 0.08);
   border-radius: 12px;
-  border: 1px solid rgba(212, 175, 55, 0.35);
+  border: 1px solid rgba(201, 24, 74, 0.25);
   font-family: 'Poppins', sans-serif;
   font-weight: 500;
 }
 
+/* 19 REASONS & SCRATCH VOUCHER */
 .reasons-stack {
   width: 240px;
   height: 110px;
@@ -857,26 +866,35 @@ html, body {
   cursor: pointer;
 }
 
+/* BOUQUET STAGE */
 .bouquet-realistic-container {
   margin: 10px 0;
   filter: drop-shadow(0 10px 20px rgba(201, 24, 74, 0.15));
 }
 
+/* BIGGER FINAL FOOTER QUOTE (APPEARS ONLY ON CHAPTER 12) */
 .app-footer {
   position: fixed;
-  bottom: 54px;
+  bottom: 58px;
   left: 0;
   right: 0;
   text-align: center;
-  font-size: 11px;
-  color: var(--text-secondary);
+  font-family: 'Caveat', cursive;
+  font-size: 20px;
+  color: #800f2f;
+  font-weight: 700;
   letter-spacing: 1px;
   z-index: 100;
   pointer-events: none;
-  font-weight: 600;
-  text-shadow: 0 1px 4px rgba(255,255,255,0.8);
+  text-shadow: 0 2px 8px rgba(255, 255, 255, 0.9);
+  display: none;
 }
 
+.app-footer.visible {
+  display: block;
+}
+
+/* FIXED NAVIGATION BAR AT BOTTOM */
 .nav-bar-fixed {
   position: fixed;
   bottom: 12px;
@@ -899,4 +917,4 @@ html, body {
   font-weight: 600;
   box-shadow: 0 4px 12px rgba(0,0,0,0.05);
   }
-                              
+  
