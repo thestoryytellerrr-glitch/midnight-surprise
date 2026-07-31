@@ -1,1 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Samrudhi's 19th Birthday Experience</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Cinzel:wght@600;700;800;900&family=Great+Vibes&family=Playfair+Display:ital,wght@0,600;0,700;1,400&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
 
+  <!-- Audio Tip Badge -->
+  <div class="audio-notice-badge">
+    🎧 Best Experience Tip (Aug 2): Set Ringing Mode ON & Volume Full!
+  </div>
+
+  <!-- Background Layers -->
+  <div class="bg-container" id="bg-layer"></div>
+  <div id="touch-trail-layer"></div>
+  <canvas id="fireworks-canvas"></canvas>
+
+  <!-- Achievement Toast Notification -->
+  <div id="achievement-toast" class="achievement-toast">
+    <div class="toast-icon" id="toast-icon">🏆</div>
+    <div class="toast-body">
+      <div class="toast-title" id="toast-title">Achievement Unlocked!</div>
+      <div class="toast-desc" id="toast-desc">Milestone reached</div>
+    </div>
+  </div>
+
+  <main id="app">
+    <!-- Chap 1: Preloader -->
+    <section class="chapter active" id="chap-1">
+      <div class="glass-card preloader-card">
+        <h1 class="heading-serif">Counting down to Samrudhi's special day</h1>
+        <p class="subheading-celestial">A celestial surprise crafted for you</p>
+        <div class="loader-bar-bg">
+          <div id="load-bar" class="loader-bar-fill"></div>
+        </div>
+        <div class="btn-wrapper-loader">
+          <button class="btn-coral" id="btn-chap-1" style="display:none;">Begin Experience</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Chap 2: Countdown Gate -->
+    <section class="chapter" id="chap-2">
+      <div class="glass-card">
+        <h1 class="heading-serif" id="secret-title" style="cursor:pointer;">Counting down to Samrudhi's special day</h1>
+        <p style="font-size: 26px; margin: 6px 0;">🎂</p>
+        <p class="subheading-heartfelt">Every second bringing us closer to celebrating the most wonderful soul ✨</p>
+        
+        <div class="timer-grid">
+          <div class="timer-box"><span id="td-days">00</span><label>DAYS</label></div>
+          <div class="timer-box"><span id="td-hours">00</span><label>HOURS</label></div>
+          <div class="timer-box"><span id="td-mins">00</span><label>MINUTES</label></div>
+          <div class="timer-box"><span id="td-secs">00</span><label>SECONDS</label></div>
+        </div>
+        
+        <button class="btn-coral" id="btn-chap-2-preview" style="margin-top:12px; font-size:10.5px; padding:8px 20px;">
+          ✨ Preview Experience
+        </button>
+      </div>
+    </section>
+
+    <!-- Chap 3: Excitement Gate -->
+    <section class="chapter" id="chap-3">
+      <div class="glass-card excitement-card">
+        <h2 class="cursive-rose" style="font-size:36px; margin-bottom:4px;">Happy Birthday, Samrudhi 💕</h2>
+        
+        <div class="kawaii-bears-stage">
+          <svg viewBox="0 0 200 120" width="180" height="110">
+            <polygon points="10,10 30,25 50,10" fill="#ff758f"/>
+            <polygon points="50,10 70,25 90,10" fill="#ffd700"/>
+            <polygon points="90,10 110,25 130,10" fill="#70e000"/>
+            <polygon points="130,10 150,25 170,10" fill="#4ea8de"/>
+            <polygon points="170,10 190,25 200,10" fill="#f72585"/>
+            <line x1="10" y1="10" x2="190" y2="10" stroke="#5c3a44" stroke-width="1.5"/>
+
+            <ellipse cx="60" cy="80" rx="25" ry="22" fill="#d4a373"/>
+            <circle cx="42" cy="62" r="8" fill="#d4a373"/>
+            <circle cx="78" cy="62" r="8" fill="#d4a373"/>
+            <circle cx="42" cy="62" r="4" fill="#f4a261"/>
+            <circle cx="78" cy="62" r="4" fill="#f4a261"/>
+            <circle cx="53" cy="78" r="2.5" fill="#2b1e23"/>
+            <circle cx="67" cy="78" r="2.5" fill="#2b1e23"/>
+            <ellipse cx="60" cy="83" rx="4" ry="3" fill="#2b1e23"/>
+
+            <ellipse cx="140" cy="80" rx="25" ry="22" fill="#ffffff" stroke="#2b1e23" stroke-width="1.5"/>
+            <circle cx="122" cy="62" r="8" fill="#2b1e23"/>
+            <circle cx="158" cy="62" r="8" fill="#2b1e23"/>
+            <ellipse cx="133" cy="78" rx="4" ry="5" fill="#2b1e23"/>
+            <ellipse cx="147" cy="78" rx="4" ry="5" fill="#2b1e23"/>
+            <circle cx="133" cy="77" r="1.5" fill="#ffffff"/>
+            <circle cx="147" cy="77" r="1.5" fill="#ffffff"/>
+
+            <rect x="88" y="85" width="24" height="15" rx="3" fill="#ffcad4"/>
+            <rect x="92" y="75" width="16" height="10" rx="2" fill="#f4acb7"/>
+            <line x1="100" y1="70" x2="100" y2="75" stroke="#c9184a" stroke-width="2"/>
+            <circle cx="100" cy="68" r="2" fill="#ff9e00"/>
+          </svg>
+        </div>
+
+        <p class="subheading" style="font-size:13px; font-weight:600; color:#2b1e23; margin:8px 0 14px 0;">Are you excited for what's next?</p>
+
+        <div class="excited-btn-group" id="excited-btn-wrapper">
+          <button class="btn-coral" id="btn-excited-yes">Yes 💕</button>
+          <button class="btn-no-runaway" id="btn-excited-no">No 😜</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Chap 4: 3D Cake & Slicing Stage -->
+    <section class="chapter" id="chap-4">
+      <div class="glass-card">
+        <h2 class="heading-serif" style="font-size:22px;">Blow the candle, SAMRUDHI</h2>
+        <p class="subheading" style="font-size:11.5px; margin-bottom:12px;">Blow into your mic or tap the candle!</p>
+
+        <div class="cake-vector-stage" id="cake-touch-area">
+          <div class="candle-el">
+            <div class="flame-el" id="candle-flame"></div>
+          </div>
+          <div class="knife-el" id="cake-knife">🔪</div>
+          
+          <div class="aesthetic-cake-container" id="cake-whole">
+            <div class="cake-half left-half" id="cake-left">
+              <svg viewBox="0 0 100 120" width="100%" height="100%">
+                <path d="M 10 110 L 100 110 L 100 50 C 100 45, 90 40, 80 40 L 20 40 C 10 40, 10 45, 10 50 Z" fill="#ffcad4"/>
+                <path d="M 10 50 Q 50 65 100 50 L 100 40 L 10 40 Z" fill="#f4acb7"/>
+                <path d="M 10 50 Q 25 65 40 50 Q 55 65 70 50 Q 85 65 100 50" fill="#ffffff"/>
+                <circle cx="30" cy="40" r="5" fill="#e63946"/>
+                <circle cx="65" cy="40" r="5" fill="#e63946"/>
+                <rect x="92" y="55" width="8" height="50" fill="#ffd1dc" class="cut-inner-texture"/>
+                <rect x="92" y="75" width="8" height="6" fill="#ff4d6d" class="cut-inner-texture"/>
+              </svg>
+            </div>
+            <div class="cake-half right-half" id="cake-right">
+              <svg viewBox="0 0 100 120" width="100%" height="100%">
+                <path d="M 0 110 L 90 110 C 90 110, 90 45, 80 40 L 0 40 Z" fill="#ffcad4"/>
+                <path d="M 0 50 Q 50 65 90 50 L 90 40 L 0 40 Z" fill="#f4acb7"/>
+                <path d="M 0 50 Q 15 65 30 50 Q 45 65 60 50 Q 75 65 90 50" fill="#ffffff"/>
+                <circle cx="35" cy="40" r="5" fill="#e63946"/>
+                <circle cx="70" cy="40" r="5" fill="#e63946"/>
+                <rect x="0" y="55" width="8" height="50" fill="#ffd1dc" class="cut-inner-texture"/>
+                <rect x="0" y="75" width="8" height="6" fill="#ff4d6d" class="cut-inner-texture"/>
+              </svg>
+            </div>
+            <div class="cake-plate"></div>
+          </div>
+        </div>
+
+        <p id="cake-action-hint" style="font-size:11px; color:#c9184a; font-weight:600; margin-top:8px;">Tap candle to blow out! 🔥</p>
+      </div>
+    </section>
+
+    <!-- Chap 5: Birthday Pop-Up Celebration -->
+    <section class="chapter" id="chap-5">
+      <div class="glass-card celebration-pop-card">
+        <h2 class="cursive-rose" style="font-size:46px;">Happy Birthday</h2>
+        <h1 class="heading-regal" style="font-size:36px; color:#2b1e23; margin:4px 0;">SAMRUDHI</h1>
+        <p class="subheading" style="font-size:14px; color:#c9184a; font-weight:600;">Level 19 Unlocked ✨</p>
+        <button class="btn-coral" id="btn-chap-5" style="margin-top:20px;">🎁 Reveal Surprise Box</button>
+      </div>
+    </section>
+
+    <!-- Chap 6: Surprise Gift Box -->
+    <section class="chapter" id="chap-6">
+      <div class="glass-card grid-paper-card">
+        <h2 class="handwritten-title-cursive">Here's a surprise for you!!!</h2>
+        
+        <div class="surprise-box-stage" id="surprise-box-trigger">
+          <div class="gift-box-3d-vector" id="gift-box-el">
+            <svg viewBox="0 0 200 200" width="160" height="160">
+              <defs>
+                <linearGradient id="boxGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#e89cae"/>
+                  <stop offset="100%" stop-color="#c96b82"/>
+                </linearGradient>
+                <linearGradient id="ribGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#ffb3c1"/>
+                  <stop offset="100%" stop-color="#ff4d6d"/>
+                </linearGradient>
+              </defs>
+              <ellipse cx="100" cy="180" rx="70" ry="12" fill="rgba(201, 24, 74, 0.15)"/>
+              <polygon points="30,80 100,115 170,80 170,150 100,180 30,150" fill="url(#boxGrad)"/>
+              <polygon points="100,115 170,80 170,150 100,180" fill="rgba(0,0,0,0.08)"/>
+              <polygon points="90,110 110,120 110,180 90,175" fill="url(#ribGrad)"/>
+              <polygon points="20,70 100,105 180,70 100,35" fill="#f4acb7"/>
+              <polygon points="20,70 100,105 100,115 20,80" fill="#e89cae"/>
+              <polygon points="100,105 180,70 180,80 100,115" fill="#c96b82"/>
+              <polygon points="88,40 112,51 112,100 88,89" fill="url(#ribGrad)"/>
+              <path d="M100 35 C70 10, 50 40, 90 42 Z" fill="url(#ribGrad)"/>
+              <path d="M100 35 C130 10, 150 40, 110 42 Z" fill="url(#ribGrad)"/>
+              <circle cx="100" cy="38" r="8" fill="#ff4d6d"/>
+            </svg>
+          </div>
+
+          <div class="tap-here-callout">
+            <span>Tap here</span>
+            <svg viewBox="0 0 50 30" width="35" height="20">
+              <path d="M 5 25 Q 25 5 42 12" fill="none" stroke="#5c3a44" stroke-width="2" stroke-dasharray="3 2"/>
+              <polyline points="35,5 45,12 38,20" fill="none" stroke="#5c3a44" stroke-width="2"/>
+            </svg>
+          </div>
+
+          <div class="party-cat-sticker">
+            <svg viewBox="0 0 100 100" width="60" height="60">
+              <polygon points="50,10 38,35 62,35" fill="#f4acb7"/>
+              <circle cx="50" cy="10" r="4" fill="#ffd700"/>
+              <ellipse cx="50" cy="60" rx="30" ry="24" fill="#e2d4c9"/>
+              <polygon points="25,42 35,48 22,58" fill="#e2d4c9"/>
+              <polygon points="75,42 65,48 78,58" fill="#e2d4c9"/>
+              <circle cx="40" cy="58" r="3" fill="#2b1e23"/>
+              <circle cx="60" cy="58" r="3" fill="#2b1e23"/>
+              <polygon points="48,63 52,63 50,66" fill="#ff758f"/>
+              <line x1="20" y1="60" x2="32" y2="61" stroke="#2b1e23" stroke-width="1.5"/>
+              <line x1="20" y1="66" x2="32" y2="65" stroke="#2b1e23" stroke-width="1.5"/>
+              <line x1="80" y1="60" x2="68" y2="61" stroke="#2b1e23" stroke-width="1.5"/>
+              <line x1="80" y1="66" x2="68" y2="65" stroke="#2b1e23" stroke-width="1.5"/>
+            </svg>
+          </div>
+        </div>
+
+        <button class="btn-coral" id="btn-chap-6" style="display:none; margin-top:16px;">💌 Open Envelope</button>
+      </div>
+    </section>
+
+    <!-- Chap 7: Grid Paper Envelope (Exact Canva Page 5 Replica) -->
+    <section class="chapter" id="chap-7">
+      <div class="glass-card grid-paper-envelope-card">
+        
+        <div class="envelope-canva-wrapper" id="envelope-wrapper">
+          <div class="pink-envelope-canva" id="envelope-el">
+            <div class="envelope-top-flap" id="envelope-flap"></div>
+            <div class="horizontal-ribbon-wrap"></div>
+            
+            <div class="satin-bow-center" id="ribbon-bow">
+              <svg viewBox="0 0 100 60" width="70" height="42">
+                <path d="M50 30 C20 0, 0 30, 42 32 Z" fill="#b0425d"/>
+                <path d="M50 30 C80 0, 100 30, 58 32 Z" fill="#b0425d"/>
+                <circle cx="50" cy="30" r="6" fill="#800f2f"/>
+                <path d="M46 34 Q 30 55 22 58 L 32 58 Q 44 42 48 35 Z" fill="#b0425d"/>
+                <path d="M54 34 Q 70 55 78 58 L 68 58 Q 56 42 52 35 Z" fill="#b0425d"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <p class="tap-to-open-cursive">Tap here to open</p>
+
+        <div class="flower-doodle-bottom-right">
+          <svg viewBox="0 0 60 60" width="45" height="45">
+            <circle cx="20" cy="20" r="8" fill="none" stroke="#5c3a44" stroke-width="1.5"/>
+            <circle cx="35" cy="25" r="7" fill="none" stroke="#5c3a44" stroke-width="1.5"/>
+            <path d="M 20 28 Q 18 45 10 50" fill="none" stroke="#5c3a44" stroke-width="1.5"/>
+            <path d="M 35 32 Q 35 48 45 52" fill="none" stroke="#5c3a44" stroke-width="1.5"/>
+          </svg>
+        </div>
+
+        <button class="btn-coral" id="btn-chap-7" style="display:none; margin-top:20px;">📸 View Memories</button>
+      </div>
+
+      <!-- Ultra-Smooth Fixed Letter Overlay -->
+      <div class="fullscreen-letter-overlay" id="fullscreen-letter-modal">
+        <div class="letter-scroll-paper" id="letter-scroll-container">
+          <button class="close-letter-btn" id="close-letter-btn">✕ Close</button>
+          <div class="handwritten-text-box" id="typing-text-box"></div>
+          <span class="typing-cursor" id="typing-cursor">|</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Chap 8: Polaroid Gallery -->
+    <section class="chapter" id="chap-8">
+      <div style="width:100%; max-width:320px;">
+        <p style="font-size:11.5px; color:#5c3a44; margin-bottom:8px; font-weight:600;" id="photo-counter">Memory 1 of 8 (Tap to Flip)</p>
+        <div class="polaroid-card" id="polaroid-el">
+          <div class="polaroid-inner">
+            <div class="polaroid-front">
+              <div class="photo-placeholder-box">
+                Photo Frame <span id="photo-idx-num">1</span>
+              </div>
+              <p style="margin-top:10px; font-size:12px; color:#5c3a44; font-weight:600;" id="photo-caption">Bright Smiles & Warm Memories</p>
+            </div>
+            <div class="polaroid-back">
+              <p style="font-size:12px; line-height:1.6;" id="photo-back-note">"Some moments stay golden forever."</p>
+            </div>
+          </div>
+        </div>
+        <div style="display:flex; justify-content:space-between; margin-top:12px;">
+          <button class="nav-btn" id="prev-photo-btn">◀ Prev</button>
+          <button class="nav-btn" id="next-photo-btn">Next ▶</button>
+        </div>
+        <button class="btn-coral" id="btn-chap-8" style="margin-top:14px;">📜 Claim Certificate</button>
+      </div>
+    </section>
+
+    <!-- Chap 9: Luxury Parchment Award Certificate -->
+    <section class="chapter" id="chap-9">
+      <div class="realistic-diploma-paper">
+        <svg class="guilloche-frame" viewBox="0 0 400 520" preserveAspectRatio="none">
+          <rect x="8" y="8" width="384" height="504" rx="12" fill="none" stroke="#d4af37" stroke-width="1.5" opacity="0.7"/>
+          <rect x="14" y="14" width="372" height="492" rx="10" fill="none" stroke="#f4acb7" stroke-width="1" stroke-dasharray="5 3"/>
+          <path d="M 20 45 Q 20 20 45 20 L 75 20 Q 35 32 20 75 Z" fill="#d4af37" opacity="0.8"/>
+          <path d="M 380 45 Q 380 20 355 20 L 325 20 Q 365 32 380 75 Z" fill="#d4af37" opacity="0.8"/>
+          <path d="M 20 475 Q 20 500 45 500 L 75 500 Q 35 488 20 445 Z" fill="#d4af37" opacity="0.8"/>
+          <path d="M 380 475 Q 380 500 355 500 L 325 500 Q 365 488 380 445 Z" fill="#d4af37" opacity="0.8"/>
+        </svg>
+
+        <div class="watermark-crest">19</div>
+
+        <div class="diploma-content">
+          <div class="diploma-header">CERTIFICATE OF EXCELLENCE</div>
+          <div class="diploma-subheader">THIS HONOR IS PROUDLY PRESENTED TO</div>
+
+          <h1 class="diploma-name">Samrudhi</h1>
+
+          <p class="diploma-body-text">
+            In official recognition of 19 extraordinary years of brilliance, unmatched grace, and spreading light to everyone around you.
+          </p>
+
+          <div class="diploma-footer-grid">
+            <div class="diploma-sig-col">
+              <div class="diploma-sig-script">Goldiee</div>
+              <div class="diploma-sig-line"></div>
+              <div class="diploma-label">OFFICIAL ISSUER</div>
+            </div>
+
+            <div class="diploma-seal-col" id="seal-el">
+              <div class="rosette-3d-seal">
+                <div class="seal-inner">
+                  <span style="font-size:6.5px; letter-spacing:1px; display:block; font-weight:700;">LEVEL</span>
+                  <strong style="font-size:16px;">19</strong>
+                </div>
+              </div>
+              <div class="ribbon-tails"></div>
+            </div>
+
+            <div class="diploma-sig-col">
+              <div class="diploma-date-val">02 / 08 / 2026</div>
+              <div class="diploma-sig-line"></div>
+              <div class="diploma-label">DATE ISSUED</div>
+            </div>
+          </div>
+
+          <div class="diploma-doc-id">DOC NO: CERT-2026-SAM-19</div>
+          <div id="stats-overlay" class="cert-stats-badge" style="display:none;">
+            ✦ 6,939 Days • 166,536 Hours of Excellence ✦
+          </div>
+        </div>
+      </div>
+      <button class="btn-coral" id="btn-chap-9" style="margin-top:16px;">💖 View 19 Reasons</button>
+    </section>
+
+    <!-- Chap 10: 19 Reasons & Scratch Voucher -->
+    <section class="chapter" id="chap-10">
+      <div class="glass-card">
+        <h2 class="heading-serif" style="font-size:18px;">19 Reasons You're Special</h2>
+        <p class="subheading" style="font-size:11px; margin-bottom:8px;" id="reason-idx">Reason 1 of 19 (Tap card)</p>
+        <div class="reasons-stack" id="reason-card-el">
+          <div class="reason-card" id="reason-text-el">1. Your contagious smile that brightens any room.</div>
+        </div>
+
+        <div style="margin-top:16px;">
+          <p class="subheading" style="font-size:11px; margin-bottom:6px;">Scratch off your voucher foil:</p>
+          <div class="scratch-wrapper">
+            <div class="scratch-secret">
+              <span style="font-size:24px; margin-bottom:2px;">🎂</span>
+              <strong style="color:#2b1e23; font-size:12.5px; line-height:1.4;">
+                1 Free Favorite Treat +<br>1 Special Memory Recreated!
+              </strong>
+              <span style="font-size:9px; color:#c9184a; margin-top:4px; font-weight:600;">Redeemable anytime during Level 19 ✨</span>
+            </div>
+            <canvas id="scratch-canvas" width="240" height="110"></canvas>
+          </div>
+        </div>
+
+        <button class="btn-coral" id="btn-chap-10" style="margin-top:12px;">💐 Receive Bouquet</button>
+      </div>
+    </section>
+<!-- Chap 11: Multi-Layer Rose Bouquet -->
+    <section class="chapter" id="chap-11">
+      <div class="glass-card">
+        <h2 class="cursive-rose" style="font-size:36px; margin-bottom:4px;">Your Rose Bouquet 🌹</h2>
+        
+        <div class="bouquet-realistic-container">
+          <svg viewBox="0 0 240 280" width="220" height="240">
+            <polygon points="60,180 180,180 140,270 100,270" fill="#d7b899"/>
+            <polygon points="40,120 200,120 180,180 60,180" fill="#e8d3c1"/>
+            <polygon points="50,110 190,110 180,180 60,180" fill="#f2e3d5"/>
+            <path d="M 40 120 Q 100 140 120 270" fill="none" stroke="#c4a282" stroke-width="2"/>
+            <path d="M 200 120 Q 140 140 120 270" fill="none" stroke="#c4a282" stroke-width="2"/>
+
+            <ellipse cx="65" cy="85" rx="22" ry="12" fill="#1b4332" transform="rotate(-35 65 85)"/>
+            <ellipse cx="175" cy="85" rx="22" ry="12" fill="#1b4332" transform="rotate(35 175 85)"/>
+            <ellipse cx="120" cy="55" rx="24" ry="12" fill="#2d6a4f"/>
+
+            <g transform="translate(65, 80)">
+              <circle cx="0" cy="0" r="22" fill="#800f2f"/>
+              <path d="M-12,-8 C-5,-18 10,-15 15,-5 C20,8 5,18 -8,15 C-18,10 -18,-2 -12,-8 Z" fill="#a4133c"/>
+              <path d="M-6,-4 C-2,-10 6,-8 8,-2 C10,4 2,10 -4,8 Z" fill="#c9184a"/>
+              <circle cx="0" cy="0" r="5" fill="#ff4d6d"/>
+            </g>
+
+            <g transform="translate(175, 80)">
+              <circle cx="0" cy="0" r="22" fill="#800f2f"/>
+              <path d="M-12,-8 C-5,-18 10,-15 15,-5 C20,8 5,18 -8,15 C-18,10 -18,-2 -12,-8 Z" fill="#a4133c"/>
+              <path d="M-6,-4 C-2,-10 6,-8 8,-2 C10,4 2,10 -4,8 Z" fill="#c9184a"/>
+              <circle cx="0" cy="0" r="5" fill="#ff4d6d"/>
+            </g>
+
+            <g transform="translate(120, 65)">
+              <circle cx="0" cy="0" r="26" fill="#590d22"/>
+              <path d="M-15,-10 C-6,-22 12,-18 18,-6 C24,10 6,22 -10,18 C-22,12 -22,-2 -15,-10 Z" fill="#800f2f"/>
+              <path d="M-8,-5 C-2,-12 8,-10 10,-2 C12,6 3,12 -5,10 Z" fill="#c9184a"/>
+              <circle cx="0" cy="0" r="6" fill="#ff758f"/>
+            </g>
+
+            <g transform="translate(120, 105)">
+              <circle cx="0" cy="0" r="28" fill="#800f2f"/>
+              <path d="M-16,-12 C-7,-24 14,-20 20,-7 C26,12 7,24 -11,20 C-24,14 -24,-2 -16,-12 Z" fill="#a4133c"/>
+              <path d="M-9,-6 C-2,-14 9,-12 11,-2 C13,7 3,14 -6,11 Z" fill="#ff4d6d"/>
+              <circle cx="0" cy="0" r="7" fill="#ff8fa3"/>
+            </g>
+
+            <g transform="translate(90, 95)">
+              <circle cx="0" cy="0" r="21" fill="#a4133c"/>
+              <path d="M-10,-7 C-4,-15 8,-12 12,-4 C16,6 4,15 -6,12 Z" fill="#c9184a"/>
+              <circle cx="0" cy="0" r="5" fill="#ff758f"/>
+            </g>
+
+            <g transform="translate(150, 95)">
+              <circle cx="0" cy="0" r="21" fill="#a4133c"/>
+              <path d="M-10,-7 C-4,-15 8,-12 12,-4 C16,6 4,15 -6,12 Z" fill="#c9184a"/>
+              <circle cx="0" cy="0" r="5" fill="#ff758f"/>
+            </g>
+
+            <path d="M120 180 C80 160, 60 200, 110 188 Z" fill="#ff4d6d"/>
+            <path d="M120 180 C160 160, 180 200, 130 188 Z" fill="#ff4d6d"/>
+            <circle cx="120" cy="184" r="7" fill="#c9184a"/>
+            <path d="M116 188 Q 95 220 85 240 L 98 235 Q 108 215 120 188 Z" fill="#ff4d6d"/>
+            <path d="M124 188 Q 145 220 155 240 L 142 235 Q 132 215 120 188 Z" fill="#ff4d6d"/>
+          </svg>
+        </div>
+
+        <p style="font-size:12px; color:#5c3a44; line-height:1.7; margin:10px 0; font-style:italic;">
+          "Flowers may fade with time, but the warmth, grace, and light you bring into every room lasts forever."
+        </p>
+        <button class="btn-coral" id="btn-chap-11">✨ Read Final Message</button>
+      </div>
+    </section>
+
+    <!-- Chap 12: Grand Finale Letter -->
+    <section class="chapter" id="chap-12">
+      <div class="glass-card">
+        <h2 class="cursive-rose" style="font-size:38px;">Dearest Samrudhi,</h2>
+        <div style="font-family:'Caveat', cursive; font-size:18px; color:#3d0c15; line-height:1.6; text-align:left; margin:12px 0;">
+          <p style="margin-bottom:10px;">
+            On your 19th birthday, I wanted to create something truly everlasting. If I have ever made mistakes, hurt you, or lagged behind in making things right—I am deeply, sincerely sorry from the bottom of my heart.
+          </p>
+          <p style="margin-bottom:10px;">
+            You bring so much genuine warmth and light into this world. Thank you for your kindness, your patience, and for simply being you.
+          </p>
+          <p style="font-weight:700; color:#c9184a;">
+            May Level 19 bring you endless joy, peace, and every single dream you wish for! ❤️
+          </p>
+        </div>
+        <div style="font-family:'Great Vibes', cursive; font-size:28px; color:#c9184a; margin-top:10px;">
+          Always cheering for you ✨<br><strong>Goldiee</strong>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="app-footer">
+    Made with ❤️ -Goldieee
+  </footer>
+
+  <div class="nav-bar-fixed">
+    <button class="nav-btn" id="nav-back-btn">◀ Go Back</button>
+    <button class="nav-btn" id="nav-replay-btn">⭐ Replay</button>
+    <button class="nav-btn" id="nav-capture-btn">📸 Capture</button>
+  </div>
+
+  <audio id="audio-main" loop preload="auto"><source src="music.mp3" type="audio/mpeg"></audio>
+  <audio id="audio-hbd" preload="auto"><source src="hbd.mp3" type="audio/mpeg"></audio>
+
+  <script src="script.js"></script>
+</body>
+</html>
