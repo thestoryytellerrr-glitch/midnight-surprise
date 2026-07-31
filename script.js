@@ -1,21 +1,191 @@
-document.addEventListener('DOMContentLoaded', () => {
+function initApp() {
+  let currentChap = 1;
+  const TOTAL_CHAPS = 12;
+  const TARGET_DATE = new Date("2026-08-02T00:00:00");
+  const SECRET_PIN = "1809";
 
-  // --- AUDIO CONTROLLER ---
-  const mainAudio = document.getElementById('audio-main');
-  const hbdAudio = document.getElementById('audio-hbd');
-  const musicBtn = document.getElementById('music-toggle-btn');
-
-  function initAudio() {
-    if (mainAudio) mainAudio.load();
-    if (hbdAudio) hbdAudio.load();
+  function triggerHaptic(pattern = 30) {
+    if ('vibrate' in navigator) navigator.vibrate(pattern);
   }
 
-  function startMainAudio() {
+  // --- ACHIEVEMENT TOAST ENGINE ---
+  const unlockedBadges = new Set();
+  function unlockAchievement(id, icon, title, desc) {
+    if (unlockedBadges.has(id)) return;
+    unlockedBadges.add(id);
+    triggerHaptic([40, 60, 40]);
+
+    const toast = document.getElementById('achievement-toast');
+    const toastIcon = document.getElementById('toast-icon');
+    const toastTitle = document.getElementById('toast-title');
+    const toastDesc = document.getElementById('toast-desc');
+
+    if (toastIcon) toastIcon.textContent = icon;
+    if (toastTitle) toastTitle.textContent = title;
+    if (toastDesc) toastDesc.textContent = desc;
+
+    if (toast) {
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 3200);
+    }
+  }
+
+  // --- INTERACTIVE STARDUST + RIBBON TOUCH TRAIL ---
+  const touchLayer = document.getElementById('touch-trail-layer');
+  const touchSymbols = ['✨', '💫', '🌸', '🎀'];
+
+  function spawnTouchParticle(x, y) {
+    if (!touchLayer) return;
+    const el = document.createElement('div');
+    el.className = 'touch-sparkle';
+    el.textContent = touchSymbols[Math.floor(Math.random() * touchSymbols.length)];
+    el.style.left = (x - 8) + 'px';
+    el.style.top = (y - 8) + 'px';
+    touchLayer.appendChild(el);
+    setTimeout(() => el.remove(), 1200);
+  }
+
+  window.addEventListener('touchmove', (e) => {
+    if (e.touches && e.touches[0]) {
+      spawnTouchParticle(e.touches[0].clientX, e.touches[0].clientY);
+    }
+  }, { passive: true });
+
+  window.addEventListener('click', (e) => {
+    spawnTouchParticle(e.clientX, e.clientY);
+  });
+
+  // --- RESET ALL STATES ENGINE ---
+  function resetAllStates() {
+    isCandleBlown = false;
+    isCakeCut = false;
+    
+    const flame = document.getElementById('candle-flame');
+    if (flame) flame.style.display = 'block';
+    
+    const knife = document.getElementById('cake-knife');
+    if (knife) knife.classList.remove('cutting');
+    
+    const leftHalf = document.getElementById('cake-left');
+    const rightHalf = document.getElementById('cake-right');
+    if (leftHalf) leftHalf.classList.remove('cut');
+    if (rightHalf) rightHalf.classList.remove('cut');
+
+    const hint = document.getElementById('cake-action-hint');
+    if (hint) hint.textContent = "Tap candle to blow out! 🔥";
+
+    const runawayBtn = document.getElementById('btn-excited-no');
+    if (runawayBtn) {
+      runawayBtn.style.transform = 'none';
+      runawayBtn.style.position = 'relative';
+    }
+
+    stopTypingLetter();
+    const env = document.getElementById('envelope-el');
+    if (env) env.classList.remove('open');
+    
+    const modal = document.getElementById('fullscreen-letter-modal');
+    if (modal) modal.classList.remove('active');
+    
+    const textBox = document.getElementById('typing-text-box');
+    if (textBox) textBox.innerHTML = '';
+    
+    const btn6 = document.getElementById('btn-chap-6');
+    if (btn6) btn6.style.display = 'none';
+
+    const btn7 = document.getElementById('btn-chap-7');
+    if (btn7) btn7.style.display = 'none';
+
+    pIdx = 0;
+    renderPhoto();
+    const statsOverlay = document.getElementById('stats-overlay');
+    if (statsOverlay) statsOverlay.style.display = 'none';
+
+    initScratchCanvas();
+
+    const fwCanvas = document.getElementById('fireworks-canvas');
+    if (fwCanvas) fwCanvas.classList.remove('active');
+  }
+
+  function goToChapter(num) {
+    if (num < 1 || num > TOTAL_CHAPS) return;
+    triggerHaptic(40);
+    document.querySelectorAll('.chapter').forEach(c => c.classList.remove('active'));
+
+    const next = document.getElementById('chap-' + num);
+    if (next) next.classList.add('active');
+    currentChap = num;
+
+    // Footer visibility: ONLY on Chapter 12
+    const footer = document.querySelector('.app-footer');
+    if (footer) {
+      if (num === 12) {
+        footer.classList.add('visible');
+      } else {
+        footer.classList.remove('visible');
+      }
+    }
+
+    if (num === 5) startFireworksLoop();
+    if (num === 12) triggerHaptic([60, 120, 60]);
+  }
+
+  document.getElementById('nav-back-btn')?.addEventListener('click', () => goToChapter(currentChap - 1));
+  document.getElementById('nav-replay-btn')?.addEventListener('click', () => {
+    resetAllStates();
+    goToChapter(1);
+  });
+
+  const AudioCtx = window.AudioContext || window.webkitAudioContext;
+  let audioCtx = null;
+
+  function initAudio() {
+    if (!audioCtx) audioCtx = new AudioCtx();
+    if (audioCtx.state === 'suspended') audioCtx.resume();
+  }
+
+  function playSynchronizedExplosionSound() {
+    initAudio();
+    if (!audioCtx) return;
+
+    const now = audioCtx.currentTime;
+
+    const boom = audioCtx.createOscillator();
+    const boomGain = audioCtx.createGain();
+    boom.type = 'triangle';
+    boom.frequency.setValueAtTime(220, now);
+    boom.frequency.exponentialRampToValueAtTime(30, now + 0.25);
+    boomGain.gain.setValueAtTime(0.7, now);
+    boomGain.gain.exponentialRampToValueAtTime(0.01, now + 0.25);
+    boom.connect(boomGain);
+    boomGain.connect(audioCtx.destination);
+    boom.start(now);
+    boom.stop(now + 0.25);
+
+    const bufferSize = audioCtx.sampleRate * 0.15;
+    const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+    const data = buffer.getChannelData(0);
+    for (let i = 0; i < bufferSize; i++) data[i] = Math.random() * 2 - 1;
+
+    const noise = audioCtx.createBufferSource();
+    noise.buffer = buffer;
+    const noiseGain = audioCtx.createGain();
+    noiseGain.gain.setValueAtTime(0.25, now + 0.05);
+    noiseGain.gain.exponentialRampToValueAtTime(0.01, now + 0.2);
+    noise.connect(noiseGain);
+    noiseGain.connect(audioCtx.destination);
+    noise.start(now + 0.05);
+  }
+
+  const mainAudio = document.getElementById('audio-main');
+  const hbdAudio = document.getElementById('audio-hbd');
+
+      function startMainAudio() {
     initAudio();
     if (mainAudio) {
       mainAudio.volume = 1.0;
 
-      // Loop back to 07s on completion
+      // STEP 2: Custom Loop (Loops back to 07s when song ends)
       if (!mainAudio.has7sLoop) {
         mainAudio.has7sLoop = true;
         mainAudio.removeAttribute('loop');
@@ -25,227 +195,355 @@ document.addEventListener('DOMContentLoaded', () => {
         });
       }
 
-      // Start directly at 07s
+      // STEP 1: Skip first 7s on initial play
       if (mainAudio.currentTime < 7) {
         mainAudio.currentTime = 7;
       }
 
       if (mainAudio.paused) {
-        mainAudio.play().then(() => {
-          if (musicBtn) musicBtn.classList.add('playing');
-        }).catch(() => {});
+        mainAudio.play().catch(() => {});
       }
     }
-  }
+      }
+  
+  
 
-  if (musicBtn) {
-    musicBtn.onclick = () => {
-      triggerHaptic(30);
-      if (mainAudio.paused) {
-        startMainAudio();
-        musicBtn.classList.add('playing');
-      } else {
-        mainAudio.pause();
-        musicBtn.classList.remove('playing');
+  // --- PRELOADER LOADER ANIMATION FIX ---
+  const loadBar = document.getElementById('load-bar');
+  const btn1 = document.getElementById('btn-chap-1');
+  if (loadBar) loadBar.style.width = '100%';
+  setTimeout(() => {
+    if (btn1) btn1.style.display = 'inline-block';
+  }, 1000);
+
+  if (btn1) btn1.onclick = () => { startMainAudio(); goToChapter(2); };
+
+  function checkTimerAndAutoUnlock() {
+    const diff = TARGET_DATE - new Date();
+    if (diff <= 0) {
+      if (currentChap === 2) goToChapter(3);
+    } else {
+      const tdDays = document.getElementById('td-days');
+      const tdHours = document.getElementById('td-hours');
+      const tdMins = document.getElementById('td-mins');
+      const tdSecs = document.getElementById('td-secs');
+
+      if (tdDays) tdDays.textContent = String(Math.floor(diff / (1000 * 60 * 60 * 24))).padStart(2, '0');
+      if (tdHours) tdHours.textContent = String(Math.floor((diff / (1000 * 60 * 60)) % 24)).padStart(2, '0');
+      if (tdMins) tdMins.textContent = String(Math.floor((diff / 1000 / 60) % 60)).padStart(2, '0');
+      if (tdSecs) tdSecs.textContent = String(Math.floor((diff / 1000) % 60)).padStart(2, '0');
+    }
+  }
+  setInterval(checkTimerAndAutoUnlock, 1000);
+  checkTimerAndAutoUnlock();
+
+  let secretTap = 0;
+  const secretTitle = document.getElementById('secret-title');
+  if (secretTitle) {
+    secretTitle.onclick = () => {
+      secretTap++;
+      if (secretTap >= 3) {
+        secretTap = 0;
+        if (prompt("Enter Secret Passcode:") === SECRET_PIN) goToChapter(3);
       }
     };
   }
 
-  // --- CHAPTER NAVIGATION ENGINE ---
-  function goToChapter(chapNum) {
-    triggerHaptic(40);
-    document.querySelectorAll('.chapter').forEach(c => c.classList.remove('active'));
-    
-    const target = document.getElementById(`chap-${chapNum}`);
-    if (target) {
-      target.classList.add('active');
-    }
-
-    if (chapNum === 5) initScratchCard();
-    if (chapNum === 7) startTypewriter();
-    if (chapNum === 11) launchFireworks();
+  const runawayBtn = document.getElementById('btn-excited-no');
+  function dodgeNoButton() {
+    triggerHaptic(20);
+    const x = (Math.random() - 0.5) * 160;
+    const y = (Math.random() - 0.5) * 100;
+    if (runawayBtn) runawayBtn.style.transform = `translate(${x}px, ${y}px)`;
   }
 
-  // Bind Buttons
-  for (let i = 1; i <= 10; i++) {
-    const btn = document.getElementById(`btn-chap-${i}`);
-    if (btn) {
-      btn.onclick = () => {
-        if (i === 1) startMainAudio();
-        goToChapter(i + 1);
-      };
-    }
+  if (runawayBtn) {
+    runawayBtn.addEventListener('mouseover', dodgeNoButton);
+    runawayBtn.addEventListener('touchstart', (e) => { e.preventDefault(); dodgeNoButton(); });
+    runawayBtn.addEventListener('click', dodgeNoButton);
   }
 
-  const replayBtn = document.getElementById('btn-replay');
-  if (replayBtn) {
-    replayBtn.onclick = () => goToChapter(1);
-  }
-
-  // --- CHAPTER 4: CAKE CUTTING ---
-  const cakeTrigger = document.getElementById('cake-trigger');
-  const flameEl = document.getElementById('flame-element');
-  const btnChap4 = document.getElementById('btn-chap-4');
-  const cakeStatus = document.getElementById('cake-status-text');
-
-  if (cakeTrigger) {
-    cakeTrigger.onclick = () => {
-      triggerHaptic([50, 100, 50]);
-      if (flameEl) flameEl.classList.add('out');
-      
-      if (mainAudio) mainAudio.pause();
-      if (hbdAudio) {
-        hbdAudio.currentTime = 0;
-        hbdAudio.play().catch(() => {});
-      }
-
-      launchFireworks();
-      if (cakeStatus) cakeStatus.innerText = "🎉 Cake Cut! Happy Birthday!";
-      if (btnChap4) btnChap4.classList.remove('hidden');
-    };
-  }
-
-  // --- CHAPTER 5: SCRATCH CARD CANVAS ---
-  let scratchInitialized = false;
-  function initScratchCard() {
-    if (scratchInitialized) return;
-    scratchInitialized = true;
-
-    const canvas = document.getElementById('scratch-canvas');
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-
-    ctx.fillStyle = '#c9184a';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-    ctx.fillStyle = '#ffffff';
-    ctx.font = '14px Poppins';
-    ctx.textAlign = 'center';
-    ctx.fillText('✨ Scratch Here ✨', canvas.width / 2, canvas.height / 2 + 5);
-
-    let isScratching = false;
-
-    function scratch(e) {
-      if (!isScratching) return;
-      const rect = canvas.getBoundingClientRect();
-      const x = (e.touches ? e.touches[0].clientX : e.clientX) - rect.left;
-      const y = (e.touches ? e.touches[0].clientY : e.clientY) - rect.top;
-
-      ctx.globalCompositeOperation = 'destination-out';
-      ctx.beginPath();
-      ctx.arc(x, y, 18, 0, Math.PI * 2);
-      ctx.fill();
-    }
-
-    canvas.addEventListener('mousedown', () => isScratching = true);
-    canvas.addEventListener('mouseup', () => isScratching = false);
-    canvas.addEventListener('mousemove', scratch);
-
-    canvas.addEventListener('touchstart', () => isScratching = true);
-    canvas.addEventListener('touchend', () => isScratching = false);
-    canvas.addEventListener('touchmove', scratch);
-  }
-
-  // --- CHAPTER 6: GIFT BOX ---
-  const giftTrigger = document.getElementById('gift-trigger');
-  const btnChap6 = document.getElementById('btn-chap-6');
-  if (giftTrigger) {
-    giftTrigger.onclick = () => {
+  const btnExcitedYes = document.getElementById('btn-excited-yes');
+  if (btnExcitedYes) {
+    btnExcitedYes.onclick = () => {
       triggerHaptic(50);
-      giftTrigger.style.transform = 'scale(1.2) rotate(5deg)';
+      goToChapter(4);
+    };
+  }
+
+  let isCandleBlown = false;
+  let isCakeCut = false;
+
+  function handleCakeInteraction() {
+    if (!isCandleBlown) {
+      isCandleBlown = true;
+      const flame = document.getElementById('candle-flame');
+      if (flame) flame.style.display = 'none';
+      const hint = document.getElementById('cake-action-hint');
+      if (hint) hint.textContent = "Candle blown out! Tap again to slice cake 🔪";
+      triggerHaptic(50);
+      unlockAchievement('candle', '🎂', 'Candle Master', 'Blown out the candles!');
+    } else if (!isCakeCut) {
+      isCakeCut = true;
+      const knife = document.getElementById('cake-knife');
+      if (knife) knife.classList.add('cutting');
+
       setTimeout(() => {
-        giftTrigger.style.transform = 'scale(1)';
-        if (btnChap6) btnChap6.classList.remove('hidden');
+        document.getElementById('cake-left')?.classList.add('cut');
+        document.getElementById('cake-right')?.classList.add('cut');
+        triggerHaptic([40, 60, 40]);
+
+        if (mainAudio) mainAudio.pause();
+        if (hbdAudio) hbdAudio.play().catch(() => {});
+
+        setTimeout(() => {
+          goToChapter(5);
+        }, 1200);
+      }, 500);
+    }
+  }
+
+  const cakeStage = document.getElementById('cake-touch-area');
+  if (cakeStage) cakeStage.onclick = handleCakeInteraction;
+
+  if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+    navigator.mediaDevices.getUserMedia({ audio: true }).then(stream => {
+      const micCtx = new AudioCtx();
+      const source = micCtx.createMediaStreamSource(stream);
+      const analyser = micCtx.createAnalyser();
+      source.connect(analyser);
+      const data = new Uint8Array(analyser.frequencyBinCount);
+
+      function checkMic() {
+        if (!isCandleBlown && currentChap === 4) {
+          analyser.getByteFrequencyData(data);
+          let avg = data.reduce((a, b) => a + b) / data.length;
+          if (avg > 35) handleCakeInteraction();
+        }
+        requestAnimationFrame(checkMic);
+      }
+      checkMic();
+    }).catch(() => {});
+  }
+
+  function startFireworksLoop() {
+    document.getElementById('fireworks-canvas')?.classList.add('active');
+  }
+
+  const btnChap5 = document.getElementById('btn-chap-5');
+  if (btnChap5) {
+    btnChap5.onclick = () => {
+      document.getElementById('fireworks-canvas')?.classList.remove('active');
+      goToChapter(6);
+    };
+  }
+
+  const surpriseTrigger = document.getElementById('surprise-box-trigger');
+  if (surpriseTrigger) {
+    surpriseTrigger.onclick = () => {
+      triggerHaptic([50, 100, 50]);
+      const giftEl = document.getElementById('gift-box-el');
+      if (giftEl) giftEl.style.transform = 'scale(1.15) rotate(5deg)';
+      setTimeout(() => {
+        if (giftEl) giftEl.style.transform = 'scale(1)';
+        const btn6 = document.getElementById('btn-chap-6');
+        if (btn6) btn6.style.display = 'inline-block';
       }, 300);
     };
   }
 
-  // --- CHAPTER 7: TYPEWRITER (22ms) ---
-  const letterText = "Dearest Samrudhi,\n\nWelcome to Level 19! Today marks the start of another wonderful chapter.\nFrom your infectious smile to your unmatched kindness, you light up every room you enter.\nAs you step into this new year, I wish you endless happiness, peace, and success in everything you do.\nThank you for being the wonderful, genuine person you are.\n\nAlways cheering for you,\nGoldiee";
-
-  function startTypewriter() {
-    const typedEl = document.getElementById('typed-text');
-    if (!typedEl) return;
-    typedEl.innerHTML = "";
-    let charIdx = 0;
-
-    function typeNextChar() {
-      if (charIdx < letterText.length) {
-        const char = letterText.charAt(charIdx);
-        typedEl.innerHTML += (char === '\n') ? '<br/>' : char;
-        charIdx++;
-        setTimeout(typeNextChar, 22);
-      }
-    }
-    typeNextChar();
-  }
-
-  // --- CHAPTER 8: POLAROID FLIP ---
-  document.querySelectorAll('.polaroid-card').forEach(card => {
-    card.onclick = () => {
-      triggerHaptic(30);
-      card.classList.toggle('flipped');
+  const btnChap6 = document.getElementById('btn-chap-6');
+  if (btnChap6) {
+    btnChap6.onclick = () => {
+      if (hbdAudio) hbdAudio.pause();
+      startMainAudio();
+      goToChapter(7);
     };
-  });
-
-  // --- HAPTIC FEEDBACK ---
-  function triggerHaptic(pattern) {
-    if (navigator.vibrate) navigator.vibrate(pattern);
   }
 
-  // --- FIREWORKS CANVAS ENGINE ---
-  function launchFireworks() {
-    const canvas = document.getElementById('fireworks-canvas');
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+  // --- BALANCED SMOOTH TYPEWRITER ENGINE (22ms PER CHAR) ---
+  const fullLetterText = 
+    "Dearest Samrudhi,\n\n" +
+    "Welcome to Level 19! Today marks the start of another beautiful chapter in your life, and I wanted to make sure you were surrounded by all the light, warmth, and joy you so effortlessly give to everyone around you.\n\n" +
+    "From your infectious smile to your unmatched grace, you have a rare gift for making every room brighter and every moment sweeter. Watching you grow, achieve, and inspire has been nothing short of amazing.\n\n" +
+    "As you step into this new year, I wish you endless laughter, peace, unforgettable adventures, and the courage to chase every single dream you hold in your heart.\n\n" +
+    "Thank you for being the wonderful, genuine, and radiant person you are. Happy 19th Birthday! ✨\n\n" +
+    "Always cheering for you,\nGoldiee";
 
-    let particles = [];
-    for (let i = 0; i < 60; i++) {
-      particles.push({
-        x: canvas.width / 2,
-        y: canvas.height / 2,
-        vx: (Math.random() - 0.5) * 10,
-        vy: (Math.random() - 0.5) * 10,
-        color: `hsl(${Math.random() * 360}, 100%, 50%)`,
-        radius: Math.random() * 3 + 2,
-        alpha: 1
-      });
+  let charIdx = 0;
+  let typingTimer = null;
+
+  function stopTypingLetter() {
+    if (typingTimer) {
+      clearInterval(typingTimer);
+      typingTimer = null;
     }
-
-    function animate() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      particles.forEach((p, idx) => {
-        p.x += p.vx;
-        p.y += p.vy;
-        p.alpha -= 0.015;
-        ctx.globalAlpha = Math.max(0, p.alpha);
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-        ctx.fillStyle = p.color;
-        ctx.fill();
-
-        if (p.alpha <= 0) particles.splice(idx, 1);
-      });
-
-      if (particles.length > 0) requestAnimationFrame(animate);
-    }
-    animate();
   }
 
-  // --- COUNTDOWN TIMER ---
-  const targetDate = new Date('August 2, 2026 00:00:00').getTime();
-  setInterval(() => {
-    const now = new Date().getTime();
-    const diff = targetDate - now;
+  function startSmoothTypewriter() {
+    stopTypingLetter();
+    const container = document.getElementById('typing-text-box');
+    const scrollPaper = document.getElementById('letter-scroll-container');
+    const cursor = document.getElementById('typing-cursor');
+    if (!container) return;
 
-    if (diff > 0) {
-      document.getElementById('days').innerText = String(Math.floor(diff / (1000 * 60 * 60 * 24))).padStart(2, '0');
-      document.getElementById('hours').innerText = String(Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))).padStart(2, '0');
-      document.getElementById('mins').innerText = String(Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60))).padStart(2, '0');
-      document.getElementById('secs').innerText = String(Math.floor((diff % (1000 * 60)) / 1000)).padStart(2, '0');
+    container.textContent = "";
+    charIdx = 0;
+    if (cursor) cursor.style.display = 'inline';
+
+    typingTimer = setInterval(() => {
+      if (charIdx < fullLetterText.length) {
+        container.textContent += fullLetterText.charAt(charIdx);
+        charIdx++;
+        if (scrollPaper) scrollPaper.scrollTop = scrollPaper.scrollHeight;
+      } else {
+        stopTypingLetter();
+        if (cursor) cursor.style.display = 'none';
+        const btn7 = document.getElementById('btn-chap-7');
+        if (btn7) btn7.style.display = 'inline-block';
+      }
+    }, 22); // Perfectly balanced smooth reading speed!
+  }
+
+  const envWrapper = document.getElementById('envelope-wrapper');
+  if (envWrapper) {
+    envWrapper.onclick = () => {
+      triggerHaptic(40);
+      document.getElementById('envelope-el')?.classList.add('open');
+      unlockAchievement('ribbon', '💌', 'Ribbon Untier', 'Opened the secret letter!');
+
+      setTimeout(() => {
+        document.getElementById('fullscreen-letter-modal')?.classList.add('active');
+        startSmoothTypewriter();
+      }, 500);
+    };
+  }
+
+  const closeLetterBtn = document.getElementById('close-letter-btn');
+  if (closeLetterBtn) {
+    closeLetterBtn.onclick = () => {
+      stopTypingLetter();
+      document.getElementById('fullscreen-letter-modal')?.classList.remove('active');
+      const btn7 = document.getElementById('btn-chap-7');
+      if (btn7) btn7.style.display = 'inline-block';
+    };
+  }
+
+  const btnChap7 = document.getElementById('btn-chap-7');
+  if (btnChap7) btnChap7.onclick = () => goToChapter(8);
+
+  const photoList = [
+    { cap: "Bright Smiles & Warm Memories", note: "Some moments stay golden forever." },
+    { cap: "Laughter & Pure Joy", note: "Your happiness lights up every room." },
+    { cap: "Unforgettable Days", note: "Grateful for every single memory." },
+    { cap: "Kindness & Grace", note: "Always bringing warmth wherever you go." },
+    { cap: "Cherished Moments", note: "Level 19 fits you perfectly!" },
+    { cap: "Sweet Birthday Vibes", note: "May your year be filled with peace." },
+    { cap: "Golden Memories", note: "Here is to many more chapters!" },
+    { cap: "Celebration Day", note: "Happy 19th Birthday, Samrudhi!" }
+  ];
+  let pIdx = 0;
+
+  function renderPhoto() {
+    const counter = document.getElementById('photo-counter');
+    const idxNum = document.getElementById('photo-idx-num');
+    const caption = document.getElementById('photo-caption');
+    const backNote = document.getElementById('photo-back-note');
+    const polaroid = document.getElementById('polaroid-el');
+
+    if (counter) counter.textContent = `Memory ${pIdx + 1} of 8 (Tap to Flip)`;
+    if (idxNum) idxNum.textContent = pIdx + 1;
+    if (caption) caption.textContent = photoList[pIdx].cap;
+    if (backNote) backNote.textContent = `"${photoList[pIdx].note}"`;
+    if (polaroid) polaroid.classList.remove('flipped');
+  }
+
+  const polaroidEl = document.getElementById('polaroid-el');
+  if (polaroidEl) {
+    polaroidEl.onclick = () => {
+      triggerHaptic(30);
+      polaroidEl.classList.toggle('flipped');
+      unlockAchievement('photo', '📸', 'Memory Keeper', 'Explored memory cards!');
+    };
+  }
+
+  const nextPhotoBtn = document.getElementById('next-photo-btn');
+  if (nextPhotoBtn) nextPhotoBtn.onclick = () => { pIdx = (pIdx + 1) % photoList.length; renderPhoto(); };
+
+  const prevPhotoBtn = document.getElementById('prev-photo-btn');
+  if (prevPhotoBtn) prevPhotoBtn.onclick = () => { pIdx = (pIdx - 1 + photoList.length) % photoList.length; renderPhoto(); };
+
+  const btnChap8 = document.getElementById('btn-chap-8');
+  if (btnChap8) btnChap8.onclick = () => goToChapter(9);
+
+  const sealEl = document.getElementById('seal-el');
+  if (sealEl) {
+    sealEl.onclick = () => {
+      triggerHaptic(50);
+      const overlay = document.getElementById('stats-overlay');
+      if (overlay) overlay.style.display = 'block';
+      unlockAchievement('cert', '📜', 'Certified Legend', 'Claimed Level 19 Diploma!');
+    };
+  }
+
+  const btnChap9 = document.getElementById('btn-chap-9');
+  if (btnChap9) btnChap9.onclick = () => goToChapter(10);
+
+  const reasonsList = [
+    "1. Your contagious smile.", "2. Your unmatched kindness.", "3. How genuine you are.",
+    "4. Your warm presence.", "5. The way you make people feel seen.", "6. Your resilience.",
+    "7. Your sweet laugh.", "8. Your graceful charm.", "9. How thoughtful you are.",
+    "10. Your bright energy.", "11. The peace you bring.", "12. Your wonderful heart.",
+    "13. Your patience.", "14. Your golden spirit.", "15. How reliable you are.",
+    "16. Your positivity.", "17. The joy you spread.", "18. Simply being yourself.",
+    "19. Everything that makes you Samrudhi! ❤️"
+  ];
+  let rIdx = 0;
+
+  const reasonCard = document.getElementById('reason-card-el');
+  if (reasonCard) {
+    reasonCard.onclick = () => {
+      triggerHaptic(20);
+      rIdx = (rIdx + 1) % reasonsList.length;
+      const idxEl = document.getElementById('reason-idx');
+      const textEl = document.getElementById('reason-text-el');
+      if (idxEl) idxEl.textContent = `Reason ${rIdx + 1} of 19 (Tap card)`;
+      if (textEl) textEl.textContent = reasonsList[rIdx];
+    };
+  }
+
+  function initScratchCanvas() {
+    const scratchCanvas = document.getElementById('scratch-canvas');
+    if (!scratchCanvas) return;
+    const scratchCtx = scratchCanvas.getContext('2d');
+    if (!scratchCtx) return;
+
+    scratchCtx.globalCompositeOperation = 'source-over';
+    scratchCtx.fillStyle = '#d4af37';
+    scratchCtx.fillRect(0, 0, 240, 110);
+    scratchCtx.fillStyle = '#ffffff';
+    scratchCtx.font = '11px Poppins';
+    scratchCtx.fillText('Scratch Here ✨', 78, 60);
+
+    let isScratching = false;
+    function scratchScratch(e) {
+      if (!isScratching) return;
+      const rect = scratchCanvas.getBoundingClientRect();
+      const x = (e.touches ? e.touches[0].clientX : e.clientX) - rect.left;
+      const y = (e.touches ? e.touches[0].clientY : e.clientY) - rect.top;
+
+      scratchCtx.globalCompositeOperation = 'destination-out';
+      scratchCtx.beginPath();
+      scratchCtx.arc(x, y, 18, 0, Math.PI * 2);
+      scratchCtx.fill();
+      unlockAchievement('scratch', '🎟️', 'Voucher Winner', 'Unlocked birthday reward!');
     }
-  }, 1000);
 
-});
-                          
+    scratchCanvas.onmousedown = () => isScratching = true;
+    scratchCanvas.onmouseup = () => isScratching = false;
+    scratchCanvas.onmousemove = scratchScratch;
+    scratchCanvas.ontouchstart = () => isScratching = true;
+    scratchCanvas.ontouchend = () => isScratching = false;
+    scratchCanvas.ontouchmove = scratchScratch;
+  }
+  
