@@ -546,4 +546,123 @@ function initApp() {
     scratchCanvas.ontouchend = () => isScratching = false;
     scratchCanvas.ontouchmove = scratchScratch;
   }
-  
+  initScratchCanvas();
+
+  const btnChap10 = document.getElementById('btn-chap-10');
+  if (btnChap10) btnChap10.onclick = () => goToChapter(11);
+
+  const btnChap11 = document.getElementById('btn-chap-11');
+  if (btnChap11) btnChap11.onclick = () => goToChapter(12);
+
+  const captureBtn = document.getElementById('nav-capture-btn');
+  if (captureBtn) {
+    captureBtn.onclick = () => {
+      triggerHaptic(50);
+      if (window.html2canvas) {
+        html2canvas(document.body).then(canvas => {
+          const a = document.createElement('a');
+          a.download = 'Samrudhi-19th-Birthday.png';
+          a.href = canvas.toDataURL();
+          a.click();
+        });
+      }
+    };
+  }
+
+  // --- FIREWORKS ENGINE ---
+  const fwCanvas = document.getElementById('fireworks-canvas');
+  const fwCtx = fwCanvas ? fwCanvas.getContext('2d') : null;
+  let bw = fwCanvas ? (fwCanvas.width = window.innerWidth) : window.innerWidth;
+  let bh = fwCanvas ? (fwCanvas.height = window.innerHeight) : window.innerHeight;
+
+  let rockets = [];
+  let fwParticles = [];
+
+  function createFireworkRocket() {
+    const targetX = Math.random() * (bw * 0.8) + bw * 0.1;
+    const targetY = Math.random() * (bh * 0.4) + bh * 0.1;
+    rockets.push({
+      x: targetX,
+      y: bh,
+      targetY: targetY,
+      speed: Math.random() * 4 + 7,
+      color: '#ffd700'
+    });
+  }
+
+  function explodeRocket(x, y) {
+    playSynchronizedExplosionSound();
+    const colors = ['#ff4d6d', '#c9184a', '#ffd700', '#ffffff', '#ff758f'];
+    for (let i = 0; i < 45; i++) {
+      const angle = Math.random() * Math.PI * 2;
+      const speed = Math.random() * 6 + 2;
+      fwParticles.push({
+        x: x, y: y,
+        vx: Math.cos(angle) * speed,
+        vy: Math.sin(angle) * speed,
+        color: colors[Math.floor(Math.random() * colors.length)],
+        alpha: 1,
+        decay: Math.random() * 0.018 + 0.012,
+        gravity: 0.06
+      });
+    }
+  }
+
+  function renderFireworks() {
+    if (fwCtx && fwCanvas) {
+      fwCtx.fillStyle = 'rgba(0, 0, 0, 0.18)';
+      fwCtx.fillRect(0, 0, bw, bh);
+
+      if (fwCanvas.classList.contains('active') && Math.random() < 0.05) {
+        createFireworkRocket();
+      }
+
+      rockets.forEach((r, idx) => {
+        r.y -= r.speed;
+        fwCtx.fillStyle = r.color;
+        fwCtx.beginPath();
+        fwCtx.arc(r.x, r.y, 2.5, 0, Math.PI * 2);
+        fwCtx.fill();
+
+        if (r.y <= r.targetY) {
+          explodeRocket(r.x, r.y);
+          rockets.splice(idx, 1);
+        }
+      });
+
+      fwParticles.forEach((p, idx) => {
+        p.x += p.vx; p.y += p.vy;
+        p.vy += p.gravity;
+        p.vx *= 0.98;
+        p.alpha -= p.decay;
+
+        if (p.alpha <= 0) {
+          fwParticles.splice(idx, 1);
+        } else {
+          fwCtx.fillStyle = p.color;
+          fwCtx.globalAlpha = p.alpha;
+          fwCtx.beginPath();
+          fwCtx.arc(p.x, p.y, 2.4, 0, Math.PI * 2);
+          fwCtx.fill();
+        }
+      });
+      fwCtx.globalAlpha = 1;
+    }
+    requestAnimationFrame(renderFireworks);
+  }
+  renderFireworks();
+
+  window.onresize = () => {
+    bw = fwCanvas ? (fwCanvas.width = window.innerWidth) : window.innerWidth;
+    bh = fwCanvas ? (fwCanvas.height = window.innerHeight) : window.innerHeight;
+  };
+
+  resetAllStates();
+}
+
+// SAFE DOM READY REGISTRATION
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initApp);
+} else {
+  initApp();
+}
