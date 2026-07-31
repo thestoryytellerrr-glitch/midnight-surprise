@@ -180,13 +180,22 @@ function initApp() {
   const mainAudio = document.getElementById('audio-main');
   const hbdAudio = document.getElementById('audio-hbd');
 
-    function startMainAudio() {
+      function startMainAudio() {
     initAudio();
     if (mainAudio) {
-      // Set volume
       mainAudio.volume = 1.0;
-      
-      // If the audio hasn't reached 7 seconds yet, skip directly to 07s
+
+      // STEP 2: Custom Loop (Loops back to 07s when song ends)
+      if (!mainAudio.has7sLoop) {
+        mainAudio.has7sLoop = true;
+        mainAudio.removeAttribute('loop');
+        mainAudio.addEventListener('ended', () => {
+          mainAudio.currentTime = 7;
+          mainAudio.play().catch(() => {});
+        });
+      }
+
+      // STEP 1: Skip first 7s on initial play
       if (mainAudio.currentTime < 7) {
         mainAudio.currentTime = 7;
       }
@@ -195,7 +204,8 @@ function initApp() {
         mainAudio.play().catch(() => {});
       }
     }
-    }
+      }
+  
   
 
   // --- PRELOADER LOADER ANIMATION FIX ---
