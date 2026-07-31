@@ -914,15 +914,16 @@ html, body {
 .realistic-bouquet-img {
   position: relative;
   z-index: 3;
-  width: 82%;
-  max-width: 330px;
-  height: auto;
-  object-fit: contain;
-  filter: drop-shadow(0 15px 25px rgba(89, 13, 34, 0.28));
+  width: 85%;
+  max-width: 320px;
+  height: 240px;
+  object-fit: cover;
+  border-radius: 18px;
+  filter: drop-shadow(0 12px 24px rgba(89, 13, 34, 0.25));
   animation: floatBouquetSmooth 4s ease-in-out infinite alternate;
-  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), filter 0.4s ease;
-  will-change: transform;
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
+
 
 @media (hover: hover) {
   .realistic-bouquet-img:hover {
