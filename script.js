@@ -116,7 +116,7 @@ function initApp() {
     if (next) next.classList.add('active');
     currentChap = num;
 
-    // Toggle footer visibility: ONLY shows on Chapter 12
+    // Footer visibility: ONLY on Chapter 12
     const footer = document.querySelector('.app-footer');
     if (footer) {
       if (num === 12) {
@@ -341,7 +341,7 @@ function initApp() {
     };
   }
 
-  // --- FAST 3-CHAR TICK TYPEWRITER ENGINE ---
+  // --- BALANCED SMOOTH TYPEWRITER ENGINE (22ms PER CHAR) ---
   const fullLetterText = 
     "Dearest Samrudhi,\n\n" +
     "Welcome to Level 19! Today marks the start of another beautiful chapter in your life, and I wanted to make sure you were surrounded by all the light, warmth, and joy you so effortlessly give to everyone around you.\n\n" +
@@ -373,8 +373,8 @@ function initApp() {
 
     typingTimer = setInterval(() => {
       if (charIdx < fullLetterText.length) {
-        container.textContent += fullLetterText.slice(charIdx, charIdx + 3);
-        charIdx += 3;
+        container.textContent += fullLetterText.charAt(charIdx);
+        charIdx++;
         if (scrollPaper) scrollPaper.scrollTop = scrollPaper.scrollHeight;
       } else {
         stopTypingLetter();
@@ -382,7 +382,7 @@ function initApp() {
         const btn7 = document.getElementById('btn-chap-7');
         if (btn7) btn7.style.display = 'inline-block';
       }
-    }, 10);
+    }, 22); // Perfectly balanced smooth reading speed!
   }
 
   const envWrapper = document.getElementById('envelope-wrapper');
