@@ -872,27 +872,33 @@ html, body {
   filter: drop-shadow(0 10px 20px rgba(201, 24, 74, 0.15));
 }
 
-/* BIGGER FINAL FOOTER QUOTE (APPEARS ONLY ON CHAPTER 12) */
+/* FINAL FOOTER POP-UP ON CHAPTER 12 */
 .app-footer {
   position: fixed;
-  bottom: 58px;
+  bottom: 56px;
   left: 0;
   right: 0;
   text-align: center;
   font-family: 'Caveat', cursive;
-  font-size: 20px;
+  font-size: 22px;
   color: #800f2f;
   font-weight: 700;
   letter-spacing: 1px;
   z-index: 100;
   pointer-events: none;
-  text-shadow: 0 2px 8px rgba(255, 255, 255, 0.9);
-  display: none;
+  text-shadow: 0 2px 8px rgba(255, 255, 255, 0.95);
+  opacity: 0;
+  transform: translate3d(0, 20px, 0) scale(0.9);
+  transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.6s ease;
+  display: block;
 }
 
 .app-footer.visible {
-  display: block;
+  opacity: 1;
+  transform: translate3d(0, 0, 0) scale(1);
 }
+
+
 
 /* FIXED NAVIGATION BAR AT BOTTOM */
 .nav-bar-fixed {
