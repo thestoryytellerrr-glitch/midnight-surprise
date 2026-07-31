@@ -403,7 +403,7 @@ html, body {
   border: 1px solid #ffcad4;
 }
 
-/* CANVA GRID PAPER ENVELOPE CARD (CHAPTER 7 - PAGE 5 REPLICA) */
+/* CANVA GRID PAPER ENVELOPE CARD (CHAPTER 7) */
 .grid-paper-envelope-card {
   background-color: #fffaf5;
   background-image: 
@@ -866,10 +866,125 @@ html, body {
   cursor: pointer;
 }
 
-/* BOUQUET STAGE */
-.bouquet-realistic-container {
-  margin: 10px 0;
-  filter: drop-shadow(0 10px 20px rgba(201, 24, 74, 0.15));
+/* CHAPTER 11: LUXURY REALISTIC ROSE BOUQUET */
+.bouquet-card-container {
+  padding: 24px 18px !important;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.cursive-rose-gradient {
+  font-family: 'Great Vibes', cursive;
+  font-size: clamp(36px, 8.5vw, 48px);
+  background: linear-gradient(135deg, #ff4d6d 0%, #c9184a 50%, #590d22 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 6px;
+  filter: drop-shadow(0 2px 6px rgba(201, 24, 74, 0.15));
+}
+
+.luxury-bouquet-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 360px;
+  margin: 8px auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 280px;
+}
+
+.bouquet-radial-glow {
+  position: absolute;
+  width: 220px;
+  height: 220px;
+  background: radial-gradient(circle, rgba(255, 117, 143, 0.5) 0%, rgba(201, 24, 74, 0.18) 55%, transparent 75%);
+  border-radius: 50%;
+  filter: blur(25px);
+  z-index: 1;
+  animation: pulseAmbientGlow 4s ease-in-out infinite alternate;
+}
+
+@keyframes pulseAmbientGlow {
+  0% { transform: scale(0.9); opacity: 0.6; }
+  100% { transform: scale(1.15); opacity: 0.95; }
+}
+
+.realistic-bouquet-img {
+  position: relative;
+  z-index: 3;
+  width: 82%;
+  max-width: 330px;
+  height: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 15px 25px rgba(89, 13, 34, 0.28));
+  animation: floatBouquetSmooth 4s ease-in-out infinite alternate;
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), filter 0.4s ease;
+  will-change: transform;
+}
+
+@media (hover: hover) {
+  .realistic-bouquet-img:hover {
+    transform: scale(1.05) translateY(-4px) !important;
+    filter: drop-shadow(0 22px 32px rgba(201, 24, 74, 0.35));
+  }
+}
+
+@keyframes floatBouquetSmooth {
+  0% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-5px) rotate(0.8deg); }
+  100% { transform: translateY(-8px) rotate(-0.5deg); }
+}
+
+.chapter.active .realistic-bouquet-img {
+  animation: entranceBouquet 1.2s cubic-bezier(0.22, 1, 0.36, 1) forwards, floatBouquetSmooth 4s ease-in-out infinite alternate 1.2s;
+}
+
+@keyframes entranceBouquet {
+  0% { opacity: 0; transform: translateY(25px) scale(0.9); }
+  100% { opacity: 1; transform: translateY(0px) scale(1); }
+}
+
+.bouquet-particles-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 4;
+}
+
+.falling-petal, .sparkle-particle {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.falling-petal.p1 { left: 12%; top: 10%; font-size: 16px; animation: floatPetal 5s ease-in-out infinite; animation-delay: 0.2s; }
+.falling-petal.p2 { right: 15%; top: 15%; font-size: 14px; animation: floatPetal 6s ease-in-out infinite; animation-delay: 1.5s; }
+.falling-petal.p3 { left: 78%; bottom: 20%; font-size: 15px; animation: floatPetal 5.5s ease-in-out infinite; animation-delay: 2.8s; }
+
+.sparkle-particle.s1 { left: 18%; top: 35%; font-size: 14px; animation: twinkleSparkle 3s ease-in-out infinite; animation-delay: 0.5s; }
+.sparkle-particle.s2 { right: 20%; top: 40%; font-size: 16px; animation: twinkleSparkle 3.5s ease-in-out infinite; animation-delay: 1.8s; }
+
+@keyframes floatPetal {
+  0% { opacity: 0; transform: translateY(-10px) rotate(0deg); }
+  30% { opacity: 0.8; }
+  100% { opacity: 0; transform: translateY(75px) rotate(120deg); }
+}
+
+@keyframes twinkleSparkle {
+  0%, 100% { opacity: 0; transform: scale(0.5); }
+  50% { opacity: 0.9; transform: scale(1.2); }
+}
+
+.bouquet-quote-text {
+  font-size: 12px;
+  color: #5c3a44;
+  line-height: 1.7;
+  margin: 14px 0 16px 0;
+  font-style: italic;
+  position: relative;
+  z-index: 5;
 }
 
 /* FINAL FOOTER POP-UP ON CHAPTER 12 */
@@ -898,8 +1013,6 @@ html, body {
   transform: translate3d(0, 0, 0) scale(1);
 }
 
-
-
 /* FIXED NAVIGATION BAR AT BOTTOM */
 .nav-bar-fixed {
   position: fixed;
@@ -923,4 +1036,3 @@ html, body {
   font-weight: 600;
   box-shadow: 0 4px 12px rgba(0,0,0,0.05);
   }
-  
