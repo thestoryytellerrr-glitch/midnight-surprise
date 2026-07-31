@@ -9,24 +9,54 @@ document.addEventListener('DOMContentLoaded', () => {
     if ('vibrate' in navigator) navigator.vibrate(pattern);
   }
 
-  function spawnRibbonParticles() {
-    const layer = document.getElementById('ribbon-particles-layer');
-    if (!layer) return;
-    layer.innerHTML = '';
-    const count = 18;
-    for (let i = 0; i < count; i++) {
-      const el = document.createElement('div');
-      el.className = 'ribbon-particle';
-      el.textContent = '🎀';
-      el.style.left = Math.random() * 95 + 'vw';
-      el.style.animationDelay = (Math.random() * 8) + 's';
-      el.style.animationDuration = (6 + Math.random() * 6) + 's';
-      el.style.fontSize = (14 + Math.random() * 12) + 'px';
-      layer.appendChild(el);
+  // --- ACHIEVEMENT TOAST ENGINE ---
+  const unlockedBadges = new Set();
+  function unlockAchievement(id, icon, title, desc) {
+    if (unlockedBadges.has(id)) return;
+    unlockedBadges.add(id);
+    triggerHaptic([40, 60, 40]);
+
+    const toast = document.getElementById('achievement-toast');
+    const toastIcon = document.getElementById('toast-icon');
+    const toastTitle = document.getElementById('toast-title');
+    const toastDesc = document.getElementById('toast-desc');
+
+    if (toastIcon) toastIcon.textContent = icon;
+    if (toastTitle) toastTitle.textContent = title;
+    if (toastDesc) toastDesc.textContent = desc;
+
+    if (toast) {
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 3200);
     }
   }
-  spawnRibbonParticles();
 
+  // --- INTERACTIVE STARDUST + RIBBON TOUCH TRAIL ---
+  const touchLayer = document.getElementById('touch-trail-layer');
+  const touchSymbols = ['✨', '💫', '🌸', '🎀'];
+
+  function spawnTouchParticle(x, y) {
+    if (!touchLayer) return;
+    const el = document.createElement('div');
+    el.className = 'touch-sparkle';
+    el.textContent = touchSymbols[Math.floor(Math.random() * touchSymbols.length)];
+    el.style.left = (x - 8) + 'px';
+    el.style.top = (y - 8) + 'px';
+    touchLayer.appendChild(el);
+    setTimeout(() => el.remove(), 1200);
+  }
+
+  window.addEventListener('touchmove', (e) => {
+    if (e.touches && e.touches[0]) {
+      spawnTouchParticle(e.touches[0].clientX, e.touches[0].clientY);
+    }
+  }, { passive: true });
+
+  window.addEventListener('click', (e) => {
+    spawnTouchParticle(e.clientX, e.clientY);
+  });
+
+  // --- RESET ALL STATES ENGINE ---
   function resetAllStates() {
     isCandleBlown = false;
     isCakeCut = false;
@@ -51,7 +81,7 @@ document.addEventListener('DOMContentLoaded', () => {
       runawayBtn.style.position = 'relative';
     }
 
-    typingStarted = false;
+    stopTypingLetter();
     const env = document.getElementById('envelope-el');
     if (env) env.classList.remove('open');
     
@@ -228,6 +258,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const hint = document.getElementById('cake-action-hint');
       if (hint) hint.textContent = "Candle blown out! Tap again to slice cake 🔪";
       triggerHaptic(50);
+      unlockAchievement('candle', '🎂', 'Candle Master', 'Blown out the candles!');
     } else if (!isCakeCut) {
       isCakeCut = true;
       const knife = document.getElementById('cake-knife');
@@ -306,38 +337,48 @@ document.addEventListener('DOMContentLoaded', () => {
     };
   }
 
-  const fullLetterLines = [
-    "Dearest Samrudhi,\n",
-    "Welcome to Level 19! Today marks the start of another beautiful chapter in your life, and I wanted to make sure you were surrounded by all the light, warmth, and joy you so effortlessly give to everyone around you.\n\n",
-    "From your infectious smile to your unmatched grace, you have a rare gift for making every room brighter and every moment sweeter. Watching you grow, achieve, and inspire has been nothing short of amazing.\n\n",
-    "As you step into this new year, I wish you endless laughter, peace, unforgettable adventures, and the courage to chase every single dream you hold in your heart.\n\n",
-    "Thank you for being the wonderful, genuine, and radiant person you are. Happy 19th Birthday! ✨\n\n",
-    "Always cheering for you,\nGoldiee"
-  ];
+  // --- FIXED ULTRA-SMOOTH CHARACTER-BY-CHARACTER TYPEWRITER ---
+  const fullLetterText = 
+    "Dearest Samrudhi,\n\n" +
+    "Welcome to Level 19! Today marks the start of another beautiful chapter in your life, and I wanted to make sure you were surrounded by all the light, warmth, and joy you so effortlessly give to everyone around you.\n\n" +
+    "From your infectious smile to your unmatched grace, you have a rare gift for making every room brighter and every moment sweeter. Watching you grow, achieve, and inspire has been nothing short of amazing.\n\n" +
+    "As you step into this new year, I wish you endless laughter, peace, unforgettable adventures, and the courage to chase every single dream you hold in your heart.\n\n" +
+    "Thank you for being the wonderful, genuine, and radiant person you are. Happy 19th Birthday! ✨\n\n" +
+    "Always cheering for you,\nGoldiee";
 
-  let typingStarted = false;
-  function typeWriterLetter() {
-    if (typingStarted) return;
-    typingStarted = true;
+  let charIdx = 0;
+  let typingTimer = null;
+
+  function stopTypingLetter() {
+    if (typingTimer) {
+      clearInterval(typingTimer);
+      typingTimer = null;
+    }
+  }
+
+  function startSmoothTypewriter() {
+    stopTypingLetter();
     const container = document.getElementById('typing-text-box');
+    const scrollPaper = document.getElementById('letter-scroll-container');
+    const cursor = document.getElementById('typing-cursor');
     if (!container) return;
-    container.innerHTML = "";
-    let lineIdx = 0;
 
-    function typeNextLine() {
-      if (lineIdx < fullLetterLines.length) {
-        const p = document.createElement('p');
-        p.style.marginBottom = "8px";
-        p.textContent = fullLetterLines[lineIdx];
-        container.appendChild(p);
-        lineIdx++;
-        setTimeout(typeNextLine, 600);
+    container.textContent = "";
+    charIdx = 0;
+    if (cursor) cursor.style.display = 'inline';
+
+    typingTimer = setInterval(() => {
+      if (charIdx < fullLetterText.length) {
+        container.textContent += fullLetterText.charAt(charIdx);
+        charIdx++;
+        if (scrollPaper) scrollPaper.scrollTop = scrollPaper.scrollHeight;
       } else {
+        stopTypingLetter();
+        if (cursor) cursor.style.display = 'none';
         const btn7 = document.getElementById('btn-chap-7');
         if (btn7) btn7.style.display = 'inline-block';
       }
-    }
-    typeNextLine();
+    }, 32);
   }
 
   const envWrapper = document.getElementById('envelope-wrapper');
@@ -345,9 +386,11 @@ document.addEventListener('DOMContentLoaded', () => {
     envWrapper.onclick = () => {
       triggerHaptic(40);
       document.getElementById('envelope-el')?.classList.add('open');
+      unlockAchievement('ribbon', '💌', 'Ribbon Untier', 'Opened the secret letter!');
+
       setTimeout(() => {
         document.getElementById('fullscreen-letter-modal')?.classList.add('active');
-        typeWriterLetter();
+        startSmoothTypewriter();
       }, 500);
     };
   }
@@ -355,6 +398,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const closeLetterBtn = document.getElementById('close-letter-btn');
   if (closeLetterBtn) {
     closeLetterBtn.onclick = () => {
+      stopTypingLetter();
       document.getElementById('fullscreen-letter-modal')?.classList.remove('active');
       const btn7 = document.getElementById('btn-chap-7');
       if (btn7) btn7.style.display = 'inline-block';
@@ -364,6 +408,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const btnChap7 = document.getElementById('btn-chap-7');
   if (btnChap7) btnChap7.onclick = () => goToChapter(8);
 
+  // --- POLAROID GALLERY ---
   const photoList = [
     { cap: "Bright Smiles & Warm Memories", note: "Some moments stay golden forever." },
     { cap: "Laughter & Pure Joy", note: "Your happiness lights up every room." },
@@ -395,6 +440,7 @@ document.addEventListener('DOMContentLoaded', () => {
     polaroidEl.onclick = () => {
       triggerHaptic(30);
       polaroidEl.classList.toggle('flipped');
+      unlockAchievement('photo', '📸', 'Memory Keeper', 'Explored memory cards!');
     };
   }
 
@@ -413,6 +459,7 @@ document.addEventListener('DOMContentLoaded', () => {
       triggerHaptic(50);
       const overlay = document.getElementById('stats-overlay');
       if (overlay) overlay.style.display = 'block';
+      unlockAchievement('cert', '📜', 'Certified Legend', 'Claimed Level 19 Diploma!');
     };
   }
 
@@ -466,16 +513,9 @@ document.addEventListener('DOMContentLoaded', () => {
       scratchCtx.beginPath();
       scratchCtx.arc(x, y, 18, 0, Math.PI * 2);
       scratchCtx.fill();
+      unlockAchievement('scratch', '🎟️', 'Voucher Winner', 'Unlocked birthday reward!');
     }
-
-    scratchCanvas.onmousedown = () => isScratching = true;
-    scratchCanvas.onmouseup = () => isScratching = false;
-    scratchCanvas.onmousemove = scratchScratch;
-    scratchCanvas.ontouchstart = () => isScratching = true;
-    scratchCanvas.ontouchend = () => isScratching = false;
-    scratchCanvas.ontouchmove = scratchScratch;
-  }
-  initScratchCanvas();
+   initScratchCanvas();
 
   const btnChap10 = document.getElementById('btn-chap-10');
   if (btnChap10) btnChap10.onclick = () => goToChapter(11);
@@ -498,43 +538,84 @@ document.addEventListener('DOMContentLoaded', () => {
     };
   }
 
+  // --- HYPER-REALISTIC FIREWORKS PHYSICS ENGINE ---
   const fwCanvas = document.getElementById('fireworks-canvas');
   const fwCtx = fwCanvas ? fwCanvas.getContext('2d') : null;
   let bw = fwCanvas ? (fwCanvas.width = window.innerWidth) : window.innerWidth;
   let bh = fwCanvas ? (fwCanvas.height = window.innerHeight) : window.innerHeight;
 
-  let particles = [];
-  function createFirework(x, y) {
-    playSynchronizedExplosionSound();
+  let rockets = [];
+  let fwParticles = [];
 
+  function createFireworkRocket() {
+    const targetX = Math.random() * (bw * 0.8) + bw * 0.1;
+    const targetY = Math.random() * (bh * 0.4) + bh * 0.1;
+    rockets.push({
+      x: targetX,
+      y: bh,
+      targetY: targetY,
+      speed: Math.random() * 4 + 7,
+      color: '#ffd700'
+    });
+  }
+
+  function explodeRocket(x, y) {
+    playSynchronizedExplosionSound();
     const colors = ['#ff4d6d', '#c9184a', '#ffd700', '#ffffff', '#ff758f'];
-    for (let i = 0; i < 40; i++) {
+    const particleCount = 45;
+
+    for (let i = 0; i < particleCount; i++) {
       const angle = Math.random() * Math.PI * 2;
       const speed = Math.random() * 6 + 2;
-      particles.push({
-        x, y, vx: Math.cos(angle) * speed, vy: Math.sin(angle) * speed,
-        color: colors[Math.floor(Math.random() * colors.length)], alpha: 1, decay: Math.random() * 0.02 + 0.015
+      fwParticles.push({
+        x: x,
+        y: y,
+        vx: Math.cos(angle) * speed,
+        vy: Math.sin(angle) * speed,
+        color: colors[Math.floor(Math.random() * colors.length)],
+        alpha: 1,
+        decay: Math.random() * 0.018 + 0.012,
+        gravity: 0.06
       });
     }
   }
 
   function renderFireworks() {
     if (fwCtx && fwCanvas) {
-      fwCtx.clearRect(0, 0, bw, bh);
-      if (fwCanvas.classList.contains('active') && Math.random() < 0.08) {
-        createFirework(Math.random() * (bw * 0.8) + bw * 0.1, Math.random() * (bh * 0.5) + bh * 0.1);
+      fwCtx.fillStyle = 'rgba(0, 0, 0, 0.18)';
+      fwCtx.fillRect(0, 0, bw, bh);
+
+      if (fwCanvas.classList.contains('active') && Math.random() < 0.05) {
+        createFireworkRocket();
       }
-      particles.forEach((p, index) => {
-        p.x += p.vx; p.y += p.vy;
-        p.vy += 0.05; p.alpha -= p.decay;
+
+      rockets.forEach((r, idx) => {
+        r.y -= r.speed;
+        fwCtx.fillStyle = r.color;
+        fwCtx.beginPath();
+        fwCtx.arc(r.x, r.y, 2.5, 0, Math.PI * 2);
+        fwCtx.fill();
+
+        if (r.y <= r.targetY) {
+          explodeRocket(r.x, r.y);
+          rockets.splice(idx, 1);
+        }
+      });
+
+      fwParticles.forEach((p, idx) => {
+        p.x += p.vx;
+        p.y += p.vy;
+        p.vy += p.gravity;
+        p.vx *= 0.98;
+        p.alpha -= p.decay;
 
         if (p.alpha <= 0) {
-          particles.splice(index, 1);
+          fwParticles.splice(idx, 1);
         } else {
           fwCtx.fillStyle = p.color;
           fwCtx.globalAlpha = p.alpha;
           fwCtx.beginPath();
-          fwCtx.arc(p.x, p.y, 2.8, 0, Math.PI * 2);
+          fwCtx.arc(p.x, p.y, 2.4, 0, Math.PI * 2);
           fwCtx.fill();
         }
       });
@@ -548,12 +629,7 @@ document.addEventListener('DOMContentLoaded', () => {
     bw = fwCanvas ? (fwCanvas.width = window.innerWidth) : window.innerWidth;
     bh = fwCanvas ? (fwCanvas.height = window.innerHeight) : window.innerHeight;
   };
-  renderFireworks();
-
-  window.onresize = () => {
-    bw = fwCanvas ? (fwCanvas.width = window.innerWidth) : window.innerWidth;
-    bh = fwCanvas ? (fwCanvas.height = window.innerHeight) : window.innerHeight;
-  };
 
   resetAllStates();
 });
+    
